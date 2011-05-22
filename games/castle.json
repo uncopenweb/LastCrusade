@@ -1,0 +1,1003 @@
+{
+    "End": 14, 
+    "SoundCount": 31, 
+    "items": [
+        {
+            "iActionSound": 18, 
+            "iType": 0, 
+            "iName": "spear", 
+            "iValue": 30, 
+            "iNameSound": 6
+        }, 
+        {
+            "iActionSound": 17, 
+            "iType": 0, 
+            "iName": "double", 
+            "iValue": 35, 
+            "iNameSound": 0
+        }, 
+        {
+            "iActionSound": 17, 
+            "iType": 0, 
+            "iName": "knightssword", 
+            "iValue": 40, 
+            "iNameSound": 3
+        }, 
+        {
+            "iActionSound": 17, 
+            "iType": 0, 
+            "iName": "royalblade", 
+            "iValue": 50, 
+            "iNameSound": 5
+        }, 
+        {
+            "iActionSound": -1, 
+            "iType": 1, 
+            "iName": "guardsarmor", 
+            "iValue": 45, 
+            "iNameSound": 1
+        }, 
+        {
+            "iActionSound": -1, 
+            "iType": 1, 
+            "iName": "swordsmanarmor", 
+            "iValue": 50, 
+            "iNameSound": 7
+        }, 
+        {
+            "iActionSound": -1, 
+            "iType": 1, 
+            "iName": "knightsarmor", 
+            "iValue": 60, 
+            "iNameSound": 2
+        }, 
+        {
+            "iActionSound": -1, 
+            "iType": 1, 
+            "iName": "royalarmor", 
+            "iValue": 75, 
+            "iNameSound": 4
+        }, 
+        {
+            "iActionSound": 15, 
+            "iType": 2, 
+            "iName": "potion", 
+            "iValue": 25, 
+            "iNameSound": 14
+        }, 
+        {
+            "iActionSound": -1, 
+            "iType": -1, 
+            "iName": "gatekeeper", 
+            "iValue": 0, 
+            "iNameSound": -1
+        }, 
+        {
+            "iActionSound": -1, 
+            "iType": -1, 
+            "iName": "goldenknight", 
+            "iValue": 0, 
+            "iNameSound": -1
+        }, 
+        {
+            "iActionSound": -1, 
+            "iType": 4, 
+            "iName": "crown", 
+            "iValue": 1, 
+            "iNameSound": 30
+        }
+    ], 
+    "NPC": [
+        {
+            "cStrMax": 22, 
+            "cActionSound": 18, 
+            "cDefMin": 30, 
+            "cHPMax": 5, 
+            "cDefMax": 32, 
+            "cType": 0, 
+            "cStrMin": 18, 
+            "cName": "guard1", 
+            "cHPMin": 1, 
+            "cItemCount": 2, 
+            "cNameSound": 9, 
+            "items": [
+                {
+                    "cPercent": 100, 
+                    "cItem": 0
+                }, 
+                {
+                    "cPercent": 100, 
+                    "cItem": 4
+                }
+            ], 
+            "cRunPerc": 30
+        }, 
+        {
+            "cStrMax": 33, 
+            "cActionSound": 18, 
+            "cDefMin": 30, 
+            "cHPMax": 8, 
+            "cDefMax": 32, 
+            "cType": 0, 
+            "cStrMin": 30, 
+            "cName": "guard", 
+            "cHPMin": 3, 
+            "cItemCount": 1, 
+            "cNameSound": 9, 
+            "items": [
+                {
+                    "cPercent": 75, 
+                    "cItem": 8
+                }
+            ], 
+            "cRunPerc": 30
+        }, 
+        {
+            "cStrMax": 35, 
+            "cActionSound": 17, 
+            "cDefMin": 43, 
+            "cHPMax": 8, 
+            "cDefMax": 47, 
+            "cType": 0, 
+            "cStrMin": 33, 
+            "cName": "swordsman", 
+            "cHPMin": 3, 
+            "cItemCount": 2, 
+            "cNameSound": 13, 
+            "items": [
+                {
+                    "cPercent": 60, 
+                    "cItem": 1
+                }, 
+                {
+                    "cPercent": 60, 
+                    "cItem": 5
+                }
+            ], 
+            "cRunPerc": 40
+        }, 
+        {
+            "cStrMax": 37, 
+            "cActionSound": 16, 
+            "cDefMin": 45, 
+            "cHPMax": 10, 
+            "cDefMax": 50, 
+            "cType": 0, 
+            "cStrMin": 35, 
+            "cName": "griffin", 
+            "cHPMin": 7, 
+            "cItemCount": 1, 
+            "cNameSound": 8, 
+            "items": [
+                {
+                    "cPercent": 70, 
+                    "cItem": 8
+                }
+            ], 
+            "cRunPerc": 40
+        }, 
+        {
+            "cStrMax": 40, 
+            "cActionSound": 17, 
+            "cDefMin": 50, 
+            "cHPMax": 10, 
+            "cDefMax": 55, 
+            "cType": 0, 
+            "cStrMin": 37, 
+            "cName": "knight", 
+            "cHPMin": 5, 
+            "cItemCount": 2, 
+            "cNameSound": 12, 
+            "items": [
+                {
+                    "cPercent": 60, 
+                    "cItem": 2
+                }, 
+                {
+                    "cPercent": 60, 
+                    "cItem": 6
+                }
+            ], 
+            "cRunPerc": 50
+        }, 
+        {
+            "cStrMax": 55, 
+            "cActionSound": 17, 
+            "cDefMin": 75, 
+            "cHPMax": 75, 
+            "cDefMax": 80, 
+            "cType": 0, 
+            "cStrMin": 50, 
+            "cName": "king", 
+            "cHPMin": 70, 
+            "cItemCount": 1, 
+            "cNameSound": 10, 
+            "items": [
+                {
+                    "cPercent": 100, 
+                    "cItem": 11
+                }
+            ], 
+            "cRunPerc": 70
+        }, 
+        {
+            "cStrMax": 45, 
+            "cActionSound": 17, 
+            "cDefMin": 55, 
+            "cHPMax": 30, 
+            "cDefMax": 58, 
+            "cType": 0, 
+            "cStrMin": 40, 
+            "cName": "prince", 
+            "cHPMin": 25, 
+            "cItemCount": 2, 
+            "cNameSound": 11, 
+            "items": [
+                {
+                    "cPercent": 100, 
+                    "cItem": 3
+                }, 
+                {
+                    "cPercent": 100, 
+                    "cItem": 7
+                }
+            ], 
+            "cRunPerc": 50
+        }, 
+        {
+            "cStrMax": 47, 
+            "cActionSound": 16, 
+            "cDefMin": 65, 
+            "cHPMax": 10, 
+            "cDefMax": 70, 
+            "cType": 0, 
+            "cStrMin": 43, 
+            "cName": "griffin2", 
+            "cHPMin": 7, 
+            "cItemCount": 1, 
+            "cNameSound": 8, 
+            "items": [
+                {
+                    "cPercent": 75, 
+                    "cItem": 8
+                }
+            ], 
+            "cRunPerc": 40
+        }, 
+        {
+            "cStrMax": 0, 
+            "cActionSound": 29, 
+            "cDefMin": 0, 
+            "cHPMax": 0, 
+            "cDefMax": 0, 
+            "cType": 1, 
+            "cStrMin": 0, 
+            "cName": "golden", 
+            "cHPMin": 0, 
+            "cItemCount": 0, 
+            "cNameSound": 28, 
+            "items": [], 
+            "cRunPerc": 0
+        }, 
+        {
+            "cStrMax": 0, 
+            "cActionSound": 27, 
+            "cDefMin": 0, 
+            "cHPMax": 0, 
+            "cDefMax": 0, 
+            "cType": 1, 
+            "cStrMin": 0, 
+            "cName": "gatekeeper", 
+            "cHPMin": 0, 
+            "cItemCount": 0, 
+            "cNameSound": 26, 
+            "items": [], 
+            "cRunPerc": 0
+        }
+    ], 
+    "Start": 0, 
+    "NPCCount": 10, 
+    "NodeCount": 15, 
+    "sounds": [
+        {
+            "sName": "doublesword.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "guardarmor.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "knightsarmor.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "knightssword.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "royalarmor.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "royalblade.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "spear.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "swordsmanarmor.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "griffin.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "guard.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "king.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "prince.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "silverknight.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "swordsman.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "potion.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "potion_a.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "griffin_a.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "sword_a.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "spear_a.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "castle45.mp3", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "castle46.mp3", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "castle47.mp3", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "castle56.mp3", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "castle57.mp3", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "castle67.mp3", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "cosmic2.mp3", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "gatekeeper.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "gatekeeper_a.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "golden.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "golden_a.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }, 
+        {
+            "sName": "crown.wav", 
+            "sYCoord": 0, 
+            "sSpatial": 0, 
+            "sNode": -1, 
+            "sXCoord": 0
+        }
+    ], 
+    "ItemCount": 12, 
+    "nodes": [
+        {
+            "nNorth": -1, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 9
+                }
+            ], 
+            "nSouth": -1, 
+            "nEast": 1, 
+            "Sounds": [
+                {
+                    "nSound": 25
+                }
+            ], 
+            "nMusicCount": 1, 
+            "nIndex": 41, 
+            "nWest": -1
+        }, 
+        {
+            "nNorth": 2, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 0
+                }
+            ], 
+            "nSouth": 4, 
+            "nEast": 7, 
+            "Sounds": [
+                {
+                    "nSound": 19
+                }, 
+                {
+                    "nSound": 20
+                }, 
+                {
+                    "nSound": 21
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 42, 
+            "nWest": 0
+        }, 
+        {
+            "nNorth": 3, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 2, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 30, 
+                    "nNPC": 1
+                }, 
+                {
+                    "nPercent": 70, 
+                    "nNPC": 2
+                }
+            ], 
+            "nSouth": 1, 
+            "nEast": 8, 
+            "Sounds": [
+                {
+                    "nSound": 20
+                }, 
+                {
+                    "nSound": 22
+                }, 
+                {
+                    "nSound": 24
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 32, 
+            "nWest": -1
+        }, 
+        {
+            "nNorth": -1, 
+            "nItemCount": 1, 
+            "nImage": "                    ", 
+            "nNPCCount": 2, 
+            "Items": [
+                {
+                    "nPercent": 60, 
+                    "nItem": 1
+                }
+            ], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 30, 
+                    "nNPC": 2
+                }, 
+                {
+                    "nPercent": 70, 
+                    "nNPC": 3
+                }
+            ], 
+            "nSouth": 2, 
+            "nEast": -1, 
+            "Sounds": [
+                {
+                    "nSound": 21
+                }, 
+                {
+                    "nSound": 23
+                }, 
+                {
+                    "nSound": 24
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 22, 
+            "nWest": -1
+        }, 
+        {
+            "nNorth": 1, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 2, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 30, 
+                    "nNPC": 1
+                }, 
+                {
+                    "nPercent": 70, 
+                    "nNPC": 2
+                }
+            ], 
+            "nSouth": 5, 
+            "nEast": 6, 
+            "Sounds": [
+                {
+                    "nSound": 19
+                }, 
+                {
+                    "nSound": 22
+                }, 
+                {
+                    "nSound": 23
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 52, 
+            "nWest": -1
+        }, 
+        {
+            "nNorth": 4, 
+            "nItemCount": 1, 
+            "nImage": "                    ", 
+            "nNPCCount": 2, 
+            "Items": [
+                {
+                    "nPercent": 60, 
+                    "nItem": 1
+                }
+            ], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 30, 
+                    "nNPC": 2
+                }, 
+                {
+                    "nPercent": 70, 
+                    "nNPC": 3
+                }
+            ], 
+            "nSouth": -1, 
+            "nEast": -1, 
+            "Sounds": [
+                {
+                    "nSound": 21
+                }, 
+                {
+                    "nSound": 23
+                }, 
+                {
+                    "nSound": 24
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 62, 
+            "nWest": -1
+        }, 
+        {
+            "nNorth": 7, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 3, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 20, 
+                    "nNPC": 2
+                }, 
+                {
+                    "nPercent": 10, 
+                    "nNPC": 3
+                }, 
+                {
+                    "nPercent": 70, 
+                    "nNPC": 4
+                }
+            ], 
+            "nSouth": -1, 
+            "nEast": -1, 
+            "Sounds": [
+                {
+                    "nSound": 19
+                }, 
+                {
+                    "nSound": 22
+                }, 
+                {
+                    "nSound": 23
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 53, 
+            "nWest": 4
+        }, 
+        {
+            "nNorth": 8, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 4
+                }
+            ], 
+            "nSouth": 6, 
+            "nEast": 9, 
+            "Sounds": [
+                {
+                    "nSound": 19
+                }, 
+                {
+                    "nSound": 20
+                }, 
+                {
+                    "nSound": 21
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 43, 
+            "nWest": 1
+        }, 
+        {
+            "nNorth": -1, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 3, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 20, 
+                    "nNPC": 2
+                }, 
+                {
+                    "nPercent": 10, 
+                    "nNPC": 3
+                }, 
+                {
+                    "nPercent": 70, 
+                    "nNPC": 4
+                }
+            ], 
+            "nSouth": 7, 
+            "nEast": -1, 
+            "Sounds": [
+                {
+                    "nSound": 20
+                }, 
+                {
+                    "nSound": 22
+                }, 
+                {
+                    "nSound": 24
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 33, 
+            "nWest": 2
+        }, 
+        {
+            "nNorth": -1, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 6
+                }
+            ], 
+            "nSouth": -1, 
+            "nEast": 10, 
+            "Sounds": [
+                {
+                    "nSound": 21
+                }, 
+                {
+                    "nSound": 23
+                }, 
+                {
+                    "nSound": 24
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 44, 
+            "nWest": 7
+        }, 
+        {
+            "nNorth": 11, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 8
+                }
+            ], 
+            "nSouth": 12, 
+            "nEast": 13, 
+            "Sounds": [
+                {
+                    "nSound": 25
+                }
+            ], 
+            "nMusicCount": 1, 
+            "nIndex": 45, 
+            "nWest": 9
+        }, 
+        {
+            "nNorth": -1, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 7
+                }
+            ], 
+            "nSouth": 10, 
+            "nEast": -1, 
+            "Sounds": [
+                {
+                    "nSound": 20
+                }, 
+                {
+                    "nSound": 22
+                }, 
+                {
+                    "nSound": 24
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 35, 
+            "nWest": -1
+        }, 
+        {
+            "nNorth": 10, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 7
+                }
+            ], 
+            "nSouth": -1, 
+            "nEast": -1, 
+            "Sounds": [
+                {
+                    "nSound": 19
+                }, 
+                {
+                    "nSound": 22
+                }, 
+                {
+                    "nSound": 23
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 55, 
+            "nWest": -1
+        }, 
+        {
+            "nNorth": -1, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 1, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [
+                {
+                    "nPercent": 100, 
+                    "nNPC": 5
+                }
+            ], 
+            "nSouth": -1, 
+            "nEast": 14, 
+            "Sounds": [
+                {
+                    "nSound": 21
+                }, 
+                {
+                    "nSound": 23
+                }, 
+                {
+                    "nSound": 24
+                }
+            ], 
+            "nMusicCount": 3, 
+            "nIndex": 46, 
+            "nWest": 10
+        }, 
+        {
+            "nNorth": -1, 
+            "nItemCount": 0, 
+            "nImage": "                    ", 
+            "nNPCCount": 0, 
+            "Items": [], 
+            "RequiredItems": [], 
+            "nReqItemCount": 0, 
+            "NPC": [], 
+            "nSouth": -1, 
+            "nEast": -1, 
+            "Sounds": [], 
+            "nMusicCount": 0, 
+            "nIndex": 47, 
+            "nWest": 13
+        }
+    ]
+}
