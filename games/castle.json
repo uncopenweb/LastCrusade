@@ -1,6 +1,6 @@
 {
     "End": 14, 
-    "SoundCount": 31, 
+    "Start": 0,
     "items": [
         {
             "iActionSound": 18, 
@@ -87,7 +87,7 @@
             "iNameSound": 30
         }
     ], 
-    "NPC": [
+    "NPCs": [
         {
             "cStrMax": 22, 
             "cActionSound": 18, 
@@ -294,230 +294,226 @@
             "items": [], 
             "cRunPerc": 0
         }
-    ], 
-    "Start": 0, 
-    "NPCCount": 10, 
-    "NodeCount": 15, 
+    ],  
     "sounds": [
         {
-            "sName": "doublesword.wav", 
+            "sName": "doublesword", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "guardarmor.wav", 
+            "sName": "guardarmor", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "knightsarmor.wav", 
+            "sName": "knightsarmor", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "knightssword.wav", 
+            "sName": "knightssword", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "royalarmor.wav", 
+            "sName": "royalarmor", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "royalblade.wav", 
+            "sName": "royalblade", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "spear.wav", 
+            "sName": "spear", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "swordsmanarmor.wav", 
+            "sName": "swordsmanarmor", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "griffin.wav", 
+            "sName": "griffin", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "guard.wav", 
+            "sName": "guard", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "king.wav", 
+            "sName": "king", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "prince.wav", 
+            "sName": "prince", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "silverknight.wav", 
+            "sName": "silverknight", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "swordsman.wav", 
+            "sName": "swordsman", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "potion.wav", 
+            "sName": "potion", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "potion_a.wav", 
+            "sName": "potion_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "griffin_a.wav", 
+            "sName": "griffin_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "sword_a.wav", 
+            "sName": "sword_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "spear_a.wav", 
+            "sName": "spear_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "castle45.mp3", 
+            "sName": "castle45", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "castle46.mp3", 
+            "sName": "castle46", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "castle47.mp3", 
+            "sName": "castle47", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "castle56.mp3", 
+            "sName": "castle56", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "castle57.mp3", 
+            "sName": "castle57", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "castle67.mp3", 
+            "sName": "castle67", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "cosmic2.mp3", 
+            "sName": "cosmic2", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "gatekeeper.wav", 
+            "sName": "gatekeeper", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "gatekeeper_a.wav", 
+            "sName": "gatekeeper_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "golden.wav", 
+            "sName": "golden", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "golden_a.wav", 
+            "sName": "golden_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "crown.wav", 
+            "sName": "crown", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }
     ], 
-    "ItemCount": 12, 
     "nodes": [
         {
             "nNorth": -1, 

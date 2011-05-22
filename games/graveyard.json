@@ -1,6 +1,6 @@
 {
     "End": 20, 
-    "SoundCount": 56, 
+    "Start": 0, 
     "items": [
         {
             "iActionSound": 32, 
@@ -115,7 +115,7 @@
             "iNameSound": 21
         }
     ], 
-    "NPC": [
+    "NPCs": [
         {
             "cStrMax": 10, 
             "cActionSound": 31, 
@@ -407,404 +407,400 @@
             "cRunPerc": 0
         }
     ], 
-    "Start": 0, 
-    "NPCCount": 13, 
-    "NodeCount": 22, 
     "sounds": [
         {
-            "sName": "bat.wav", 
+            "sName": "bat", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "skeleton.wav", 
+            "sName": "skeleton", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "zombie.wav", 
+            "sName": "zombie", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "werewolf.wav", 
+            "sName": "werewolf", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "vampire.wav", 
+            "sName": "vampire", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "nightmare.wav", 
+            "sName": "nightmare", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "death_knight.wav", 
+            "sName": "death_knight", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "necromancer.wav", 
+            "sName": "necromancer", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "deaddiscount.wav", 
+            "sName": "deaddiscount", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "deathdeal.wav", 
+            "sName": "deathdeal", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "basic_arm.wav", 
+            "sName": "basic_arm", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "death_sw.wav", 
+            "sName": "death_sw", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "heavy_arm.wav", 
+            "sName": "heavy_arm", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "light_arm.wav", 
+            "sName": "light_arm", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "long_sw.wav", 
+            "sName": "long_sw", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "medium_arm.wav", 
+            "sName": "medium_arm", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "skeleton_key.wav", 
+            "sName": "skeleton_key", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "small_axe.wav", 
+            "sName": "small_axe", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "sw.wav", 
+            "sName": "sw", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "undead_elixer.wav", 
+            "sName": "undead_elixer", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "weak_helm.wav", 
+            "sName": "weak_helm", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "bag_gold.wav", 
+            "sName": "bag_gold", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "coin_gold.wav", 
+            "sName": "coin_gold", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "weak_arm.wav", 
+            "sName": "weak_arm", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "small_sword.wav", 
+            "sName": "small_sword", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "potion.wav", 
+            "sName": "potion", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "potion_a.wav", 
+            "sName": "potion_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "zombie_a.wav", 
+            "sName": "zombie_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "werewolf_a.wav", 
+            "sName": "werewolf_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "skeleton_a.wav", 
+            "sName": "skeleton_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "nightmare_a.wav", 
+            "sName": "nightmare_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "bat_a.wav", 
+            "sName": "bat_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "sword_a.wav", 
+            "sName": "sword_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "death_a.wav", 
+            "sName": "death_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "basic.mp3", 
+            "sName": "basic", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "bg_vend_gr.mp3", 
+            "sName": "bg_vend_gr", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave34.mp3", 
+            "sName": "grave34", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave36.mp3", 
+            "sName": "grave36", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave37.mp3", 
+            "sName": "grave37", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave45.mp3", 
+            "sName": "grave45", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave46.mp3", 
+            "sName": "grave46", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave47.mp3", 
+            "sName": "grave47", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave56.mp3", 
+            "sName": "grave56", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave57.mp3", 
+            "sName": "grave57", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "grave67.mp3", 
+            "sName": "grave67", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "adv_key.wav", 
+            "sName": "adv_key", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "adv_death.wav", 
+            "sName": "adv_death", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "spirit.wav", 
+            "sName": "spirit", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "priest.wav", 
+            "sName": "priest", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "necro_a.mp3", 
+            "sName": "necro_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "vampire_a.mp3", 
+            "sName": "vampire_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "vampire_a.wav", 
+            "sName": "vampire_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "cyclops_a.wav", 
+            "sName": "cyclops_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "axe_a.wav", 
+            "sName": "axe_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "roque.wav", 
+            "sName": "roque", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }, 
         {
-            "sName": "roque_a.wav", 
+            "sName": "roque_a", 
             "sYCoord": 0, 
             "sSpatial": 0, 
             "sNode": -1, 
             "sXCoord": 0
         }
     ], 
-    "ItemCount": 16, 
     "nodes": [
         {
             "nNorth": -1, 
