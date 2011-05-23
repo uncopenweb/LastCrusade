@@ -31,8 +31,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
     move: function(direction){
         result = this._getNeighbor(direction);
         if(!result)
+        {
+            console.log("Did not move:");   
+            console.log("X: " + this.x + " Y: " + this.y);   
             return false;
-
+        }
         switch(direction){
             case this.north:
                 this.y++;
@@ -46,7 +49,9 @@ dojo.declare('widgets.map', [dijit._Widget], {
             case this.west:
                 this.x--;
                 break;
-        }            
+        }      
+        console.log("Moved:");   
+        console.log("X: " + this.x + " Y: " + this.y);   
         return true;
     },
 

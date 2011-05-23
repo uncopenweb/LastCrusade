@@ -7,12 +7,13 @@ dojo.require('widgets.map');
 dojo.declare('lastCrusadeMain', null, {
     constructor: function() {
         this.map = null;
+        this.keyDelay = 0;
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
         def.then(dojo.hitch(this, function(audio) { 
             this._audio = audio;
             this._initMap();
-            this.connect(dojo.global, 'onkeyup', '_removeKeyDownFlag');
-            this.connect(dojo.global, 'onkeydown', '_analyzeKey');     
+            dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
+            dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));     
             this._keyHasGoneUp = true;
         }));
     },
@@ -44,29 +45,37 @@ dojo.declare('lastCrusadeMain', null, {
         }
 	},    
 
- //  analyzes user input
-    _analyzeKey: function(evt){	//checks keyStrokes
+    _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
         this._keyHasGoneUp = false;              
-            else if (this._keyIsDownArrow(evt)) {
+            result = false;
+            if (this._keyIsDownArrow(evt)) {
                 evt.preventDefault();
+                result = this.map.move(this.map.south);
             }
-            else if (this_keyIsLeftArrow(evt)){ //then attempted to move
+            else if (this._keyIsLeftArrow(evt)){
                 evt.preventDefault();
+                result = this.map.move(this.map.west);
             }
-            else if (this.hark._keyIsRightArrow(evt)) { //then attempted to move
+            else if (this._keyIsRightArrow(evt)) {
                 evt.preventDefault();
+                result = this.map.move(this.map.east);
             }
-            else if (this.hark._keyIsUpArrow(evt)) { //then we want to see if correct key hit
+            else if (this._keyIsUpArrow(evt)) {
                 evt.preventDefault();
+                result = this.map.move(this.map.north);
+            }
+            if(!result){
+                this._audio.stop({channel: "main"});
+                this._audio.play({url: "sounds/noMove", channel : "main"});
             }
         }        
         else {
-            if (this.hark._keyIsDownArrow(evt) || this.hark._keyIsLeftArrow(evt) || this.hark._keyIsRightArrow(evt) || this.hark._keyIsUpArrow(evt)) {
+            if (this._keyIsDownArrow(evt) || this._keyIsLeftArrow(evt) || this._keyIsRightArrow(evt) || this._keyIsUpArrow(evt)) {
                 evt.preventDefault();
             }
-            this._audio.stop({channel: "second"});  //else tooEarlySounds will queue up hit hit fast
-            this._audio.play({url: "Sounds/TooEarlyClick", channel : "second"});
+            this._audio.stop({channel: "second"});
+            this._audio.play({url: "sounds/TooEarlyClick", channel : "second"});
         }
     },
 
