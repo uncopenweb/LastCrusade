@@ -1,26 +1,36 @@
 dojo.provide('lastCrusadeMain');
 dojo.require('dojo.parser');
 dojo.require('dojo.hash');
-dojo.require("dojox.timing");
+dojo.require('dojox.timing');
 dojo.require('widgets.map');
+dojo.require('widgets.player');
+dojo.require('widgets.item');
 
 dojo.declare('lastCrusadeMain', null, {
     constructor: function() {
+
+//@fixme: holding down key streams jsonic requests
         this.map = null;
         this.keyDelay = 0;
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
         def.then(dojo.hitch(this, function(audio) { 
             this._audio = audio;
-            this._initMap();
+            this._start();
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
             dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));     
             this._keyHasGoneUp = true;
         }));
     },
 
+    _start: function(){
+        this.mapList = ["graveyard.json", "forest.json", "castle.json"];
+        this._initMap(this.oneOf(this.mapList));
+        
+    },
+
     //Load a map
-    _initMap: function() {
-        var file = 'forest.json';
+    _initMap: function(fileName) {
+        var file = fileName;
         var mapRequest = {
             url : "games/" + file,
             handleAs : 'json',
@@ -48,22 +58,22 @@ dojo.declare('lastCrusadeMain', null, {
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
         this._keyHasGoneUp = false;              
-            result = false;
+            result = true;
             if (this._keyIsDownArrow(evt)) {
                 evt.preventDefault();
-                result = this.map.move(this.map.south);
+                result = this.map.move(this.map.SOUTH);
             }
             else if (this._keyIsLeftArrow(evt)){
                 evt.preventDefault();
-                result = this.map.move(this.map.west);
+                result = this.map.move(this.map.WEST);
             }
             else if (this._keyIsRightArrow(evt)) {
                 evt.preventDefault();
-                result = this.map.move(this.map.east);
+                result = this.map.move(this.map.EAST);
             }
             else if (this._keyIsUpArrow(evt)) {
                 evt.preventDefault();
-                result = this.map.move(this.map.north);
+                result = this.map.move(this.map.NORTH);
             }
             if(!result){
                 this._audio.stop({channel: "main"});
@@ -74,8 +84,8 @@ dojo.declare('lastCrusadeMain', null, {
             if (this._keyIsDownArrow(evt) || this._keyIsLeftArrow(evt) || this._keyIsRightArrow(evt) || this._keyIsUpArrow(evt)) {
                 evt.preventDefault();
             }
-            this._audio.stop({channel: "second"});
-            this._audio.play({url: "sounds/TooEarlyClick", channel : "second"});
+            //this._audio.stop({channel: "second"});
+            //this._audio.play({url: "sounds/TooEarlyClick", channel : "second"});
         }
     },
 
@@ -114,6 +124,10 @@ dojo.declare('lastCrusadeMain', null, {
             return false;
         }
     },
+    
+    oneOf: function(array){
+        return array[Math.floor(Math.random()*array.length)]
+    }
 });
 
 dojo.ready(function() {

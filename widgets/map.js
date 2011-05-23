@@ -6,10 +6,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
     mapData: {}, 
 
     constructor: function() {
-        this.north = 0;
-        this.south = 1;
-        this.east = 2;
-        this.west = 3;
+        this.NORTH = 0;
+        this.SOUTH = 1;
+        this.EAST = 2;
+        this.WEST = 3;
         this.x = 0;
         this.y = 0;
     },
@@ -21,6 +21,12 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.sounds = this.mapData.sounds;
         this.items = this.mapData.items;
         this.finish = this.mapData.End;
+        this.Name = this.mapData.Name;
+        var def = uow.getAudio({defaultCaching: true});
+        def.then(dojo.hitch(this, function(audio) { 
+            this._audio = audio;
+            this._audio.say({text: "You are now entering the " + this.Name});
+        }));
     },
 
     /*
@@ -37,16 +43,16 @@ dojo.declare('widgets.map', [dijit._Widget], {
             return false;
         }
         switch(direction){
-            case this.north:
+            case this.NORTH:
                 this.y++;
                 break;            
-            case this.south:
+            case this.SOUTH:
                 this.y--;
                 break;            
-            case this.east:
+            case this.EAST:
                 this.x++;
                 break;            
-            case this.west:
+            case this.WEST:
                 this.x--;
                 break;
         }      
@@ -63,16 +69,16 @@ dojo.declare('widgets.map', [dijit._Widget], {
     _getNeighbor: function(direction){
         neighbor = -1;
         switch(direction){
-            case this.north:
+            case this.NORTH:
                 neighbor = this.nodes[this.currentNodeIndex].nNorth;
                 break;            
-            case this.south:
+            case this.SOUTH:
                 neighbor = this.nodes[this.currentNodeIndex].nSouth;
                 break;            
-            case this.east:
+            case this.EAST:
                 neighbor = this.nodes[this.currentNodeIndex].nEast;
                 break;            
-            case this.west:
+            case this.WEST:
                 neighbor = this.nodes[this.currentNodeIndex].nWest;
                 break;
         }  
