@@ -193,6 +193,9 @@ dojo.declare('lastCrusadeMain', null, {
                 evt.preventDefault();
                 result = this.map.move(this.map.NORTH);
             }
+            else if (evt.keyCode == 70){
+                this._audio.stop({channel: 'main'});
+            }
             else if (evt.keyCode == dojo.keys.NUMPAD_3||
                      evt.keyCode == 51)
             {
@@ -202,13 +205,16 @@ dojo.declare('lastCrusadeMain', null, {
                      evt.keyCode == 49)
             {
                 this._masterIndex = 0;
-                var def = this.fadeChannel('background')
-                def.then(dojo.hitch(this, function(){
-                    var def2 = this.fadeChannel('main');
-                    return def2;
+                var d1 = this.fadeChannel('background');
+                d1.then(dojo.hitch(this, function(){
+                    var def3 = this.fadeChannel('main')
+                    return def3;
                 })).then(dojo.hitch(this, function(){
-                    this._loadMap(this.mapList[this._masterIndex]);
-                })).t;
+                    this._audio.play({url: 'sounds/general/' + this.story, channel: 'main'})
+                        .anyAfter(dojo.hitch(this, function(){
+                        this._loadMap(this.mapList[this._masterIndex]);
+                    }));
+                }));
             }
             if(!result){
                 this._audio.stop({channel: "main"});
@@ -255,13 +261,14 @@ dojo.declare('lastCrusadeMain', null, {
         fadeTimer = new dojox.timing.Timer(400);
         var deferred = new dojo.Deferred();
         fadeTimer.onTick = dojo.hitch(this, function() {
+            this._audio.setProperty({name : 'volume', value: increments[i], channel : chn, immediate : true});
             if(i == (increments.length - 1))
             {
                 fadeTimer.stop();
                 this._audio.stop({channel : chn});
+                this._audio.setProperty({name : 'volume', value: 1.0, channel : chn, immediate : true});
                 deferred.callback();
             }
-            this._audio.setProperty({name : 'volume', value: increments[i], channel : chn, immediate : true});
             i++;
         });
         fadeTimer.start();
