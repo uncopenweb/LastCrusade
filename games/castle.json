@@ -296,224 +296,38 @@
             "cRunPerc": 0
         }
     ],  
-    "sounds": [
-        {
-            "sName": "doublesword", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "guardarmor", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "knightsarmor", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "knightssword", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "royalarmor", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "royalblade", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "spear", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "swordsmanarmor", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "griffin", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "guard", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "king", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "prince", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "silverknight", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "swordsman", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "potion", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "potion_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "griffin_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "sword_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "spear_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "castle45", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "castle46", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "castle47", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "castle56", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "castle57", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "castle67", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "cosmic2", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "gatekeeper", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "gatekeeper_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "golden", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "golden_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "crown", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }
+    "sounds": [ 
+        "doublesword", 
+        "guardarmor", 
+        "knightsarmor", 
+        "knightssword", 
+        "royalarmor", 
+        "royalblade", 
+        "spear", 
+        "swordsmanarmor", 
+        "griffin", 
+        "guard", 
+        "king", 
+        "prince", 
+        "silverknight", 
+        "swordsman", 
+        "potion", 
+        "potion_a", 
+        "griffin_a", 
+        "sword_a", 
+        "spear_a", 
+        "castle45", 
+        "castle46", 
+        "castle47", 
+        "castle56", 
+        "castle57", 
+        "castle67", 
+        "cosmic2", 
+        "gatekeeper", 
+        "gatekeeper_a", 
+        "golden", 
+        "golden_a", 
+        "crown"
     ], 
     "nodes": [
         {

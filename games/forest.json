@@ -453,398 +453,62 @@
         }
     ], 
     "sounds": [
-        {
-            "sName": "wolf", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "barbarian", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bear", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "berserker", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "centaur", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "cyclops", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "snake", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "spider", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bag_gold", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "coin_gold", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "dag", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "potion", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "sh", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "sharp_dag", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "silver_dag", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "small_dag", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "small_sh", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "small_sword", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "strong_sh", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "weak_arm", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "wooden_dag", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "wooden_sh", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "black_dag", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bear_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "centaur_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "cyclops_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "dagger_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "potion_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "snake_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "sword_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "wolf_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_friend", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst12", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst13", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst14", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst23", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst24", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst34", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst123", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst124", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst134", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst234", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_myst1234", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_vendor", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "leprachaun", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "leprechuan", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "pot_gold", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "weaponsrus", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "niceprice", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "adv_grave", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "adv_lep", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "christopher", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "fisherman", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "farmer", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "christopher_n", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "spider_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }
+        "wolf", 
+        "barbarian", 
+        "bear", 
+        "berserker", 
+        "centaur", 
+        "cyclops", 
+        "snake", 
+        "spider", 
+        "bag_gold", 
+        "coin_gold", 
+        "dag", 
+        "potion", 
+        "sh", 
+        "sharp_dag", 
+        "silver_dag", 
+        "small_dag", 
+        "small_sh", 
+        "small_sword", 
+        "strong_sh", 
+        "weak_arm", 
+        "wooden_dag", 
+        "wooden_sh", 
+        "black_dag", 
+        "bear_a", 
+        "centaur_a", 
+        "cyclops_a", 
+        "dagger_a", 
+        "potion_a", 
+        "snake_a", 
+        "sword_a", 
+        "wolf_a", 
+        "bg_friend", 
+        "bg_myst12", 
+        "bg_myst13", 
+        "bg_myst14", 
+        "bg_myst23", 
+        "bg_myst24", 
+        "bg_myst34", 
+        "bg_myst123", 
+        "bg_myst124", 
+        "bg_myst134", 
+        "bg_myst234", 
+        "bg_myst1234", 
+        "bg_vendor", 
+        "leprachaun", 
+        "leprechuan", 
+        "pot_gold", 
+        "weaponsrus", 
+        "niceprice", 
+        "adv_grave", 
+        "adv_lep", 
+        "christopher", 
+        "fisherman", 
+        "farmer", 
+        "christopher_n", 
+        "spider_a"
     ], 
     "nodes": [
         {

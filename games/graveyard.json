@@ -409,398 +409,62 @@
         }
     ], 
     "sounds": [
-        {
-            "sName": "bat", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "skeleton", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "zombie", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "werewolf", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "vampire", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "nightmare", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "death_knight", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "necromancer", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "deaddiscount", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "deathdeal", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "basic_arm", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "death_sw", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "heavy_arm", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "light_arm", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "long_sw", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "medium_arm", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "skeleton_key", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "small_axe", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "sw", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "undead_elixer", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "weak_helm", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bag_gold", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "coin_gold", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "weak_arm", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "small_sword", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "potion", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "potion_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "zombie_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "werewolf_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "skeleton_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "nightmare_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bat_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "sword_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "death_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "basic", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "bg_vend_gr", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave34", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave36", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave37", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave45", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave46", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave47", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave56", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave57", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "grave67", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "adv_key", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "adv_death", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "spirit", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "priest", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "necro_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "vampire_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "vampire_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "cyclops_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "axe_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "roque", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }, 
-        {
-            "sName": "roque_a", 
-            "sYCoord": 0, 
-            "sSpatial": 0, 
-            "sNode": -1, 
-            "sXCoord": 0
-        }
+        "bat", 
+        "skeleton", 
+        "zombie", 
+        "werewolf", 
+        "vampire", 
+        "nightmare", 
+        "death_knight", 
+        "necromancer", 
+        "deaddiscount", 
+        "deathdeal", 
+        "basic_arm", 
+        "death_sw", 
+        "heavy_arm", 
+        "light_arm", 
+        "long_sw", 
+        "medium_arm", 
+        "skeleton_key", 
+        "small_axe", 
+        "sw", 
+        "undead_elixer", 
+        "weak_helm", 
+        "bag_gold", 
+        "coin_gold", 
+        "weak_arm", 
+        "small_sword", 
+        "potion", 
+        "potion_a", 
+        "zombie_a", 
+        "werewolf_a", 
+        "skeleton_a", 
+        "nightmare_a", 
+        "bat_a", 
+        "sword_a", 
+        "death_a", 
+        "basic", 
+        "bg_vend_gr", 
+        "grave34", 
+        "grave36", 
+        "grave37", 
+        "grave45", 
+        "grave46", 
+        "grave47", 
+        "grave56", 
+        "grave57", 
+        "grave67", 
+        "adv_key", 
+        "adv_death", 
+        "spirit", 
+        "priest", 
+        "necro_a", 
+        "vampire_a", 
+        "vampire_a", 
+        "cyclops_a", 
+        "axe_a", 
+        "roque", 
+        "roque_a"
     ], 
     "nodes": [
         {
