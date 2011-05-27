@@ -19,6 +19,7 @@ dojo.declare('lastCrusadeMain', null, {
         this.sMove = 2;
         this.sFight = 3;
         this.state = this.sOff;
+        this._mapIndex = 0;
 
 //@fixme: holding down key streams jsonic requests
         this.map = null;
@@ -64,7 +65,7 @@ dojo.declare('lastCrusadeMain', null, {
             this.player.equipWeakItems(this.map);
             this._audio.say({text: "You are now entering the " + this.map.Name})
                 .anyAfter(dojo.hitch(this,function(){
-                    this._playBackground();    
+                     this.map.visitCurrentNode();
                 }));   
         }));
     },
@@ -99,14 +100,7 @@ dojo.declare('lastCrusadeMain', null, {
 	    this.dirSave = "dir_save";			
 	    this.dirSkip = "dir_skip";			
 	    this.dirSpac = "dir_spacebar";		
-	    this.dirQuit = "dir_quit";			
-	    // Movement										
-	    this.entering = "entering";			
-	    this.heading = "g_heading";			
-	    this.dNorth = "g_north";			
-	    this.dSouth = "g_south";			
-	    this.dEast = "g_east";				
-	    this.dWest = "g_west";				
+	    this.dirQuit = "dir_quit";						
 	    // Node query									
 	    this.nPass = "g_northern";			
 	    this.sPass = "g_southern";			
@@ -247,7 +241,6 @@ dojo.declare('lastCrusadeMain', null, {
                             // 1 to start new game
                             case dojo.keys.NUMPAD_1:
                             case 49:
-                                this._masterIndex = 0;
                                 var d1 = this.fadeChannel('background');
                                 d1.then(dojo.hitch(this, function(){
                                     var def3 = this.fadeChannel('main')
@@ -255,7 +248,8 @@ dojo.declare('lastCrusadeMain', null, {
                                 })).then(dojo.hitch(this, function(){
                                     this._audio.play({url: 'sounds/general/' + this.story, channel: 'main'})
                                         .anyAfter(dojo.hitch(this, function(){
-                                        this._loadMap(this.mapList[this._masterIndex]);
+                                        this._loadMap(this.mapList[this._mapIndex]);
+                                        
                                     }));
                                 }));
                                 break;

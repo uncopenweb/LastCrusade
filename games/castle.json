@@ -331,8 +331,8 @@
     ], 
     "nodes": [
         {
+            "visited": 0,
             "nNorth": -1, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -356,8 +356,8 @@
             "nWest": -1
         }, 
         {
+            "visited": 0,
             "nNorth": 2, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -387,8 +387,8 @@
             "nWest": 0
         }, 
         {
+            "visited": 0,
             "nNorth": 3, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 2, 
             "Items": [], 
@@ -422,8 +422,8 @@
             "nWest": -1
         }, 
         {
+            "visited": 0,
             "nNorth": -1, 
-            "nItemCount": 1, 
             "nImage": "                    ", 
             "nNPCCount": 2, 
             "Items": [
@@ -462,8 +462,8 @@
             "nWest": -1
         }, 
         {
+            "visited": 0,
             "nNorth": 1, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 2, 
             "Items": [], 
@@ -497,8 +497,8 @@
             "nWest": -1
         }, 
         {
+            "visited": 0,
             "nNorth": 4, 
-            "nItemCount": 1, 
             "nImage": "                    ", 
             "nNPCCount": 2, 
             "Items": [
@@ -537,8 +537,8 @@
             "nWest": -1
         }, 
         {
+            "visited": 0,
             "nNorth": 7, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 3, 
             "Items": [], 
@@ -576,8 +576,8 @@
             "nWest": 4
         }, 
         {
-            "nNorth": 8, 
-            "nItemCount": 0, 
+            "visited": 0,
+            "nNorth": 8,  
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -607,8 +607,8 @@
             "nWest": 1
         }, 
         {
+            "visited": 0,
             "nNorth": -1, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 3, 
             "Items": [], 
@@ -646,8 +646,8 @@
             "nWest": 2
         }, 
         {
+            "visited": 0,
             "nNorth": -1, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -677,8 +677,8 @@
             "nWest": 7
         }, 
         {
+            "visited": 0,
             "nNorth": 11, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -702,8 +702,8 @@
             "nWest": 9
         }, 
         {
+            "visited": 0,
             "nNorth": -1, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -733,8 +733,8 @@
             "nWest": -1
         }, 
         {
+            "visited": 0,
             "nNorth": 10, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -764,8 +764,8 @@
             "nWest": -1
         }, 
         {
+            "visited": 0,
             "nNorth": -1, 
-            "nItemCount": 0, 
             "nImage": "                    ", 
             "nNPCCount": 1, 
             "Items": [], 
@@ -795,8 +795,8 @@
             "nWest": 10
         }, 
         {
-            "nNorth": -1, 
-            "nItemCount": 0, 
+            "visited": 0,
+            "nNorth": -1,  
             "nImage": "                    ", 
             "nNPCCount": 0, 
             "Items": [], 

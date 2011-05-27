@@ -12,6 +12,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.WEST = 3;
         this.x = 0;
         this.y = 0;
+        var def = uow.getAudio({defaultCaching: true});    //get JSonic
+        def.then(dojo.hitch(this, function(audio) { 
+            this._audio = audio;
+        }));   
     },
     
     postCreate: function() {
@@ -81,5 +85,21 @@ dojo.declare('widgets.map', [dijit._Widget], {
             this.currentNodeIndex = neighbor;
             return true;
         }
-    }
+    },
+
+    visitCurrentNode: function(){
+        var cNode = this.mapData.nodes[this.currentNodeIndex];
+        cNode.visited = 1;
+        //play sound
+        if(cNode.Sounds.length>0){
+            this._audio.setProperty({name: 'loop', channel: 'map', value: true});
+            sound = this.mapData.Sounds[this.oneOf(cNode.Sounds)];
+            console.log(sound);
+            this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'}); 
+        }
+    },
+
+    oneOf: function(array){
+        return array[Math.floor(Math.random()*array.length)];
+    },
 });

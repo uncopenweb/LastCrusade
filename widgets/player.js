@@ -94,5 +94,6 @@ dojo.declare('widgets.player', [dijit._Widget], {
     */
     updateHP: function(change){
         this.hp+=change;
+        this._audio.say({text: 'You now have ' + this.hp + ' hit points.'});
     }
 });
