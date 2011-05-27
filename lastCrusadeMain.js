@@ -8,6 +8,17 @@ dojo.require('widgets.item');
 
 dojo.declare('lastCrusadeMain', null, {
     constructor: function() {
+        dojo.global.WEAPON = 0;
+        dojo.global.ARMOR = 1;
+        dojo.global.POTION = 2;
+        dojo.global.GOLD = 3;
+        dojo.global.SPECIAL = 4;
+
+        this.sOff = 0;
+        this.sMenu = 1;
+        this.sMove = 2;
+        this.sFight = 3;
+        this.state = this.sOff;
 
 //@fixme: holding down key streams jsonic requests
         this.map = null;
@@ -25,11 +36,16 @@ dojo.declare('lastCrusadeMain', null, {
 
     _start: function(){
         this.mapList = ["graveyard.json", "forest.json", "castle.json"];
+        this.player = new widgets.player({}, null); 
         //start background and loop indefinitely 
+        this._playBackground();
+        this.playNow(this.menu, 'main');
+        this.state = this.sMenu;                
+    },
+
+    _playBackground: function(){
         this._audio.setProperty({name: 'loop', channel: 'background', value: true});
         this.playNow(this.theme, 'background');
-        this.playNow(this.menu, 'main');
-                
     },
 
     //Load a map
@@ -43,7 +59,13 @@ dojo.declare('lastCrusadeMain', null, {
         };
         var dataDef = dojo.xhrGet(mapRequest);
         dataDef.addCallback(dojo.hitch(this, function(data) { 
-            this.map = new widgets.map({mapData: data}, null);        
+            this.map = new widgets.map({mapData: data}, null); 
+            this.state = this.sMove;
+            this.player.equipWeakItems(this.map);
+            this._audio.say({text: "You are now entering the " + this.map.Name})
+                .anyAfter(dojo.hitch(this,function(){
+                    this._playBackground();    
+                }));   
         }));
     },
 
@@ -175,51 +197,73 @@ dojo.declare('lastCrusadeMain', null, {
     
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
-        this._keyHasGoneUp = false;              
-            result = true;
-            if (evt.keyCode == dojo.keys.DOWN_ARROW) {
-                evt.preventDefault();
-                result = this.map.move(this.map.SOUTH);
-            }
-            else if (evt.keyCode == dojo.keys.LEFT_ARROW){
-                evt.preventDefault();
-                result = this.map.move(this.map.WEST);
-            }
-            else if (evt.keyCode == dojo.keys.RIGHT_ARROW) {
-                evt.preventDefault();
-                result = this.map.move(this.map.EAST);
-            }
-            else if (evt.keyCode == dojo.keys.UP_ARROW) {
-                evt.preventDefault();
-                result = this.map.move(this.map.NORTH);
-            }
-            else if (evt.keyCode == 70){
-                this._audio.stop({channel: 'main'});
-            }
-            else if (evt.keyCode == dojo.keys.NUMPAD_3||
-                     evt.keyCode == 51)
-            {
-                this.readMenu();
-            }
-            else if (evt.keyCode == dojo.keys.NUMPAD_1||
-                     evt.keyCode == 49)
-            {
-                this._masterIndex = 0;
-                var d1 = this.fadeChannel('background');
-                d1.then(dojo.hitch(this, function(){
-                    var def3 = this.fadeChannel('main')
-                    return def3;
-                })).then(dojo.hitch(this, function(){
-                    this._audio.play({url: 'sounds/general/' + this.story, channel: 'main'})
-                        .anyAfter(dojo.hitch(this, function(){
-                        this._loadMap(this.mapList[this._masterIndex]);
-                    }));
-                }));
-            }
-            if(!result){
-                this._audio.stop({channel: "main"});
-                this._audio.play({url: "sounds/noMove", channel : "main"});
-            }
+            this._keyHasGoneUp = false;              
+                switch(this.state){  
+                    case this.sOff:
+                        break;
+                    case this.sMove:
+                        result = true;
+                        switch(evt.keyCode){
+                            case dojo.keys.DOWN_ARROW:
+                                evt.preventDefault();
+                                result = this.map.move(this.map.SOUTH);
+                                break;
+                            case dojo.keys.LEFT_ARROW:
+                                evt.preventDefault();
+                                result = this.map.move(this.map.WEST);
+                                break;
+                            case dojo.keys.RIGHT_ARROW:
+                                evt.preventDefault();
+                                result = this.map.move(this.map.EAST);
+                                break;
+                            case dojo.keys.UP_ARROW:
+                                evt.preventDefault();
+                                result = this.map.move(this.map.NORTH);
+                                break;
+                            case dojo.keys.SPACE:
+                                this.fadeChannel('background');
+                                var d = this.player.readStats();
+                                d.then(dojo.hitch(this, function(){                                
+                                    this._playBackground();
+                                }));
+                                break;                                
+                        }
+                        if(!result){
+                            this._audio.stop({channel: "main"});
+                            this._audio.play({url: "sounds/noMove", channel : "main"});
+                        }
+                        break;
+                    case this.sMenu:
+                        switch(evt.keyCode){
+                            // 'f' to stop sound
+                            case 70:
+                                this._audio.stop({channel: 'main'});
+                                break;
+                            // 3 to read the menu
+                            case dojo.keys.NUMPAD_3:
+                            case 51:
+                                this.readMenu();
+                                break;
+                            // 1 to start new game
+                            case dojo.keys.NUMPAD_1:
+                            case 49:
+                                this._masterIndex = 0;
+                                var d1 = this.fadeChannel('background');
+                                d1.then(dojo.hitch(this, function(){
+                                    var def3 = this.fadeChannel('main')
+                                    return def3;
+                                })).then(dojo.hitch(this, function(){
+                                    this._audio.play({url: 'sounds/general/' + this.story, channel: 'main'})
+                                        .anyAfter(dojo.hitch(this, function(){
+                                        this._loadMap(this.mapList[this._masterIndex]);
+                                    }));
+                                }));
+                                break;
+                        }
+                        break;
+                    case this.sFight:   
+                        break;
+                }
         }        
         else {
             if (evt.keyCode == dojo.keys.UP_ARROW || 
