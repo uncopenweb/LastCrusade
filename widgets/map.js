@@ -92,8 +92,9 @@ dojo.declare('widgets.map', [dijit._Widget], {
         cNode.visited = 1;
         //play sound
         if(cNode.Sounds.length>0){
+            this._audio.stop({channel: 'map'});
             this._audio.setProperty({name: 'loop', channel: 'map', value: true});
-            sound = this.mapData.Sounds[this.oneOf(cNode.Sounds)];
+            sound = this.mapData.sounds[this.oneOf(cNode.Sounds)];
             console.log(sound);
             this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'}); 
         }

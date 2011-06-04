@@ -226,6 +226,9 @@ dojo.declare('lastCrusadeMain', null, {
                             this._audio.stop({channel: "main"});
                             this._audio.play({url: "sounds/noMove", channel : "main"});
                         }
+                        else{
+                            this.map.visitCurrentNode();
+                        }
                         break;
                     case this.sMenu:
                         switch(evt.keyCode){

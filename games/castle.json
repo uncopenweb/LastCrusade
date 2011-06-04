@@ -347,9 +347,7 @@
             "nSouth": -1, 
             "nEast": 1, 
             "Sounds": [
-                {
-                    "nSound": 25
-                }
+                    25
             ], 
             "nMusicCount": 1, 
             "nIndex": 41, 
@@ -372,15 +370,9 @@
             "nSouth": 4, 
             "nEast": 7, 
             "Sounds": [
-                {
-                    "nSound": 19
-                }, 
-                {
-                    "nSound": 20
-                }, 
-                {
-                    "nSound": 21
-                }
+                19, 
+                20, 
+                21
             ], 
             "nMusicCount": 3, 
             "nIndex": 42, 
@@ -407,15 +399,9 @@
             "nSouth": 1, 
             "nEast": 8, 
             "Sounds": [
-                {
-                    "nSound": 20
-                }, 
-                {
-                    "nSound": 22
-                }, 
-                {
-                    "nSound": 24
-                }
+                20, 
+                22, 
+                24
             ], 
             "nMusicCount": 3, 
             "nIndex": 32, 
@@ -447,15 +433,9 @@
             "nSouth": 2, 
             "nEast": -1, 
             "Sounds": [
-                {
-                    "nSound": 21
-                }, 
-                {
-                    "nSound": 23
-                }, 
-                {
-                    "nSound": 24
-                }
+                21,
+                23, 
+                24
             ], 
             "nMusicCount": 3, 
             "nIndex": 22, 
@@ -482,15 +462,9 @@
             "nSouth": 5, 
             "nEast": 6, 
             "Sounds": [
-                {
-                    "nSound": 19
-                }, 
-                {
-                    "nSound": 22
-                }, 
-                {
-                    "nSound": 23
-                }
+                19, 
+                22, 
+                23
             ], 
             "nMusicCount": 3, 
             "nIndex": 52, 
@@ -522,15 +496,9 @@
             "nSouth": -1, 
             "nEast": -1, 
             "Sounds": [
-                {
-                    "nSound": 21
-                }, 
-                {
-                    "nSound": 23
-                }, 
-                {
-                    "nSound": 24
-                }
+                21, 
+                23, 
+                24
             ], 
             "nMusicCount": 3, 
             "nIndex": 62, 
@@ -561,15 +529,9 @@
             "nSouth": -1, 
             "nEast": -1, 
             "Sounds": [
-                {
-                    "nSound": 19
-                }, 
-                {
-                    "nSound": 22
-                }, 
-                {
-                    "nSound": 23
-                }
+                19, 
+                22, 
+                23
             ], 
             "nMusicCount": 3, 
             "nIndex": 53, 
@@ -592,15 +554,9 @@
             "nSouth": 6, 
             "nEast": 9, 
             "Sounds": [
-                {
-                    "nSound": 19
-                }, 
-                {
-                    "nSound": 20
-                }, 
-                {
-                    "nSound": 21
-                }
+                19, 
+                20, 
+                21
             ], 
             "nMusicCount": 3, 
             "nIndex": 43, 
@@ -631,15 +587,9 @@
             "nSouth": 7, 
             "nEast": -1, 
             "Sounds": [
-                {
-                    "nSound": 20
-                }, 
-                {
-                    "nSound": 22
-                }, 
-                {
-                    "nSound": 24
-                }
+                20, 
+                22, 
+                24
             ], 
             "nMusicCount": 3, 
             "nIndex": 33, 
@@ -662,15 +612,9 @@
             "nSouth": -1, 
             "nEast": 10, 
             "Sounds": [
-                {
-                    "nSound": 21
-                }, 
-                {
-                    "nSound": 23
-                }, 
-                {
-                    "nSound": 24
-                }
+                21, 
+                23, 
+                24
             ], 
             "nMusicCount": 3, 
             "nIndex": 44, 
@@ -693,9 +637,7 @@
             "nSouth": 12, 
             "nEast": 13, 
             "Sounds": [
-                {
-                    "nSound": 25
-                }
+                25
             ], 
             "nMusicCount": 1, 
             "nIndex": 45, 
@@ -718,15 +660,9 @@
             "nSouth": 10, 
             "nEast": -1, 
             "Sounds": [
-                {
-                    "nSound": 20
-                }, 
-                {
-                    "nSound": 22
-                }, 
-                {
-                    "nSound": 24
-                }
+                20, 
+                22, 
+                24
             ], 
             "nMusicCount": 3, 
             "nIndex": 35, 
@@ -749,15 +685,9 @@
             "nSouth": -1, 
             "nEast": -1, 
             "Sounds": [
-                {
-                    "nSound": 19
-                }, 
-                {
-                    "nSound": 22
-                }, 
-                {
-                    "nSound": 23
-                }
+                19, 
+                22, 
+                23
             ], 
             "nMusicCount": 3, 
             "nIndex": 55, 
@@ -780,15 +710,9 @@
             "nSouth": -1, 
             "nEast": 14, 
             "Sounds": [
-                {
-                    "nSound": 21
-                }, 
-                {
-                    "nSound": 23
-                }, 
-                {
-                    "nSound": 24
-                }
+                21, 
+                23, 
+                24
             ], 
             "nMusicCount": 3, 
             "nIndex": 46, 
