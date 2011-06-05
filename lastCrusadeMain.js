@@ -32,7 +32,7 @@ dojo.declare('lastCrusadeMain', null, {
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
             dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));     
             this._keyHasGoneUp = true;
-        }));        
+        }));           
     },
 
     _start: function(){
@@ -51,6 +51,21 @@ dojo.declare('lastCrusadeMain', null, {
 
     //Load a map
     _loadMap: function(fileName) {
+        var mapHandle = dojo.subscribe("mapStatus", dojo.hitch(this, function(message){
+            if (message == "mapDestroy") {
+                dojo.unsubscribe(mapHandle);
+                this._mapIndex++;
+                if(this._mapIndex==this.mapList.length)
+                {
+                    //done with game, do something
+                    console.log("Finished all games");
+                }
+                else
+                {
+                    this._loadMap(this.mapList[this._mapIndex]);                    
+                }                
+            }
+        })); 
         var file = fileName;
         var mapRequest = {
             url : "games/" + file,

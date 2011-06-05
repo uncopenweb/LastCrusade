@@ -6,10 +6,18 @@ dojo.declare('widgets.map', [dijit._Widget], {
     mapData: {}, 
 
     constructor: function() {
+        //**poor mans enums
+        //directions        
         this.NORTH = 0;
         this.SOUTH = 1;
         this.EAST = 2;
         this.WEST = 3;
+        //NPC types
+        dojo.global.ENEMY = 0;
+        dojo.global.FRIEND = 1;
+        dojo.global.VENDOR = 2;
+        dojo.global.LEPRECHAUN = 3;
+
         this.x = 0;
         this.y = 0;
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
@@ -27,6 +35,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.items = this.mapData.items;
         this.finish = this.mapData.End;
         this.Name = this.mapData.Name;
+        this.inherited(arguments);
     },
 
     /*
@@ -90,17 +99,45 @@ dojo.declare('widgets.map', [dijit._Widget], {
     visitCurrentNode: function(){
         var cNode = this.mapData.nodes[this.currentNodeIndex];
         cNode.visited = 1;
-        //play sound
-        if(cNode.Sounds.length>0){
-            this._audio.stop({channel: 'map'});
-            this._audio.setProperty({name: 'loop', channel: 'map', value: true});
-            sound = this.mapData.sounds[this.oneOf(cNode.Sounds)];
-            console.log(sound);
-            this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'}); 
+        if(this.currentNodeIndex == this.mapData.End){
+            this.destroyRecursive();
+        }
+        else{
+            //play sound
+            if(cNode.Sounds.length>0){
+                this._audio.stop({channel: 'map'});
+                this._audio.setProperty({name: 'loop', channel: 'map', value: true});
+                sound = this.mapData.sounds[this.oneOf(cNode.Sounds)];
+                console.log(sound);
+                this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'}); 
+            }
+            //this should probably be in main
+            var enemy = this.getNPC(dojo.global.ENEMY);
+            if(enemy != null)
+            {
+               
+            }
         }
     },
 
     oneOf: function(array){
         return array[Math.floor(Math.random()*array.length)];
+    },
+
+    uninitialize: function() {
+        var handle = dojo.subscribe("mapStatus", dojo.hitch(this, function(){
+            dojo.unsubscribe(handle);
+        }));
+        dojo.publish("mapStatus", ["mapDestroy"]);
+    },
+
+    getNPC: function(type){
+         dojo.forEach({this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npcShell){
+            if(this.NPCs[npcShell.nNPC].cType == type)
+            {
+                return this.NPCs[npcShell.nNPC];
+            }
+        }));
+        return null;
     },
 });
