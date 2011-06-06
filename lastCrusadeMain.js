@@ -18,11 +18,13 @@ dojo.declare('lastCrusadeMain', null, {
         this.sMenu = 1;
         this.sMove = 2;
         this.sFight = 3;
+        this.sRun = 4;
         this.state = this.sOff;
         this._mapIndex = 0;
 
 //@fixme: holding down key streams jsonic requests
         this.map = null;
+        this.enemy = null;
         this.keyDelay = 0;
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
         def.then(dojo.hitch(this, function(audio) { 
@@ -243,19 +245,23 @@ dojo.declare('lastCrusadeMain', null, {
                         }
                         else{
                             this.map.visitCurrentNode();
-                            enemy = this.map.getNPC(dojo.global.ENEMY);
-                            console.log(enemy);
+                            this.enemy = this.map.getNPC(dojo.global.ENEMY);
                             if(enemy != null)
                             {
                                 var def = this.map.fade();
                                 def.then(dojo.hitch(this, function(){
                                     this._audio.setProperty({name: 'loop', channel: 'background', value: true});
                                     this.playNow(this.fightsong, 'background');
-                                    this._audio.say({text: "You have encountered a " + enemy.cName});
+                                    this._audio.say({text: "You have encountered a " + enemy.Name + "."});
 
                                     //read stats
-                                    //this._audio.say({text: ""});
-                                    this.state = this.sFight;
+                                    this._audio.say({text: "Its strength is " + enemy.Strength + "."});
+                                    this._audio.say({text: "Its defense is " + enemy.Defense + "."});
+                                    this._audio.say({text: "It has " + enemy.HP + " hit points."});
+        
+                                    //option to run
+                                    this._audio.say({text: "Do you want to try to run away?"});
+                                    this.state = this.sRun;
                                 }));
                             }
                         }
@@ -295,6 +301,18 @@ dojo.declare('lastCrusadeMain', null, {
                             //P
                             //Q
                         }  
+                        break;
+                    case this.sRun:
+                        switch(evt.keyCode){
+                            case 89: //Y
+                                var randZeroTo99=Math.floor(Math.random()*100);
+                                if(randZeroTo99 > this.enemy.RunPerc){ //fail
+                                    
+                                }
+                            break;
+                            case 78: //N
+                            break;
+                        }
                         break;
                 }
         }        

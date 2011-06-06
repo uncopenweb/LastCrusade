@@ -128,10 +128,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
 
     getNPC: function(type){
          toReturn = null;
-         dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npcShell){
-            if(this.NPCs[npcShell.nNPC].cType == type)
+         dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npc){
+            if(npc.Type == type)
             {
-                toReturn = this.NPCs[npcShell.nNPC];
+                toReturn = npc;
                 return false;
             }
         }));
