@@ -36,6 +36,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.finish = this.mapData.End;
         this.Name = this.mapData.Name;
         this.inherited(arguments);
+        this.setUpNPCs();
     },
 
     /*
@@ -158,5 +159,33 @@ dojo.declare('widgets.map', [dijit._Widget], {
         });
         fadeTimer.start();
         return deferred;
-    }
+    },
+
+    /*
+        Each NPC has min and max params for health, strength, etc. Need to fixed values.
+        Also, for each node, and NPC has a percentage change that it will be at that given
+        node, so go ahead and determine that now
+    */
+    setUpNPCs: function(){
+        dojo.forEach(this.nodes, dojo.hitch(this, function(node){
+            var toPop = [];
+            dojo.forEach(node.NPC, dojo.hitch(this, function(NPCshell, index){
+                var randZeroTo99=Math.floor(Math.random()*100);
+                if(randZeroTo99 > NPCshell.nPercent){ //not there
+                    toPop.push(index);
+                }
+                else{//set the values
+
+                }
+            }));
+            /*
+                must pull removing out because otherwise, forEach iteration will fail as we 
+                remove. For similar reason, must keep track of # removed thus far
+            */            
+            var removedSoFar = 0;
+            dojo.forEach(toPop, dojo.hitch(this, function(i){
+                node.NPC.splice((i - removedSoFar++),1);
+            }));
+        }));
+    },
 });

@@ -252,6 +252,9 @@ dojo.declare('lastCrusadeMain', null, {
                                     this._audio.setProperty({name: 'loop', channel: 'background', value: true});
                                     this.playNow(this.fightsong, 'background');
                                     this._audio.say({text: "You have encountered a " + enemy.cName});
+
+                                    //read stats
+                                    //this._audio.say({text: ""});
                                     this.state = this.sFight;
                                 }));
                             }
@@ -285,7 +288,13 @@ dojo.declare('lastCrusadeMain', null, {
                                 break;
                         }
                         break;
-                    case this.sFight:   
+                    case this.sFight: 
+                        switch(evt.keyCode){
+                            //A
+                            //R
+                            //P
+                            //Q
+                        }  
                         break;
                 }
         }        
