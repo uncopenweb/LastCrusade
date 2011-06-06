@@ -174,8 +174,29 @@ dojo.declare('widgets.map', [dijit._Widget], {
                 if(randZeroTo99 > NPCshell.nPercent){ //not there
                     toPop.push(index);
                 }
-                else{//set the values
-
+                else{//set the values and only keep variables we want
+                    var cName = this.NPCs[NPCshell.nNPC].cName;
+                    var strength = Math.floor(Math.random()*(this.NPCs[NPCshell.nNPC].cStrMax - this.NPCs[NPCshell.nNPC].cStrMin)) + this.NPCs[NPCshell.nNPC].cStrMin;
+                    var defense = Math.floor(Math.random()*(this.NPCs[NPCshell.nNPC].cDefMax - this.NPCs[NPCshell.nNPC].cDefMin)) + this.NPCs[NPCshell.nNPC].cDefMin; 
+                    var maxHP = Math.floor(Math.random()*(this.NPCs[NPCshell.nNPC].cHPMax - this.NPCs[NPCshell.nNPC].cHPMin)) + this.NPCs[NPCshell.nNPC].cHPMin;
+                    var hp = maxHP;
+                    var type = this.NPCs[NPCshell.nNPC].cType;
+                    var items = this.NPCs[NPCshell.nNPC].items;
+                    var runPerc = this.NPCs[NPCshell.nNPC].cRunPerc;
+                    var nameSound = this.NPCs[NPCshell.nNPC].cNameSound;
+                    var actionSound = this.NPCs[NPCshell.nNPC].cActionSound;
+                    node.NPC[index] = {
+                        "Name": cName,
+                        "Strength": strength,
+                        "Defense": defense,
+                        "MaxHP": maxHP,
+                        "HP": hp,
+                        "Type":type,
+                        "Items":items,
+                        "RunPerc":runPerc,
+                        "NameSound":nameSound,
+                        "ActionSound":actionSound
+                    };
                 }
             }));
             /*
