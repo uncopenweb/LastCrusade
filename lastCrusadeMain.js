@@ -243,6 +243,18 @@ dojo.declare('lastCrusadeMain', null, {
                         }
                         else{
                             this.map.visitCurrentNode();
+                            enemy = this.map.getNPC(dojo.global.ENEMY);
+                            console.log(enemy);
+                            if(enemy != null)
+                            {
+                                var def = this.map.fade();
+                                def.then(dojo.hitch(this, function(){
+                                    this._audio.setProperty({name: 'loop', channel: 'background', value: true});
+                                    this.playNow(this.fightsong, 'background');
+                                    this._audio.say({text: "You have encountered a " + enemy.cName});
+                                    this.state = this.sFight;
+                                }));
+                            }
                         }
                         break;
                     case this.sMenu:
@@ -312,6 +324,8 @@ dojo.declare('lastCrusadeMain', null, {
         fade out and stop channel
     */
     fadeChannel: function(chn){
+        //implement fading boolean        
+        this.fading = true;
         increments=[0.75, 0.5, 0.25, 0.1, 0.05];
         i = 0;
         fadeTimer = new dojox.timing.Timer(400);

@@ -111,12 +111,6 @@ dojo.declare('widgets.map', [dijit._Widget], {
                 console.log(sound);
                 this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'}); 
             }
-            //this should probably be in main
-            var enemy = this.getNPC(dojo.global.ENEMY);
-            if(enemy != null)
-            {
-               
-            }
         }
     },
 
@@ -132,12 +126,37 @@ dojo.declare('widgets.map', [dijit._Widget], {
     },
 
     getNPC: function(type){
-         dojo.forEach({this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npcShell){
+         toReturn = null;
+         dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npcShell){
             if(this.NPCs[npcShell.nNPC].cType == type)
             {
-                return this.NPCs[npcShell.nNPC];
+                toReturn = this.NPCs[npcShell.nNPC];
+                return false;
             }
         }));
-        return null;
+        return toReturn;
     },
+
+    /*
+        fade out and stop channel
+    */
+    fade: function(){
+        increments=[0.75, 0.5, 0.25, 0.1, 0.05];
+        i = 0;
+        fadeTimer = new dojox.timing.Timer(400);
+        var deferred = new dojo.Deferred();
+        fadeTimer.onTick = dojo.hitch(this, function() {
+            this._audio.setProperty({name : 'volume', value: increments[i], channel : "map", immediate : true});
+            if(i == (increments.length - 1))
+            {
+                fadeTimer.stop();
+                this._audio.stop({channel : "map"});
+                this._audio.setProperty({name : 'volume', value: 1.0, channel : "map", immediate : true});
+                deferred.callback();
+            }
+            i++;
+        });
+        fadeTimer.start();
+        return deferred;
+    }
 });
