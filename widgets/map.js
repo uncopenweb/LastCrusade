@@ -18,6 +18,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
         dojo.global.VENDOR = 2;
         dojo.global.LEPRECHAUN = 3;
 
+        this.currentNPCIndex = -1;
         this.x = 0;
         this.y = 0;
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
@@ -136,9 +137,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
 
     getNPC: function(type){
          toReturn = null;
-         dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npc){
+         dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npc, index){
             if(npc.Type == type)
             {
+                this.currentNPCIndex = index;
                 toReturn = npc;
                 return false;
             }
@@ -216,5 +218,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
                 node.NPC.splice((i - removedSoFar++),1);
             }));
         }));
+    },
+
+    defeatedEnemy: function(){
+        //remove enemy
+        this.nodes[this.currentNodeIndex].NPC.splice(this.currentNPCIndex,1);
+        this.currentNPCIndex = -1;
     },
 });

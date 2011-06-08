@@ -88,6 +88,8 @@ dojo.declare('widgets.player', [dijit._Widget], {
 	    }));
 	    this.weapon = map.items[lowWeapon];
 	    this.armor = map.items[lowArmor];
+        this.strength = this.weapon.iValue;
+        this.defense = this.armor.iValue;
     },
     /*
         updates hp in respone to integer change
@@ -96,10 +98,24 @@ dojo.declare('widgets.player', [dijit._Widget], {
         this.hp+=change;
         if(change < 0){
             var temp = - change;
-            this._audio.say({text: "You have lost " + temp + " hit points. You now have " + this.hp + " hit points."});
+            if(temp == 1){
+                this._audio.say({text: "You have lost " + temp + " hit point. You now have " + this.hp + " hit points."});
+            }
+            else{
+                this._audio.say({text: "You have lost " + temp + " hit points. You now have " + this.hp + " hit points."});
+            }
         }
         else{
-            this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."});
+            if(change == 1){
+                this._audio.say({text: "You have gained " + change + " hit point. You now have " + this.hp + " hit points."});
+            }
+            else{
+                this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."});
+            }
         }
+        if (this.hp<=0){
+            return false;
+        }
+        return true;
     }
 });
