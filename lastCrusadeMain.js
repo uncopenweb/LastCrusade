@@ -246,18 +246,18 @@ dojo.declare('lastCrusadeMain', null, {
                         else{
                             this.map.visitCurrentNode();
                             this.enemy = this.map.getNPC(dojo.global.ENEMY);
-                            if(enemy != null)
+                            if(this.enemy != null)
                             {
                                 var def = this.map.fade();
                                 def.then(dojo.hitch(this, function(){
                                     this._audio.setProperty({name: 'loop', channel: 'background', value: true});
                                     this.playNow(this.fightsong, 'background');
-                                    this._audio.say({text: "You have encountered a " + enemy.Name + "."});
+                                    this._audio.say({text: "You have encountered a " + this.enemy.Name + "."});
 
                                     //read stats
-                                    this._audio.say({text: "Its strength is " + enemy.Strength + "."});
-                                    this._audio.say({text: "Its defense is " + enemy.Defense + "."});
-                                    this._audio.say({text: "It has " + enemy.HP + " hit points."});
+                                    this._audio.say({text: "Its strength is " + this.enemy.Strength + "."});
+                                    this._audio.say({text: "Its defense is " + this.enemy.Defense + "."});
+                                    this._audio.say({text: "It has " + this.enemy.HP + " hit points."});
         
                                     //option to run
                                     this._audio.say({text: "Do you want to try to run away?"});
@@ -305,12 +305,24 @@ dojo.declare('lastCrusadeMain', null, {
                     case this.sRun:
                         switch(evt.keyCode){
                             case 89: //Y
+                                this.state = this.sOff;
                                 var randZeroTo99=Math.floor(Math.random()*100);
                                 if(randZeroTo99 > this.enemy.RunPerc){ //fail
-                                    
+                                    this._audio.say({text: "Your attempt to run away has failed. You must now fight the " + this.enemy.Name});
+                                }
+                                else{//success
+                                    this._audio.say({text: "You have avoided the " + this.enemy.Name + " and returned to your previous location."});
+                                    this.fadeChannel("background");
+                                    this.map.returnPrevious();
                                 }
                             break;
                             case 78: //N
+                                this.state = this.sOff;
+                                //enemy should also attack
+                                this._audio.say({text: "You have chosen to stand your ground."})
+                                    .anyAfter(dojo.hitch(this, function(){
+                                        this.enemyAttack();
+                                    }));
                             break;
                         }
                         break;
@@ -370,7 +382,25 @@ dojo.declare('lastCrusadeMain', null, {
         });
         fadeTimer.start();
         return deferred;
-    }
+    },
+
+    enemyAttack: function(){
+        //play action sound
+        this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.enemy.ActionSound], channel: 'enemy'}).anyAfter(dojo.hitch(this, function(){
+            //get two strengths from enemy
+            var randS = Math.floor(Math.random()*(this.enemy.Strength+1));
+            console.log("randS: " + randS);
+            var total = randS + this.enemy.Strength - this.player.defense;
+            console.log("Enemy strength: " + this.enemy.Strength + " Player def: " + this.player.defense);
+            if(total > 0){ //enemy hit successfully
+                this.player.updateHP(-total);
+            }
+            else{ //miss
+                this._audio.say({text: "You successfully avoided the attack."});           
+            }
+            this.state = this.sFight;
+        }));
+    },
 });
 
 dojo.ready(function() {

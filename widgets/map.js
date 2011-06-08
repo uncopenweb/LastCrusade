@@ -28,6 +28,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
     
     postCreate: function() {
         console.log(this.mapData);
+        this.lastNodeIndex = 0;
         this.currentNodeIndex = this.mapData.Start;
         this.NPCs = this.mapData.NPCs;
         this.nodes = this.mapData.nodes;
@@ -92,6 +93,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
             return false;
         }
         else{
+            this.lastNodeIndex = this.currentNodeIndex;
             this.currentNodeIndex = neighbor;
             return true;
         }
@@ -109,10 +111,16 @@ dojo.declare('widgets.map', [dijit._Widget], {
                 this._audio.stop({channel: 'map'});
                 this._audio.setProperty({name: 'loop', channel: 'map', value: true});
                 sound = this.mapData.sounds[this.oneOf(cNode.Sounds)];
-                console.log(sound);
                 this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'}); 
             }
         }
+    },
+
+    returnPrevious: function(){
+        var temp = this.currentNodeIndex;
+        this.currentNodeIndex = this.lastNodeIndex;
+        this.lastNodeIndex = temp;
+        this.visitCurrentNode();        
     },
 
     oneOf: function(array){
