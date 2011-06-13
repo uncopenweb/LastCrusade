@@ -100,6 +100,9 @@ dojo.declare('widgets.map', [dijit._Widget], {
         }
     },
 
+    /*
+        May eventually be simplfied, not sure what I need right now
+    */
     visitCurrentNode: function(){
         var cNode = this.mapData.nodes[this.currentNodeIndex];
         var deferred = new dojo.Deferred();
@@ -122,6 +125,9 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return deferred;
     },
 
+    /*
+        Used when the player runs away from the enemy
+    */
     returnPrevious: function(){
         var deferred = new dojo.Deferred();
         var temp = this.currentNodeIndex;
@@ -145,6 +151,9 @@ dojo.declare('widgets.map', [dijit._Widget], {
         dojo.publish("mapStatus", ["mapDestroy"]);
     },
 
+    /*
+        Get NPC of a node, build in order of precedence if more than one
+    */
     getNPC: function(type){
          var toReturn = null;
          dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npc, index){

@@ -1,3 +1,12 @@
+/**************************************************************************
+*
+* TheLastCrusade -- developed for HarkTheSound.org by Robert Overman
+*
+* From the original Win version:
+* http://www.cs.unc.edu/Research/assist/et/projects/RPG/TheLastCrusade.htm
+*
+***************************************************************************/
+
 dojo.provide('main');
 dojo.require('dojo.parser');
 dojo.require('dojo.hash');
@@ -28,6 +37,8 @@ dojo.declare('main', null, {
         this.enemy = null;
         this.keyDelay = 0;
         this.directions = dojo.byId("directions");
+        
+        //messages to display with corresponding state
         var stateHandle = dojo.subscribe("stateStatus", dojo.hitch(this, function(message){
             switch (message){
             case this.sOff:
@@ -60,6 +71,9 @@ dojo.declare('main', null, {
         }));           
     },
 
+    /*
+        begin gameplay
+    */
     _start: function(){
         this.mapList = ["graveyard.json", "forest.json", "castle.json"];
         this.player = new widgets.player({}, null); 
@@ -70,7 +84,10 @@ dojo.declare('main', null, {
         this.setState(this.sMenu);            
     },
 
-    //Load a map
+    /*
+        Load the map and visit the first node
+        Also sets up how to handle game widget destruction
+    */
     _loadMap: function(fileName) {
         var mapHandle = dojo.subscribe("mapStatus", dojo.hitch(this, function(message){
             if (message == "mapDestroy") {
@@ -107,6 +124,10 @@ dojo.declare('main', null, {
         }));
     },
 
+    /*
+        Remove key down flag. Checking key down flag prevents streaming 
+        requests to server from holding down a key
+    */
     _removeKeyDownFlag: function() {
         if (this.keyDelayTimer && this.keyDelayTimer.isRunning){} //do nothing
         else{
@@ -119,6 +140,9 @@ dojo.declare('main', null, {
         }
 	},    
 
+    /*
+        setup all sound names from original game, most will eventually be deleted
+    */
     _initSounds: function(){
         this.theme = "main_theme";			
 	    this.title = "title";				
@@ -225,6 +249,9 @@ dojo.declare('main', null, {
 	    this.save = "saved";     
     },
     
+    /*
+        Analyze used input given the state of the game
+    */
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
             console.log(this.state);
@@ -441,6 +468,9 @@ dojo.declare('main', null, {
         }
     },
     
+    /*
+        Read the original menu instructions
+    */
     readMenu: function(){
         var def = this.fadeChannel('background');
         def.then(dojo.hitch(this, function(){
@@ -477,6 +507,9 @@ dojo.declare('main', null, {
         return deferred;
     },
 
+    /*
+        Enemy attack player
+    */
     enemyAttack: function(){
         this.setState(this.sOff);
         var deferred = new dojo.Deferred();
@@ -507,6 +540,9 @@ dojo.declare('main', null, {
         return deferred;
     },
 
+    /*
+        Player attack enemy
+    */
     playerAttack: function(){
         var deferred = new dojo.Deferred();
         this.setState(this.sOff);
