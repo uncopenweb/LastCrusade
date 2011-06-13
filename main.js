@@ -233,35 +233,31 @@ dojo.declare('main', null, {
                     case this.sOff:
                         break;
                     case this.sMove:
+                        this.setState(this.sOff);
                         var result = true;
                         var junk = true;
                         switch(evt.keyCode){
                             case dojo.keys.DOWN_ARROW:
-                                this.setState(this.sOff);
                                 junk = false;
                                 evt.preventDefault();
                                 result = this.map.move(this.map.SOUTH);
                                 break;
                             case dojo.keys.LEFT_ARROW:
-                                this.setState(this.sOff);
                                 junk = false;
                                 evt.preventDefault();
                                 result = this.map.move(this.map.WEST);
                                 break;
                             case dojo.keys.RIGHT_ARROW:
-                                this.setState(this.sOff);
                                 junk = false;
                                 evt.preventDefault();
                                 result = this.map.move(this.map.EAST);
                                 break;
                             case dojo.keys.UP_ARROW:
-                                this.setState(this.sOff);
                                 junk = false;
                                 evt.preventDefault();
                                 result = this.map.move(this.map.NORTH);
                                 break;
                             case dojo.keys.SPACE:
-                                this.setState(this.sOff);
                                 junk = false;
                                 this.fadeChannel('background');
                                 var d = this.player.readStats();
@@ -341,14 +337,17 @@ dojo.declare('main', null, {
                                 this.setState(this.sOff);
                                 //player attack
                                 var def = this.playerAttack();
-                                def.then(dojo.hitch(this, function(){
-                                    if(this.state == this.sFight){
+                                def.then(dojo.hitch(this, function(result){
+                                    if(result.vanquished){
+                                        this.setState(this.sMove);
+                                        this.map.visitCurrentNode();
+                                    }
+                                    else{
                                         var def = this.enemyAttack();
                                         def.then(dojo.hitch(this,function(){
                                             this.setState(this.sFight);
                                         }));               
                                     }
-                                    //otherwise enemy was defeated
                                 }));
                                 break;
                             case 82: //R run away
@@ -364,8 +363,8 @@ dojo.declare('main', null, {
                                         }));
                                 }
                                 else{//success
-                                    this._audio.say({text: "You have abandoned the fight and returned to your previous location."});
                                     this.fadeChannel("background");
+                                    this._audio.say({text: "You have abandoned the fight and returned to your previous location."});
 
                                     //give enemy health back????
                                     this.enemy = null;
@@ -488,8 +487,9 @@ dojo.declare('main', null, {
             var total = randS + this.enemy.Strength - this.player.defense;
             if(total > 0){ //enemy hit successfully
                 var def = this.player.updateHP(-total);
-                def.then(dojo.hitch(this,function(alive){
-                    if(alive){
+                def.then(dojo.hitch(this,function(result){
+                    console.log(result.alive);
+                    if(result.alive){
                         deferred.callback();
                     }
                     else{
@@ -517,27 +517,27 @@ dojo.declare('main', null, {
             if(total > 0){ //successful
                 this.enemy.HP-=total;
                 if(this.enemy.HP <= 0){
-                    var def = this.fadeChannel('background');
-                    def.then(dojo.hitch(this,function(){
-                        //this.playNow(this.victory, 'background');
-                        this.setState(this.sMove);
-                        deferred.callback();
-                    }));
-                    this._audio.say({text: "Successful attack! You have vanquished the " + this.enemy.Name})
+                    this.fadeChannel('background');
+                    var enemyName = this.enemy.Name;
                     this.map.defeatedEnemy();
                     this.enemy = null;
+                    this._audio.say({text: "Successful attack! You have vanquished the " + enemyName})
+                        .anyAfter(dojo.hitch(this,function(){
+                            deferred.callback({vanquished:true});
+                        }));
                 }
                 else{
                     this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit points."})
                     .anyAfter(dojo.hitch(this,function(){
-                        this.setState(this.sFight);
-                        deferred.callback();
+                        deferred.callback({vanquished:false});
                     }));
                 }
             }
             else{ //miss
-                this._audio.say({text: "You failed to hit the enemy."});
-                this.setState(this.sFight);
+                this._audio.say({text: "You failed to hit the enemy."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({vanquished:false});
+                    }));
             }
         }));
         return deferred;
