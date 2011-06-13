@@ -75,7 +75,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
         otherwise return true and set the new currentNodeIndex
     */
     _getNeighbor: function(direction){
-        neighbor = -1;
+        var neighbor = -1;
         switch(direction){
             case this.NORTH:
                 neighbor = this.nodes[this.currentNodeIndex].nNorth;
@@ -102,6 +102,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
 
     visitCurrentNode: function(){
         var cNode = this.mapData.nodes[this.currentNodeIndex];
+        var deferred = new dojo.Deferred();
         cNode.visited = 1;
         if(this.currentNodeIndex == this.mapData.End){
             this.destroyRecursive();
@@ -111,17 +112,26 @@ dojo.declare('widgets.map', [dijit._Widget], {
             if(cNode.Sounds.length>0){
                 this._audio.stop({channel: 'map'});
                 this._audio.setProperty({name: 'loop', channel: 'map', value: true});
-                sound = this.mapData.sounds[this.oneOf(cNode.Sounds)];
-                this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'}); 
+                var sound = this.mapData.sounds[this.oneOf(cNode.Sounds)];
+                this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback();
+                    })); 
             }
         }
+        return deferred;
     },
 
     returnPrevious: function(){
+        var deferred = new dojo.Deferred();
         var temp = this.currentNodeIndex;
         this.currentNodeIndex = this.lastNodeIndex;
         this.lastNodeIndex = temp;
-        this.visitCurrentNode();        
+        var def = this.visitCurrentNode(); 
+        def.then(dojo.hitch(this,function(){
+            deferred.callback();
+        }));
+        return deferred;       
     },
 
     oneOf: function(array){
@@ -136,7 +146,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
     },
 
     getNPC: function(type){
-         toReturn = null;
+         var toReturn = null;
          dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npc, index){
             if(npc.Type == type)
             {
@@ -152,9 +162,9 @@ dojo.declare('widgets.map', [dijit._Widget], {
         fade out and stop channel
     */
     fade: function(){
-        increments=[0.75, 0.5, 0.25, 0.1, 0.05];
-        i = 0;
-        fadeTimer = new dojox.timing.Timer(400);
+        var increments=[0.75, 0.5, 0.25, 0.1, 0.05];
+        var i = 0;
+        var fadeTimer = new dojox.timing.Timer(400);
         var deferred = new dojo.Deferred();
         fadeTimer.onTick = dojo.hitch(this, function() {
             this._audio.setProperty({name : 'volume', value: increments[i], channel : "map", immediate : true});

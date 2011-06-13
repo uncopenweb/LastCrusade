@@ -96,26 +96,42 @@ dojo.declare('widgets.player', [dijit._Widget], {
     */
     updateHP: function(change){
         this.hp+=change;
-        if(change < 0){
+        var deferred = new dojo.Deferred();
+        if(change < 0){ //lost health
             var temp = - change;
-            if(temp == 1){
-                this._audio.say({text: "You have lost " + temp + " hit point. You now have " + this.hp + " hit points."});
-            }
+            if(this.hp <= 0){
+                this._audio.say({text: "The enemy was too much for you to handle. You have been slain."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: false});
+                    })); 
+            }    
+            else if(temp == 1){
+                this._audio.say({text: "You have lost " + temp + " hit point. You now have " + this.hp + " hit points."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: true});
+                    })); 
+            }            
             else{
-                this._audio.say({text: "You have lost " + temp + " hit points. You now have " + this.hp + " hit points."});
+                this._audio.say({text: "You have lost " + temp + " hit points. You now have " + this.hp + " hit points."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: true});
+                    })); 
             }
         }
         else{
             if(change == 1){
-                this._audio.say({text: "You have gained " + change + " hit point. You now have " + this.hp + " hit points."});
+                this._audio.say({text: "You have gained " + change + " hit point. You now have " + this.hp + " hit points."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: true});
+                    })); 
             }
             else{
-                this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."});
+                this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: true});
+                    })); 
             }
         }
-        if (this.hp<=0){
-            return false;
-        }
-        return true;
+        return deferred;
     }
 });
