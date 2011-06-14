@@ -7,6 +7,11 @@
 *
 ***************************************************************************/
 
+/*  @TODO: AFTER ACCEPTING items cannot procede because each call to 
+    offerItems give a new defferred object, therein last call to deferred.callback
+    will do nothing for the initial instantiation
+*/
+
 dojo.provide('main');
 dojo.require('dojo.parser');
 dojo.require('dojo.hash');
@@ -295,7 +300,7 @@ dojo.declare('main', null, {
                                 this.fadeChannel('background');
                                 var d = this.player.readStats();
                                 d.then(dojo.hitch(this, function(){  
-                                    this.setState(this.sListen);                              
+                                    this.setState(this.sMove);                              
                                     this._audio.play({url: "sounds/general/"+ this.theme, channel: 'background'});
                                 }));
                                 break;                                
@@ -336,9 +341,13 @@ dojo.declare('main', null, {
                                 var def = this.playerAttack();
                                 def.then(dojo.hitch(this, function(result){
                                     if(result.vanquished){
-                                        //@TODO: get a deferred from lootEnemy and then call the next two lines
-                                        this.setState(this.sMove);
-                                        this.map.visitCurrentNode();
+                                        var def2 = this.lootEnemy();
+                                        def2.then(dojo.hitch(this,function(){
+                                            this.map.defeatedEnemy();
+                                            this.enemy = null;
+                                            this.setState(this.sMove);
+                                            this.map.visitCurrentNode();
+                                        }));
                                     }
                                     else{
                                         var def = this.enemyAttack();
@@ -379,7 +388,10 @@ dojo.declare('main', null, {
                                 break;
                             case 81: //Q
                                 break;
-
+                            /* @TODO: REMOVE AFTER DEBUGGING DONE!!!!!!!!!!!*/
+                            case 75: //set enemy health to 0
+                                this.enemy.HP = 0;
+                                break;
                         }  
                         break;
                     case this.sRun:
@@ -431,13 +443,15 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case 89: //Y
                                 this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                                this._audio.say({text: this.tempItem.Name + " equipped.", channel: 'main'});
+                                this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'main'});
                                 this.player.addItem(this.tempItem);
                                 this.tempItem = null;
+                                this.setState(this.sOff);
                                 this.offerItems();                                
                             break;
                             case 78: //N
                                 this.tempItem = null;
+                                this.setState(this.sOff);
                                 this.offerItems();   
                             break;
                         }
@@ -543,8 +557,6 @@ dojo.declare('main', null, {
                 if(this.enemy.HP <= 0){
                     this.fadeChannel('background');
                     var enemyName = this.enemy.Name;
-                    this.map.defeatedEnemy();
-                    this.enemy = null;
                     this._audio.say({text: "Successful attack! You have vanquished the " + enemyName})
                         .anyAfter(dojo.hitch(this,function(){
                             deferred.callback({vanquished:true});
@@ -580,11 +592,15 @@ dojo.declare('main', null, {
         Find any items that are better than current from enemy, then ask player whether to take
     */
     lootEnemy: function(){
+        var deferred = new dojo.Deferred();
         this.setState(this.sOff);
 	    // Game may be over if "crown" found
 	    var gameEnd = false;
 	    // Go through item list
+        console.log(this.enemy.Items);
+        var atLeastOne = false;
         dojo.some(this.enemy.Items, dojo.hitch(this,function(item, indx){
+            atLeastOne = true;
             if(item.iName == "crown"){
                 gameEnd = true;
                 return false; //break out of loop
@@ -602,33 +618,35 @@ dojo.declare('main', null, {
                     break;
                 case dojo.global.POTION:
                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                    this._audio.say({text: "You found some " + this.item.iName, channel: 'main'})
-                        .anyAfter(dojo.hitch(this,function(){
-                            if(indx == (this.enemy.Items.length - 1)){
-                                this.offerItems();
-                            }
-                        }));
+                    this._audio.say({text: "You found some " + item.iName, channel: 'main'});
+                    this.player.potions.push(item);
                     break;
                 case dojo.global.GOLD:
                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                    this._audio.say({text: "You found " + this.item.iValue + " gold pieces!" , channel: 'main'})
-                        .anyAfter(dojo.hitch(this,function(){
-                            if(indx == (this.enemy.Items.length - 1)){
-                                this.offerItems();
-                            }
-                        }));                                        
+                    this._audio.say({text: "You found " + item.iValue + " gold pieces!" , channel: 'main'});
+                    this.player.gold+=item.iValue;
                     break;
                 case dojo.global.SPECIAL:
                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                    this._audio.say({text: "You found " + this.item.iName, channel: 'main'})
-                        .anyAfter(dojo.hitch(this,function(){
-                            if(indx == (this.enemy.Items.length - 1)){
-                                this.offerItems();
-                            }
-                        }));
+                    this._audio.say({text: "You found " + item.iName, channel: 'main'});
+                    this.player.specialItems.push(item);
                     break;
             }
+            if(indx == (this.enemy.Items.length - 1)){
+                var def = this.offerItems();
+                def.then(dojo.hitch(this,function(){
+                    deferred.callback();
+                }));
+            }
         }));
+        if(gameEnd){
+            console.log("AAAAAAAAAAAAHHH game end sequence missing");
+        }
+        if(!atLeastOne){
+            this.setState(this.sMove);
+            this.map.visitCurrentNode();
+        }
+        return deferred;
 
     },
 
@@ -636,6 +654,7 @@ dojo.declare('main', null, {
         Give player option of swapping items, one at a time
     */
     offerItems: function(){
+        var deferred = new dojo.Deferred();
         if(this.potentialItems.length > 0 ){
             this.setState(this.sOff);
             var playerItem;
@@ -649,13 +668,14 @@ dojo.declare('main', null, {
             this._audio.say({text: "Would you like to replace your level " + playerItem.iValue + " " + playerItem.iName + " with it?", channel: 'main'})
                 .anyAfter(dojo.hitch(this,function(){
                     //remove item
-                    this.tempItem = this.potentialItems.splice(0,1);
+                    this.tempItem = this.potentialItems.splice(0,1)[0];
                     this.setState(this.sAddItem);
                 }));
         }
         else{
-            this.setState(this.sMove);
+            deferred.callback();
         }
+        return deferred;
     },
     /*
         Decides what to do given a success value of whether the player was allowed to move
