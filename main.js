@@ -336,6 +336,7 @@ dojo.declare('main', null, {
                                 var def = this.playerAttack();
                                 def.then(dojo.hitch(this, function(result){
                                     if(result.vanquished){
+                                        //@TODO: get a deferred from lootEnemy and then call the next two lines
                                         this.setState(this.sMove);
                                         this.map.visitCurrentNode();
                                     }
