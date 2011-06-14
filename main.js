@@ -30,7 +30,10 @@ dojo.declare('main', null, {
         this.sFight = 3;
         this.sRun = 4;
         this.sListen = 5;
+        this.sAddItem = 6;
         this.state = this.sOff;
+        this.potentialItems = new Array(); //items to ask player if he/she wants
+        this.tempItem = null;
 
         this._mapIndex = 0;
         this.map = null;
@@ -53,11 +56,13 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P:  <br> Q:  ";
                 break;
             case this.sRun:
-                this.directions.innerHTML = "Y: Yes <br> N: No";;
+                this.directions.innerHTML = "Y: Yes, run away <br> N: No, stay and fight";
                 break;
             case this.sListen:
                 this.directions.innerHTML = "F: Skip";
                 break;
+            case this.sAddItem:
+                this.directions.innerHTML = "Y: Yes, add item <br> N: No, discard item";
             }
         })); 
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
@@ -250,7 +255,7 @@ dojo.declare('main', null, {
     },
     
     /*
-        Analyze used input given the state of the game
+        Analyze user input given the state of the game
     */
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
@@ -393,7 +398,9 @@ dojo.declare('main', null, {
                                     this.fadeChannel("background");
                                     this._audio.say({text: "You have abandoned the fight and returned to your previous location."});
 
-                                    //give enemy health back????
+                                    //restore enemy health if you run away
+                                    this.enemy.HP = this.enemy.MaxHP;
+
                                     this.enemy = null;
                                     var def = this.map.returnPrevious();
                                     def.then(dojo.hitch(this,function(){
@@ -450,6 +457,19 @@ dojo.declare('main', null, {
                         // 'f' to stop sounds on main
                         case 70:
                             this._audio.stop({channel: 'main'});
+                            break;
+                        }
+                        break;
+                    case this.sAddItem:
+                        switch(evt.keyCode){
+                            case 89: //Y
+                                this.player.addItem(this.tempItem);
+                                this.tempItem = null;
+                                this.offerItems();                                
+                            break;
+                            case 78: //N
+                                this.tempItem = null;
+                                this.offerItems();   
                             break;
                         }
                         break;
@@ -521,7 +541,6 @@ dojo.declare('main', null, {
             if(total > 0){ //enemy hit successfully
                 var def = this.player.updateHP(-total);
                 def.then(dojo.hitch(this,function(result){
-                    console.log(result.alive);
                     if(result.alive){
                         deferred.callback();
                     }
@@ -585,6 +604,70 @@ dojo.declare('main', null, {
     setState:function(state){
         this.state = state;
         dojo.publish("stateStatus", [state]);
+    },
+
+    /*
+        Find any items that are better than current from enemy, then ask player whether to take
+    */
+    lootEnemy: function(){
+        this.setState(this.sOff);
+	    // Game may be over if "crown" found
+	    var gameEnd = false;
+	    // Go through item list
+        dojo.some(this.enemy.Items, dojo.hitch(this,function(item){
+            if(item.iName == "crown"){
+                gameEnd = true;
+                return false; //break out of loop
+            }
+            switch(item.iType){
+                case dojo.global.WEAPON:
+                    if(item.iValue >= this.player.weapon.iValue){
+                        this.potentialItems.push(item);
+                    }
+                    break;
+		        case dojo.global.ARMOR:
+                    if(item.iValue >= this.player.armor.iValue){
+                        this.potentialItems.push(item);
+                    }
+                    break;
+                case dojo.global.POTION:
+                    
+                    break;
+                case dojo.global.GOLD:
+                                        
+                    break;
+                case dojo.global.SPECIAL:
+                    
+                    break;
+            }
+        }));
+
+    },
+
+    /*
+        Give player option of swapping items, one at a time
+    */
+    offerItems: function(){
+        if(this.potentialItems.length > 0 ){
+            this.setState(this.sOff);
+            var playerItem;
+            if(this.potentialItems[0].iType == dojo.global.WEAPON){
+                playerItem = this.player.weapon;
+            }
+            else{
+                playerItem = this.player.armor;
+            }
+            this._audio.say({text: "You recovered a level " + this.potentialItems[0].iValue + " " + this.potentialItems[0].iName, channel: 'main'});
+            this._audio.say({text: "Would you like to replace your level " + playerItem.iValue + " " + playerItem.iName + " with it?", channel: 'main'})
+                .anyAfter(dojo.hitch(this,function(){
+                    //remove item
+                    this.tempItem = this.potentialItems.splice(0,1);
+                    this.setState(this.sAddItem);
+                }));
+        }
+        else{
+            this.setState(this.sMove);
+        }
     },
 });
 

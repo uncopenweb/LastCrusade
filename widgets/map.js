@@ -210,7 +210,19 @@ dojo.declare('widgets.map', [dijit._Widget], {
                     var maxHP = Math.floor(Math.random()*(this.NPCs[NPCshell.nNPC].cHPMax - this.NPCs[NPCshell.nNPC].cHPMin)) + this.NPCs[NPCshell.nNPC].cHPMin;
                     var hp = maxHP;
                     var type = this.NPCs[NPCshell.nNPC].cType;
-                    var items = this.NPCs[NPCshell.nNPC].items;
+                    
+                    var items = new Array();                    
+                    //have to do same scheme for items
+                    dojo.forEach(this.NPCs[NPCshell.nNPC].items, dojo.hitch(this, function(itemShell){
+                        var ItemRandZeroTo99=Math.floor(Math.random()*100);
+                        if(ItemRandZeroTo99 > itemShell.cPercent){ //not there
+                            //notta
+                        }
+                        else{
+                            items.push(this.items[itemShell.cItem]);
+                        }
+                    }
+    
                     var runPerc = this.NPCs[NPCshell.nNPC].cRunPerc;
                     var nameSound = this.NPCs[NPCshell.nNPC].cNameSound;
                     var actionSound = this.NPCs[NPCshell.nNPC].cActionSound;

@@ -133,5 +133,28 @@ dojo.declare('widgets.player', [dijit._Widget], {
             }
         }
         return deferred;
-    }
+    },
+
+    /*
+        Add an item to player
+    */
+    addItem:function(item){
+        switch(item.iType){
+            case dojo.global.WEAPON:
+                this.weapon = item;
+                break;
+		    case dojo.global.ARMOR:
+                this.armor = item;
+                break;
+            case dojo.global.POTION:
+                this.potions.push(item);
+                break;
+            case dojo.global.GOLD:
+                this.gold+=item.iValue;
+                break;
+            case dojo.global.SPECIAL:
+                this.specialItems.push(item);
+                break;
+        }
+    },
 });
