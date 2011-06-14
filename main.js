@@ -119,7 +119,6 @@ dojo.declare('main', null, {
         var dataDef = dojo.xhrGet(mapRequest);
         dataDef.addCallback(dojo.hitch(this, function(data) { 
             this.map = new widgets.map({mapData: data}, null); 
-            this.setState(this.sMove);
             this.player.equipWeakItems(this.map);
             this._audio.say({text: "You are now entering the " + this.map.Name})
                 .anyAfter(dojo.hitch(this,function(){
@@ -183,10 +182,10 @@ dojo.declare('main', null, {
 	    this.noitems = "g_noitems";			
 	    this.nomore = "g_nomore";			
 	    this.found = "g_found";				
-	    this.replace = "g_replace";			
+	    this.replace = "g_replace";	
+        this.equip = "equip";		
         //had to change to With vs with	    
-        this.With = "g_with";				
-	    this.equipped = "g_equipped";		
+        this.With = "g_with";	
 	    // Battle										
 	    this.fightsong = "fight";			
 	    this.encounter = "encountered";		
@@ -265,75 +264,41 @@ dojo.declare('main', null, {
                     case this.sOff:
                         break;
                     case this.sMove:
-                        this.setState(this.sOff);
-                        var result = true;
-                        var junk = true;
+                        var result;
                         switch(evt.keyCode){
                             case dojo.keys.DOWN_ARROW:
-                                junk = false;
+                                this.setState(this.sOff);
                                 evt.preventDefault();
                                 result = this.map.move(this.map.SOUTH);
+                                this.moveResult(result);
                                 break;
                             case dojo.keys.LEFT_ARROW:
-                                junk = false;
+                                this.setState(this.sOff);
                                 evt.preventDefault();
                                 result = this.map.move(this.map.WEST);
+                                this.moveResult(result);
                                 break;
                             case dojo.keys.RIGHT_ARROW:
-                                junk = false;
+                                this.setState(this.sOff);
                                 evt.preventDefault();
                                 result = this.map.move(this.map.EAST);
+                                this.moveResult(result);
                                 break;
                             case dojo.keys.UP_ARROW:
-                                junk = false;
+                                this.setState(this.sOff);
                                 evt.preventDefault();
                                 result = this.map.move(this.map.NORTH);
+                                this.moveResult(result);
                                 break;
                             case dojo.keys.SPACE:
-                                junk = false;
+                                this.setState(this.sOff);
                                 this.fadeChannel('background');
                                 var d = this.player.readStats();
-                                d.then(dojo.hitch(this, function(){                                
+                                d.then(dojo.hitch(this, function(){  
+                                    this.setState(this.sListen);                              
                                     this._audio.play({url: "sounds/general/"+ this.theme, channel: 'background'});
                                 }));
                                 break;                                
-                        }
-                        if(!result){
-                            this._audio.stop({channel: "main"});
-                            this._audio.play({url: "sounds/noMove", channel : "main"})
-                                .anyAfter(dojo.hitch(this,function(){
-                                    this.setState(this.sMove);            
-                                }));
-                        }
-                        else if (!junk){
-                            this.map.visitCurrentNode();
-                            this.enemy = this.map.getNPC(dojo.global.ENEMY);
-                            if(this.enemy != null)
-                            {
-                                var def = this.map.fade();
-                                def.then(dojo.hitch(this, function(){
-                                    this._audio.play({url: "sounds/general/"+ this.fightsong, channel: 'background'});
-                                    this._audio.setProperty({name : 'volume', value: 0.75, channel : 'background', immediate : true});
-                                    this._audio.say({text: "You have encountered a " + this.enemy.Name + "."});
-
-                                    //read stats
-                                    this._audio.say({text: "Its strength is " + this.enemy.Strength + "."});
-                                    this._audio.say({text: "Its defense is " + this.enemy.Defense + "."});
-                                    this._audio.say({text: "It has " + this.enemy.HP + " hit points."});
-        
-                                    //option to run
-                                    this._audio.say({text: "Do you want to try to run away?"})
-                                        .anyAfter(dojo.hitch(this, function(){
-                                            this.setState(this.sRun);
-                                        }));
-                                }));
-                            }
-                            else{
-                                this.setState(this.sMove);
-                            }
-                        }
-                        if(junk){
-                            this.setState(this.sMove);
                         }
                         break;
                     case this.sMenu:
@@ -357,7 +322,7 @@ dojo.declare('main', null, {
                                     this._audio.play({url: 'sounds/general/' + this.story, channel: 'main'})
                                         .anyAfter(dojo.hitch(this, function(){
                                         //state is changed again in load map to move
-                                        this._loadMap(this.mapList[this._mapIndex]);                                        
+                                        this._loadMap(this.mapList[this._mapIndex]);                            
                                     }));
                                 }));
                                 break;
@@ -457,12 +422,15 @@ dojo.declare('main', null, {
                         // 'f' to stop sounds on main
                         case 70:
                             this._audio.stop({channel: 'main'});
+                            this.setState(this.sOff);
                             break;
                         }
                         break;
                     case this.sAddItem:
                         switch(evt.keyCode){
                             case 89: //Y
+                                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
+                                this._audio.say({text: this.tempItem.Name + " equipped.", channel: 'main'});
                                 this.player.addItem(this.tempItem);
                                 this.tempItem = null;
                                 this.offerItems();                                
@@ -602,6 +570,7 @@ dojo.declare('main', null, {
         Sets this.state and also publishes to change on screen directions
     */
     setState:function(state){
+        //console.log(arguments.callee.caller.toString());
         this.state = state;
         dojo.publish("stateStatus", [state]);
     },
@@ -614,7 +583,7 @@ dojo.declare('main', null, {
 	    // Game may be over if "crown" found
 	    var gameEnd = false;
 	    // Go through item list
-        dojo.some(this.enemy.Items, dojo.hitch(this,function(item){
+        dojo.some(this.enemy.Items, dojo.hitch(this,function(item, indx){
             if(item.iName == "crown"){
                 gameEnd = true;
                 return false; //break out of loop
@@ -631,13 +600,31 @@ dojo.declare('main', null, {
                     }
                     break;
                 case dojo.global.POTION:
-                    
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
+                    this._audio.say({text: "You found some " + this.item.iName, channel: 'main'})
+                        .anyAfter(dojo.hitch(this,function(){
+                            if(indx == (this.enemy.Items.length - 1)){
+                                this.offerItems();
+                            }
+                        }));
                     break;
                 case dojo.global.GOLD:
-                                        
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
+                    this._audio.say({text: "You found " + this.item.iValue + " gold pieces!" , channel: 'main'})
+                        .anyAfter(dojo.hitch(this,function(){
+                            if(indx == (this.enemy.Items.length - 1)){
+                                this.offerItems();
+                            }
+                        }));                                        
                     break;
                 case dojo.global.SPECIAL:
-                    
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
+                    this._audio.say({text: "You found " + this.item.iName, channel: 'main'})
+                        .anyAfter(dojo.hitch(this,function(){
+                            if(indx == (this.enemy.Items.length - 1)){
+                                this.offerItems();
+                            }
+                        }));
                     break;
             }
         }));
@@ -664,6 +651,52 @@ dojo.declare('main', null, {
                     this.tempItem = this.potentialItems.splice(0,1);
                     this.setState(this.sAddItem);
                 }));
+        }
+        else{
+            this.setState(this.sMove);
+        }
+    },
+    /*
+        Decides what to do given a success value of whether the player was allowed to move
+    */
+    moveResult: function(result){
+        if(result){
+            this.exploreNode();
+        }
+        else{
+            this._audio.stop({channel: "main"});
+            this._audio.play({url: "sounds/noMove", channel : "main"})
+            .anyAfter(dojo.hitch(this,function(){
+                this.setState(this.sMove);            
+            }));
+        }
+    },
+
+    /*
+        Sequence following a successful move
+    */
+    exploreNode: function(){
+        this.map.visitCurrentNode();
+        this.enemy = this.map.getNPC(dojo.global.ENEMY);
+        if(this.enemy != null)
+        {
+            var def = this.map.fade();
+            def.then(dojo.hitch(this, function(){
+                this._audio.play({url: "sounds/general/"+ this.fightsong, channel: 'background'});
+                this._audio.setProperty({name : 'volume', value: 0.75, channel : 'background', immediate : true});
+                this._audio.say({text: "You have encountered a " + this.enemy.Name + "."});
+
+                //read stats
+                this._audio.say({text: "Its strength is " + this.enemy.Strength + "."});
+                this._audio.say({text: "Its defense is " + this.enemy.Defense + "."});
+                this._audio.say({text: "It has " + this.enemy.HP + " hit points."});
+
+                //option to run
+                this._audio.say({text: "Do you want to try to run away?"})
+                    .anyAfter(dojo.hitch(this, function(){
+                        this.setState(this.sRun);
+                    }));
+            }));
         }
         else{
             this.setState(this.sMove);

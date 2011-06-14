@@ -116,10 +116,8 @@ dojo.declare('widgets.map', [dijit._Widget], {
                 this._audio.stop({channel: 'map'});
                 this._audio.setProperty({name: 'loop', channel: 'map', value: true});
                 var sound = this.mapData.sounds[this.oneOf(cNode.Sounds)];
-                this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'})
-                    .anyAfter(dojo.hitch(this,function(){
-                        deferred.callback();
-                    })); 
+                this._audio.play({url: "sounds/" + this.mapData.Name +".sounds/" + sound, channel: 'map'});
+                deferred.callback();
             }
         }
         return deferred;
@@ -221,7 +219,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
                         else{
                             items.push(this.items[itemShell.cItem]);
                         }
-                    }
+                    }));
     
                     var runPerc = this.NPCs[NPCshell.nNPC].cRunPerc;
                     var nameSound = this.NPCs[NPCshell.nNPC].cNameSound;
@@ -255,5 +253,5 @@ dojo.declare('widgets.map', [dijit._Widget], {
         //remove enemy
         this.nodes[this.currentNodeIndex].NPC.splice(this.currentNPCIndex,1);
         this.currentNPCIndex = -1;
-    },
+    }
 });
