@@ -7,15 +7,6 @@
 *
 ***************************************************************************/
 
-/*  @TODO: AFTER ACCEPTING items cannot procede because each call to 
-    offerItems give a new defferred object, therein last call to deferred.callback
-    will do nothing for the initial instantiation
-*/
-
-/*
-    Enemy was not successfully removed once and items not showing up
-*/
-
 dojo.provide('main');
 dojo.require('dojo.parser');
 dojo.require('dojo.hash');
@@ -49,14 +40,17 @@ dojo.declare('main', null, {
         this.enemy = null;
         this.keyDelay = 0;
         this.directions = dojo.byId("directions");
+
+        this._readingInstructions = false;
         
         //messages to display with corresponding state
         var stateHandle = dojo.subscribe("stateStatus", dojo.hitch(this, function(message){
             switch (message){
             case this.sOff:
+                this.directions.innerHTML = "";
                 break;
             case this.sMenu:
-                this.directions.innerHTML = "1: New Game <br> 2: Resume Saved Game  <br> 3: Directions For Playing";
+                this.directions.innerHTML = "1: New Game <br> 2: Resume Saved Game  <br> 3: Instructions For Playing";
                 break;
             case this.sMove:
                 this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West ";
@@ -303,6 +297,7 @@ dojo.declare('main', null, {
                             case dojo.keys.SPACE:
                                 this.setState(this.sOff);
                                 this.fadeChannel('background');
+                                this._audio.stop({channel:'main'});
                                 var d = this.player.readStats();
                                 d.then(dojo.hitch(this, function(){  
                                     this.setState(this.sMove);                              
@@ -317,6 +312,7 @@ dojo.declare('main', null, {
                             case dojo.keys.NUMPAD_3:
                             case 51:
                                 this.setState(this.sOff);
+                                this.fadeChannel('main');
                                 this.readMenu();
                                 break;
                             // 1 to start new game
@@ -408,6 +404,7 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case 89: //Y
                                 this.setState(this.sOff);
+                                this._audio.stop({channel: "main"});
                                 var randZeroTo99=Math.floor(Math.random()*100);
                                 if(randZeroTo99 > this.enemy.RunPerc){ //fail
                                     this._audio.say({text: "Your attempt to run away has failed. You must now fight the " + this.enemy.Name})
@@ -431,6 +428,7 @@ dojo.declare('main', null, {
                             break;
                             case 78: //N
                                 this.setState(this.sOff);
+                                this._audio.stop({channel: "main"});
                                 //enemy should also attack
                                 this._audio.say({text: "You have chosen to stand your ground."})
                                     .anyAfter(dojo.hitch(this, function(){
@@ -448,6 +446,11 @@ dojo.declare('main', null, {
                         case 70:
                             this._audio.stop({channel: 'main'});
                             this.setState(this.sOff);
+                            if(this._readingInstructions){
+                                this._readingInstructions = false;
+                                this._audio.play({url: "sounds/general/"+ this.theme, channel:'main'});
+                                this.setState(this.sMenu);
+                            }
                             break;
                         }
                         break;
@@ -487,13 +490,21 @@ dojo.declare('main', null, {
         Read the original menu instructions
     */
     readMenu: function(){
+        this._readingInstructions = true;
         var def = this.fadeChannel('background');
         def.then(dojo.hitch(this, function(){
             this.setState(this.sListen);
             this._audio.play({url: "sounds/general/"+ this.dirSpac, channel:'main'});
-            dojo.forEach([this.dirChar, this.dirItem, this.dirLoca, this.dirEnem,   this.dirSave, this.dirQuit, this.instruct, this.menu], dojo.hitch(this, function(sound){
+            dojo.forEach([this.dirChar, this.dirItem, this.dirLoca, this.dirEnem,   this.dirSave, this.dirQuit, this.instruct], dojo.hitch(this, function(sound){
                 this._audio.play({url: "sounds/general/" + sound, channel:'main'}); 
             }));
+            this._audio.play({url: "sounds/general/"+ this.menu, channel:'main'})
+                .anyAfter(dojo.hitch(this,function(){
+                    //start background when done
+                    this._readingInstructions = false;
+                    this._audio.play({url: "sounds/general/"+ this.theme, channel:'main'});
+                    this.setState(this.sMenu);
+                }));
         }));
     },
 
@@ -717,18 +728,18 @@ dojo.declare('main', null, {
             def.then(dojo.hitch(this, function(){
                 this._audio.play({url: "sounds/general/"+ this.fightsong, channel: 'background'});
                 this._audio.setProperty({name : 'volume', value: 0.75, channel : 'background', immediate : true});
-                this._audio.say({text: "You have encountered a " + this.enemy.Name + "."});
+                this._audio.say({text: "You have encountered a " + this.enemy.Name + ".", channel:'main'});
 
                 //read stats
-                this._audio.say({text: "Its strength is " + this.enemy.Strength + "."});
-                this._audio.say({text: "Its defense is " + this.enemy.Defense + "."});
-                this._audio.say({text: "It has " + this.enemy.HP + " hit points."});
+                this._audio.say({text: "Its strength is " + this.enemy.Strength + ".", channel:'main'});
+                this._audio.say({text: "Its defense is " + this.enemy.Defense + ".", channel:'main'});
+                this._audio.say({text: "It has " + this.enemy.HP + " hit points.", channel:'main'});
 
                 //option to run
-                this._audio.say({text: "Do you want to try to run away?"})
-                    .anyAfter(dojo.hitch(this, function(){
-                        this.setState(this.sRun);
-                    }));
+                this._audio.say({text: "Do you want to try to run away?", channel:'main'});
+
+                //don't actually need to wait for all to be read, just make sure all have been queued up
+                this.setState(this.sRun);
             }));
         }
         else{
