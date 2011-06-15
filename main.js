@@ -12,6 +12,10 @@
     will do nothing for the initial instantiation
 */
 
+/*
+    Enemy was not successfully removed once and items not showing up
+*/
+
 dojo.provide('main');
 dojo.require('dojo.parser');
 dojo.require('dojo.hash');
@@ -301,7 +305,7 @@ dojo.declare('main', null, {
                                 var d = this.player.readStats();
                                 d.then(dojo.hitch(this, function(){  
                                     this.setState(this.sMove);                              
-                                    this._audio.play({url: "sounds/general/"+ this.theme, channel: 'background'});
+                                    //this._audio.play({url: "sounds/general/"+ this.theme, channel: 'background'});
                                 }));
                                 break;                                
                         }
@@ -342,7 +346,7 @@ dojo.declare('main', null, {
                                 def.then(dojo.hitch(this, function(result){
                                     if(result.vanquished){
                                         var def2 = this.lootEnemy();
-                                        def2.then(dojo.hitch(this,function(){
+                                        def2.then(dojo.hitch(this,function(){                                               
                                             this.map.defeatedEnemy();
                                             this.enemy = null;
                                             this.setState(this.sMove);
@@ -619,24 +623,28 @@ dojo.declare('main', null, {
                 case dojo.global.POTION:
                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
                     this._audio.say({text: "You found some " + item.iName, channel: 'main'});
-                    this.player.potions.push(item);
+                    this.player.addItem(item);
                     break;
                 case dojo.global.GOLD:
                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
                     this._audio.say({text: "You found " + item.iValue + " gold pieces!" , channel: 'main'});
-                    this.player.gold+=item.iValue;
+                    this.player.addItem(item);
                     break;
                 case dojo.global.SPECIAL:
                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
                     this._audio.say({text: "You found " + item.iName, channel: 'main'});
-                    this.player.specialItems.push(item);
+                    this.player.addItem(item);
                     break;
             }
             if(indx == (this.enemy.Items.length - 1)){
-                var def = this.offerItems();
-                def.then(dojo.hitch(this,function(){
-                    deferred.callback();
+                //setup for after offerItems() is done
+                var offer = dojo.subscribe("offeringItems", dojo.hitch(this, function(message){
+                    if (message == "done") {
+                        dojo.unsubscribe(offer);
+                        deferred.callback();
+                    }
                 }));
+                this.offerItems();
             }
         }));
         if(gameEnd){
@@ -647,14 +655,12 @@ dojo.declare('main', null, {
             this.map.visitCurrentNode();
         }
         return deferred;
-
     },
 
     /*
         Give player option of swapping items, one at a time
     */
     offerItems: function(){
-        var deferred = new dojo.Deferred();
         if(this.potentialItems.length > 0 ){
             this.setState(this.sOff);
             var playerItem;
@@ -673,9 +679,8 @@ dojo.declare('main', null, {
                 }));
         }
         else{
-            deferred.callback();
+            dojo.publish("offeringItems", ["done"]);
         }
-        return deferred;
     },
     /*
         Decides what to do given a success value of whether the player was allowed to move
