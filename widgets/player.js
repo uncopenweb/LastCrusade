@@ -33,7 +33,6 @@ dojo.declare('widgets.player', [dijit._Widget], {
     },
 
     readStats: function(){
-        var def = new dojo.Deferred();
         if(this.ready)
         {
             this._audio.say({text: 'You currently have strength of ' + this.strength});
@@ -41,23 +40,23 @@ dojo.declare('widgets.player', [dijit._Widget], {
             this._audio.say({text: 'You currently have ' + this.hp + ' hit points.'});
             this._audio.say({text: 'You currently have ' + this.gold + ' gold.'});
             if(this.potions.length > 0){
-
+                dojo.forEach(this.potions, dojo.hitch(this,function(potion){
+                    this._audio.say({text: 'You have a ' + potion.iName});
+                }));
             }
             else{
                 this._audio.say({text: 'You currently have no potions.'});
             }     
             if(this.specialItems.length > 0){
-
+                dojo.forEach(this.specialItems, dojo.hitch(this,function(item){
+                    this._audio.say({text: 'You have a ' + item.iName});
+                }));
             }
             else{
-                this._audio.say({text: 'You currently have no specialItems.'})
-                    .anyAfter(dojo.hitch(this, function(){
-                        def.callback();
-                    }));
+                this._audio.say({text: 'You currently have no specialItems.'});
             }               
 
         }
-        return def;
     },
 
     /*

@@ -6,6 +6,7 @@
 * http://www.cs.unc.edu/Research/assist/et/projects/RPG/TheLastCrusade.htm
 *
 ***************************************************************************/
+/*  @TODO: Add in too soon click for space bar?*/
 
 dojo.provide('main');
 dojo.require('dojo.parser');
@@ -53,7 +54,7 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "1: New Game <br> 2: Resume Saved Game  <br> 3: Instructions For Playing";
                 break;
             case this.sMove:
-                this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West ";
+                this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West <br> S: Search Location for Items";
                 break;
             case this.sFight:
                 this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P:  <br> Q:  ";
@@ -272,38 +273,62 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.DOWN_ARROW:
                                 this.setState(this.sOff);
+                                this.player.stopAudio();
                                 evt.preventDefault();
                                 result = this.map.move(this.map.SOUTH);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
+                                this.player.stopAudio();
                                 evt.preventDefault();
                                 result = this.map.move(this.map.WEST);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.RIGHT_ARROW:
                                 this.setState(this.sOff);
+                                this.player.stopAudio();
                                 evt.preventDefault();
                                 result = this.map.move(this.map.EAST);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.UP_ARROW:
                                 this.setState(this.sOff);
+                                this.player.stopAudio();
                                 evt.preventDefault();
                                 result = this.map.move(this.map.NORTH);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.SPACE:
+
+                                //should we add in a too soon click for this??
                                 this.setState(this.sOff);
+                                this.player.stopAudio();
                                 this.fadeChannel('background');
                                 this._audio.stop({channel:'main'});
-                                var d = this.player.readStats();
-                                d.then(dojo.hitch(this, function(){  
-                                    this.setState(this.sMove);                              
-                                    //this._audio.play({url: "sounds/general/"+ this.theme, channel: 'background'});
+                                this.player.readStats();
+                                //don't need to wait through all of stats
+                                this.setState(this.sMove);                              
+                                break;    
+                            case 83: //search for items
+                                this.setState(this.sOff);
+                                this.player.stopAudio();
+                                this._audio.stop({channel:'main'});
+                                var def = this.examineItems(this.map.nodes[this.map.currentNodeIndex].Items);
+                                def.then(dojo.hitch(this,function(result){
+                                    if(result.found){
+                                        //empty item array
+                                        this.map.nodes[this.map.currentNodeIndex].Items = new Array();
+
+                                        this.setState(this.sMove);               
+                                    }
+                                    else{
+                                        this._audio.say({text:"You did not find any items."});
+                                        this.setState(this.sMove);        
+                                    }
                                 }));
-                                break;                                
+
+                                break;                   
                         }
                         break;
                     case this.sMenu:
@@ -344,7 +369,7 @@ dojo.declare('main', null, {
                                 def.then(dojo.hitch(this, function(result){
                                     if(result.vanquished){
                                         console.log("Killed, attempting to loot.");
-                                        var def2 = this.lootEnemy();
+                                        var def2 = this.examineItems(this.enemy.Items);
                                         def2.then(dojo.hitch(this,function(){
                                             console.log("Finished loot");                                              
                                             this.map.defeatedEnemy();
@@ -612,16 +637,16 @@ dojo.declare('main', null, {
     },
 
     /*
-        Find any items that are better than current from enemy, then ask player whether to take
+        Find any items that are better than current from ItemArray, then ask player whether to take
     */
-    lootEnemy: function(){
+    examineItems: function(ItemArray){
         var deferred = new dojo.Deferred();
         this.setState(this.sOff);
 	    // Game may be over if "crown" found
 	    var gameEnd = false;
 	    // Go through item list
         var atLeastOne = false;
-        dojo.some(this.enemy.Items, dojo.hitch(this,function(item, indx){
+        dojo.some(ItemArray, dojo.hitch(this,function(item, indx){
             atLeastOne = true;
             if(item.iName == "crown"){
                 gameEnd = true;
@@ -654,12 +679,12 @@ dojo.declare('main', null, {
                     this.player.addItem(item);
                     break;
             }
-            if(indx == (this.enemy.Items.length - 1)){
+            if(indx == (ItemArray.length - 1)){
                 //setup for after offerItems() is done
                 var offer = dojo.subscribe("offeringItems", dojo.hitch(this, function(message){
                     if (message == "done") {
                         dojo.unsubscribe(offer);
-                        deferred.callback();
+                        deferred.callback({found:true});
                     }
                 }));
                 this.offerItems();
@@ -669,7 +694,7 @@ dojo.declare('main', null, {
             console.log("AAAAAAAAAAAAHHH game end sequence missing");
         }
         if(!atLeastOne){
-            deferred.callback();
+            deferred.callback({found:false});
         }
         return deferred;
     },
@@ -721,7 +746,6 @@ dojo.declare('main', null, {
     exploreNode: function(){
         this.map.visitCurrentNode();
         this.enemy = this.map.getNPC(dojo.global.ENEMY);
-        console.log(this.enemy);
         if(this.enemy != null)
         {
             var def = this.map.fade();

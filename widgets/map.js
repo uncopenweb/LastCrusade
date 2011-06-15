@@ -37,7 +37,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.finish = this.mapData.End;
         this.Name = this.mapData.Name;
         this.inherited(arguments);
-        this.setUpNPCs();
+        this.setUpNodes();
     },
 
     /*
@@ -191,10 +191,26 @@ dojo.declare('widgets.map', [dijit._Widget], {
         Each NPC has min and max params for health, strength, etc. Need to fixed values.
         Also, for each node, and NPC has a percentage change that it will be at that given
         node, so go ahead and determine that now
+
+        Likewise determine the items for each node
     */
-    setUpNPCs: function(){
+    setUpNodes: function(){
         dojo.forEach(this.nodes, dojo.hitch(this, function(node){
             var toPop = [];
+
+            //setup node items
+            var nItems = new Array();                    
+            dojo.forEach(node.Items, dojo.hitch(this, function(itemShell){
+                var nItemRandZeroTo99=Math.floor(Math.random()*100);
+                if(nItemRandZeroTo99 > itemShell.nPercent){ //not there
+                    //notta
+                }
+                else{
+                    nItems.push(dojo.clone(this.items[itemShell.nItem]));
+                }
+            }));
+            node.Items = dojo.clone(nItems);      
+
             dojo.forEach(node.NPC, dojo.hitch(this, function(NPCshell, index){
                 var randZeroTo99=Math.floor(Math.random()*100);
                 if(randZeroTo99 > NPCshell.nPercent){ //not there
