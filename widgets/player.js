@@ -106,30 +106,22 @@ dojo.declare('widgets.player', [dijit._Widget], {
                     })); 
             }    
             else if(temp == 1){
-                this._audio.say({text: "You have lost " + temp + " hit point. You now have " + this.hp + " hit points."})
-                    .anyAfter(dojo.hitch(this,function(){
-                        deferred.callback({alive: true});
-                    })); 
+                this._audio.say({text: "You have lost " + temp + " hit point. You now have " + this.hp + " hit points."});
+                deferred.callback({alive: true});
             }            
             else{
-                this._audio.say({text: "You have lost " + temp + " hit points. You now have " + this.hp + " hit points."})
-                    .anyAfter(dojo.hitch(this,function(){
-                        deferred.callback({alive: true});
-                    })); 
+                this._audio.say({text: "You have lost " + temp + " hit points. You now have " + this.hp + " hit points."});
+                deferred.callback({alive: true}); 
             }
         }
         else{
             if(change == 1){
-                this._audio.say({text: "You have gained " + change + " hit point. You now have " + this.hp + " hit points."})
-                    .anyAfter(dojo.hitch(this,function(){
-                        deferred.callback({alive: true});
-                    })); 
+                this._audio.say({text: "You have gained " + change + " hit point. You now have " + this.hp + " hit points."});
+                deferred.callback({alive: true});
             }
             else{
-                this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."})
-                    .anyAfter(dojo.hitch(this,function(){
-                        deferred.callback({alive: true});
-                    })); 
+                this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."});
+                deferred.callback({alive: true});
             }
         }
         return deferred;
@@ -142,9 +134,11 @@ dojo.declare('widgets.player', [dijit._Widget], {
         switch(item.iType){
             case dojo.global.WEAPON:
                 this.weapon = item;
+                this.strength = this.weapon.iValue;
                 break;
 		    case dojo.global.ARMOR:
                 this.armor = item;
+                this.defense = this.armor.iValue;
                 break;
             case dojo.global.POTION:
                 this.potions.push(item);
@@ -156,5 +150,9 @@ dojo.declare('widgets.player', [dijit._Widget], {
                 this.specialItems.push(item);
                 break;
         }
+    },
+
+    stopAudio: function(){
+        this._audio.stop();
     },
 });

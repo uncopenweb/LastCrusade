@@ -267,7 +267,8 @@ dojo.declare('main', null, {
     */
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
-            console.log(this.state);
+            console.log("Game state: " , this.state);
+            console.log("enemy: ", this.enemy);
             this._keyHasGoneUp = false;             
                 switch(this.state){  
                     case this.sOff:
@@ -341,12 +342,15 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case 65: // A attack
                                 this.setState(this.sOff);
+                                this.player.stopAudio();
                                 //player attack
                                 var def = this.playerAttack();
                                 def.then(dojo.hitch(this, function(result){
                                     if(result.vanquished){
+                                        console.log("Killed, attempting to loot.");
                                         var def2 = this.lootEnemy();
-                                        def2.then(dojo.hitch(this,function(){                                               
+                                        def2.then(dojo.hitch(this,function(){
+                                            console.log("Finished loot");                                              
                                             this.map.defeatedEnemy();
                                             this.enemy = null;
                                             this.setState(this.sMove);
@@ -354,6 +358,7 @@ dojo.declare('main', null, {
                                         }));
                                     }
                                     else{
+                                        console.log("Still alive.");
                                         var def = this.enemyAttack();
                                         def.then(dojo.hitch(this,function(){
                                             this.setState(this.sFight);
@@ -363,6 +368,7 @@ dojo.declare('main', null, {
                                 break;
                             case 82: //R run away
                                 this.setState(this.sOff);
+                                this.player.stopAudio();
                                 var randZeroTo99=Math.floor(Math.random()*100);
                                 if(randZeroTo99 > this.enemy.RunPerc){ //fail
                                     this._audio.say({text: "Your attempt to run away has failed. You must continue to fight the " + this.enemy.Name})
@@ -413,8 +419,10 @@ dojo.declare('main', null, {
                                         }));
                                 }
                                 else{//success
-                                    this._audio.say({text: "You have avoided the " + this.enemy.Name + " and returned to your previous location."});
                                     this.fadeChannel("background");
+                                    this._audio.say({text: "You have avoided the " + this.enemy.Name + " and returned to your previous location."});
+
+                                    this.enemy = null;
                                     var def = this.map.returnPrevious();
                                     def.then(dojo.hitch(this,function(){
                                         this.setState(this.sMove);
@@ -587,7 +595,7 @@ dojo.declare('main', null, {
         Sets this.state and also publishes to change on screen directions
     */
     setState:function(state){
-        //console.log(arguments.callee.caller.toString());
+        //console.log(arguments.callee.caller.toString(), "With state: " + this.state);
         this.state = state;
         dojo.publish("stateStatus", [state]);
     },
@@ -601,7 +609,6 @@ dojo.declare('main', null, {
 	    // Game may be over if "crown" found
 	    var gameEnd = false;
 	    // Go through item list
-        console.log(this.enemy.Items);
         var atLeastOne = false;
         dojo.some(this.enemy.Items, dojo.hitch(this,function(item, indx){
             atLeastOne = true;
@@ -651,8 +658,7 @@ dojo.declare('main', null, {
             console.log("AAAAAAAAAAAAHHH game end sequence missing");
         }
         if(!atLeastOne){
-            this.setState(this.sMove);
-            this.map.visitCurrentNode();
+            deferred.callback();
         }
         return deferred;
     },
@@ -704,6 +710,7 @@ dojo.declare('main', null, {
     exploreNode: function(){
         this.map.visitCurrentNode();
         this.enemy = this.map.getNPC(dojo.global.ENEMY);
+        console.log(this.enemy);
         if(this.enemy != null)
         {
             var def = this.map.fade();

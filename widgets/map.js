@@ -28,7 +28,6 @@ dojo.declare('widgets.map', [dijit._Widget], {
     },
     
     postCreate: function() {
-        console.log(this.mapData);
         this.lastNodeIndex = 0;
         this.currentNodeIndex = this.mapData.Start;
         this.NPCs = this.mapData.NPCs;
@@ -217,7 +216,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
                             //notta
                         }
                         else{
-                            items.push(this.items[itemShell.cItem]);
+                            items.push(dojo.clone(this.items[itemShell.cItem]));
                         }
                     }));
     
@@ -251,8 +250,9 @@ dojo.declare('widgets.map', [dijit._Widget], {
 
     defeatedEnemy: function(){
         //remove enemy
-        console.log(this.nodes[this.currentNodeIndex].NPC);
+        //console.log("Current NPC index: ", this.currentNPCIndex);
         this.nodes[this.currentNodeIndex].NPC.splice(this.currentNPCIndex,1);
+        //console.log(this.nodes[this.currentNodeIndex].NPC);
         this.currentNPCIndex = -1;
     }
 });
