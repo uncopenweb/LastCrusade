@@ -95,6 +95,9 @@ dojo.declare('widgets.player', [dijit._Widget], {
     */
     updateHP: function(change){
         this.hp+=change;
+        if(this.hp > this.maxHP){
+            this.hp = this.maxHp;
+        }
         var deferred = new dojo.Deferred();
         if(change < 0){ //lost health
             var temp = - change;
@@ -116,11 +119,55 @@ dojo.declare('widgets.player', [dijit._Widget], {
         else{
             if(change == 1){
                 this._audio.say({text: "You have gained " + change + " hit point. You now have " + this.hp + " hit points."});
-                deferred.callback({alive: true});
             }
             else{
                 this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."});
-                deferred.callback({alive: true});
+            }
+            deferred.callback({alive: true});
+        }
+        return deferred;
+    },
+
+    /*
+        updates hp in respone to integer change, wait to call deferred until after reading done
+    */
+    updateHPplusWait: function(change){
+        this.hp+=change;
+        if(this.hp > this.maxHP){
+            this.hp = this.maxHp;
+        }
+        var deferred = new dojo.Deferred();
+        if(change < 0){ //lost health
+            var temp = - change;
+            if(this.hp <= 0){
+                this._audio.say({text: "The enemy was too much for you to handle. You have been slain."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: false});
+                    })); 
+            }    
+            else if(temp == 1){
+                this._audio.say({text: "You have lost " + temp + " hit point. You now have " + this.hp + " hit points."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: true});
+                    }));
+            }            
+            else{
+                this._audio.say({text: "You have lost " + temp + " hit points. You now have " + this.hp + " hit points."})
+                    .anyAfter(dojo.hitch(this,function(){
+                        deferred.callback({alive: true});
+                    }));
+            }
+        }
+        else{
+            if(change == 1){
+                this._audio.say({text: "You have gained " + change + " hit point. You now have " + this.hp + " hit points."}).anyAfter(dojo.hitch(this,function(){
+                    deferred.callback({alive: true});
+                }));
+            }
+            else{
+                this._audio.say({text: "You have gained " + change + " hit points. You now have " + this.hp + " hit points."}).anyAfter(dojo.hitch(this,function(){
+                    deferred.callback({alive: true});
+                }));
             }
         }
         return deferred;

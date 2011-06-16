@@ -32,6 +32,8 @@ dojo.declare('main', null, {
         this.sRun = 4;
         this.sListen = 5;
         this.sAddItem = 6;
+        this.sPotionCycle = 7;
+        this.sPotionChoice = 8;
         this.state = this.sOff;
         this.potentialItems = new Array(); //items to ask player if he/she wants
         this.tempItem = null;
@@ -43,6 +45,7 @@ dojo.declare('main', null, {
         this.directions = dojo.byId("directions");
 
         this._readingInstructions = false;
+        this.potionIndex = 0;
         
         //messages to display with corresponding state
         var stateHandle = dojo.subscribe("stateStatus", dojo.hitch(this, function(message){
@@ -67,6 +70,13 @@ dojo.declare('main', null, {
                 break;
             case this.sAddItem:
                 this.directions.innerHTML = "Y: Yes, add item <br> N: No, discard item";
+                break;
+            case this.sPotionCycle:
+                this.directions.innerHTML = "Use the left and right arrow keys to cycle through the potions.";
+                break;
+            case this.sPotionChoice:
+                this.directions.innerHTML = "A: Accept, use potion <br> Left/Right Arrow: Choose Another";              
+                break;
             }
         })); 
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
@@ -319,7 +329,6 @@ dojo.declare('main', null, {
                                     if(result.found){
                                         //empty item array
                                         this.map.nodes[this.map.currentNodeIndex].Items = new Array();
-
                                         this.setState(this.sMove);               
                                     }
                                     else{
@@ -415,7 +424,16 @@ dojo.declare('main', null, {
                                 }                                
                                 break;
                             
-                            case 80: //P 
+                            case 80: //P: use potion if available
+                                this.setState(this.sOff);
+                                this.player.stopAudio();
+                                if(this.player.potions.length != 0){
+                                    this._audio.say({text:"Use the left and right arrow keys to cycle through the potions.", channel: "main"});
+                                    this.setState(this.sPotionCycle);   
+                                }
+                                else{
+                                    this._audio.say({text:"You do not have any potion.", channel: "main"});
+                                }
                                 break;
                             case 81: //Q
                                 break;
@@ -469,8 +487,8 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                         // 'f' to stop sounds on main
                         case 70:
-                            this._audio.stop({channel: 'main'});
                             this.setState(this.sOff);
+                            this._audio.stop({channel: 'main'});
                             if(this._readingInstructions){
                                 this._readingInstructions = false;
                                 this._audio.play({url: "sounds/general/"+ this.theme, channel:'main'});
@@ -482,20 +500,66 @@ dojo.declare('main', null, {
                     case this.sAddItem:
                         switch(evt.keyCode){
                             case 89: //Y
+                                this.setState(this.sOff);
                                 this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
                                 this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'main'});
                                 this.player.addItem(this.tempItem);
                                 this.tempItem = null;
-                                this.setState(this.sOff);
                                 this.offerItems();                                
                             break;
                             case 78: //N
-                                this.tempItem = null;
                                 this.setState(this.sOff);
+                                this.tempItem = null;
                                 this.offerItems();   
                             break;
                         }
                         break;
+                    case this.sPotionCycle:
+                        switch(evt.keyCode){
+                            case dojo.keys.LEFT_ARROW:
+                                this.setState(this.sOff);
+                                if(--this.potionIndex < 0){
+                                    this.potionIndex = (this.player.potions.length - 1);
+                                }
+                                break;
+                            case dojo.keys.RIGHT_ARROW:
+                                this.setState(this.sOff);
+                                if(++this.potionIndex >= this.player.potions.length){
+                                    this.potionIndex = 0;
+                                }
+                                break;
+                        }
+                        this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
+                        this.setState(this.sPotionChoice);
+                        break; 
+                    case this.sPotionChoice:
+//finnish cycle and pronouncing
+                        switch(evt.keyCode){
+                            case dojo.keys.LEFT_ARROW:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                if(--this.potionIndex < 0){
+                                    this.potionIndex = (this.player.potions.length - 1);
+                                }
+                                this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
+                                this.setState(this.sPotionChoice);
+                                break;
+                            case dojo.keys.RIGHT_ARROW:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                if(++this.potionIndex >= this.player.potions.length){
+                                    this.potionIndex = 0;
+                                }
+                                this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
+                                this.setState(this.sPotionChoice);
+                                break;
+                            case 65: //A
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this._usePotion();                           
+                            break;
+                        }
+                        break;  
                 }
         }        
         else {
@@ -511,6 +575,23 @@ dojo.declare('main', null, {
         }
     },
     
+    /*
+        Use the potion selected
+    */
+    _usePotion:function(){
+        var def = this.player.updateHPplusWait(this.player.potions[this.potionIndex].iValue);
+        //delete potion
+        this.player.potions.splice(this.potionIndex, 1); 
+        this.potionIndex = 0;
+        
+        def.then(dojo.hitch(this,function(){
+            var def2 = this.enemyAttack();
+            def2.then(dojo.hitch(this,function(){
+                this.setState(this.sFight);
+            })); 
+        }));
+    },
+
     /*
         Read the original menu instructions
     */
