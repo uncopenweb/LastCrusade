@@ -7,6 +7,8 @@
 *
 ***************************************************************************/
 /*  @TODO: Add in too soon click for space bar?*/
+/*  @TODO: Should be able to use potion when moving as well as when in fight*?
+/*  @TODO: Sell back items -> need for primary and secondary weapons??*/
 
 dojo.provide('main');
 dojo.require('dojo.parser');
@@ -34,18 +36,24 @@ dojo.declare('main', null, {
         this.sAddItem = 6;
         this.sPotionCycle = 7;
         this.sPotionChoice = 8;
+        this.sVendor = 9;
+        this.sVendorScroll = 10;
+        this.sBuy = 11;
         this.state = this.sOff;
         this.potentialItems = new Array(); //items to ask player if he/she wants
         this.tempItem = null;
 
+        this.skipVendors = false;
         this._mapIndex = 0;
         this.map = null;
         this.enemy = null;
+        this.vendor = null;
         this.keyDelay = 0;
         this.directions = dojo.byId("directions");
 
         this._readingInstructions = false;
         this.potionIndex = 0;
+        this.itemIndex = 0;
         
         //messages to display with corresponding state
         var stateHandle = dojo.subscribe("stateStatus", dojo.hitch(this, function(message){
@@ -76,6 +84,15 @@ dojo.declare('main', null, {
                 break;
             case this.sPotionChoice:
                 this.directions.innerHTML = "A: Accept, use potion <br> Left/Right Arrow: Choose Another";              
+                break;
+            case this.sVendor:
+                this.directions.innerHTML = "Y: Yes check out inventory <br> N: No, I don't want to buy anything";
+                break;
+            case this.sVendorScroll:
+                this.directions.innerHTML = "B: Buy item <br> Left/Right Arrow: Choose Another <br> Escape: Return to game";              
+                break;   
+            case this.sBuy:
+                this.directions.innerHTML = "Y: Yes, buy item <br> N: No, continue looking";         
                 break;
             }
         })); 
@@ -136,8 +153,8 @@ dojo.declare('main', null, {
             this.player.equipWeakItems(this.map);
             this._audio.say({text: "You are now entering the " + this.map.Name})
                 .anyAfter(dojo.hitch(this,function(){
-                     this.setState(this.sMove);
-                     this.map.visitCurrentNode();
+                    this.setState(this.sMove);
+                    this.exploreNode();
                 }));   
         }));
     },
@@ -381,7 +398,7 @@ dojo.declare('main', null, {
                                         var def2 = this.examineItems(this.enemy.Items);
                                         def2.then(dojo.hitch(this,function(){
                                             console.log("Finished loot");                                              
-                                            this.map.defeatedEnemy();
+                                            this.map.removeNPC();
                                             this.enemy = null;
                                             this.setState(this.sMove);
                                             this.map.visitCurrentNode();
@@ -518,12 +535,14 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
                                 if(--this.potionIndex < 0){
                                     this.potionIndex = (this.player.potions.length - 1);
                                 }
                                 break;
                             case dojo.keys.RIGHT_ARROW:
                                 this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
                                 if(++this.potionIndex >= this.player.potions.length){
                                     this.potionIndex = 0;
                                 }
@@ -533,7 +552,6 @@ dojo.declare('main', null, {
                         this.setState(this.sPotionChoice);
                         break; 
                     case this.sPotionChoice:
-//finnish cycle and pronouncing
                         switch(evt.keyCode){
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
@@ -559,7 +577,103 @@ dojo.declare('main', null, {
                                 this._usePotion();                           
                             break;
                         }
-                        break;  
+                        break; 
+                    case this.sVendor:
+                        switch(evt.keyCode){
+                            case 89: //Y
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
+                                this._audio.say({text: "Use the arrow keys to cycle through the options and press bee to select a purchase. Press escape to return to the game.", channel:'main'});
+                                this.setState(this.sVendorScroll);
+                            break;
+                            case 78: //N
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                this.skipVendors = true;
+                                this.vendor = null;
+                                this.exploreNode();
+                            break;
+                        }
+                        break; 
+                    case this.sVendorScroll:
+                        switch(evt.keyCode){
+                            case dojo.keys.LEFT_ARROW:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                if(--this.itemIndex < 0){
+                                    this.itemIndex = (this.vendor.Items.length - 1);
+                                }
+                                this._audio.say({text: this.vendor.Items[this.itemIndex].iName + "price " + this.vendor.Items[this.itemIndex].iValue + " gold.", channel: "main"});
+                                this.setState(this.sVendorScroll);
+                                break;
+                            case dojo.keys.RIGHT_ARROW:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                if(++this.itemIndex >= this.vendor.Items.length){
+                                    this.itemIndex = 0;
+                                }
+                                this._audio.say({text: this.vendor.Items[this.itemIndex].iName + "price " + this.vendor.Items[this.itemIndex].iValue + " gold.", channel: "main"});
+                                this.setState(this.sVendorScroll);
+                                break;
+                            case 66: //B
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this._buyItem();                           
+                                break;
+                            case dojo.keys.ESCAPE:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                this.skipVendors = true;
+                                this.vendor = null;
+                                this.exploreNode();
+                                break;
+                        }
+                    break;
+                    case this.sBuy:
+                        switch(evt.keyCode){
+                            case 89: //Y
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                if(this.player.gold < this.vendor.Items[this.itemIndex].iValue){
+                                    this._audio.say({text:"You cannot afford this item.", channel:'main'});
+                                    this.setState(this.sVendorScroll);
+                                }
+                                else{
+                                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
+                                    this.player.addItem(this.vendor.Items[this.itemIndex]);
+                                    //take away gold
+                                    this.player.gold-= this.vendor.Items[this.itemIndex].iValue;
+                                    this.vendor.Items.splice(this.itemIndex, 1);
+                                    this.itemIndex = 0;
+                                    
+                                    if(this.vendor.Items.length == 0){
+                                        this._audio.say({text: "That was the last item in our inventory. Thank you for your business.", channel: 'main'});
+                                        //remove vendor
+                                        this.map.removeNPC();                                        
+                                        this.vendor = null;
+                                        this.exploreNode();
+                                    }
+                                    else{
+                                        this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
+                                        this._audio.say({text: "Use the arrow keys to cycle through the options and press bee to select a purchase. Press escape to return to the game.", channel:'main'});
+                                        this.setState(this.sVendorScroll);
+                                    }
+                                }
+                                
+                            break;
+                            case 78: //N
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
+                                this._audio.say({text: "Use the arrow keys to cycle through the options and press bee to select a purchase. Press escape to return to the game.", channel:'main'});
+                                this.setState(this.sVendorScroll);
+                            break;
+                        }
+                    break;
                 }
         }        
         else {
@@ -590,6 +704,27 @@ dojo.declare('main', null, {
                 this.setState(this.sFight);
             })); 
         }));
+    },
+
+    /*
+        Buy the selected item
+    */
+    _buyItem: function(){
+        switch(this.vendor.Items[this.itemIndex].iType){
+            case dojo.global.WEAPON:
+                this._audio.say({text: "Purchasing this item will replace your current weapon, " + this.player.weapon.iName + " level " + this.player.weapon.iValue, channel:'main'});
+                this._audio.say({text: "Are you sure you want to replace it with " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue, channel:'main'});
+                this.setState(this.sBuy);
+            break;
+            case dojo.global.ARMOR:
+                this._audio.say({text: "Purchasing this item will replace your current armor, " + this.player.armor.iName + " level " + this.player.armor.iValue, channel:'main'});
+                this._audio.say({text: "Are you sure you want to replace it with " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue, channel:'main'});
+                this.setState(this.sBuy);
+            break;
+            default:
+                this._audio.say({text: "Are you sure you want to purchase " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue , channel:'main'});
+                this.setState(this.sBuy);
+        }
     },
 
     /*
@@ -825,8 +960,11 @@ dojo.declare('main', null, {
         Sequence following a successful move
     */
     exploreNode: function(){
+        console.log(this.map.nodes[this.map.currentNodeIndex]);
         this.map.visitCurrentNode();
         this.enemy = this.map.getNPC(dojo.global.ENEMY);
+        this.vendor = this.map.getNPC(dojo.global.VENDOR);
+        console.log("vendor: ", this.vendor);
         if(this.enemy != null)
         {
             var def = this.map.fade();
@@ -847,9 +985,15 @@ dojo.declare('main', null, {
                 this.setState(this.sRun);
             }));
         }
+        else if ((this.vendor!=null) && !this.skipVendors){
+            this._audio.say({text: "Welcome to " + this.vendor.Name, channel: 'main'});
+            this._audio.say({text: "Would you like to purchase some items today?", channel:'main'});
+            this.setState(this.sVendor);
+        }								
         else{
             this.setState(this.sMove);
         }
+        this.skipVendors = false;
     },
 });
 

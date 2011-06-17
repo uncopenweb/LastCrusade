@@ -264,11 +264,8 @@ dojo.declare('widgets.map', [dijit._Widget], {
         }));
     },
 
-    defeatedEnemy: function(){
-        //remove enemy
-        //console.log("Current NPC index: ", this.currentNPCIndex);
+    removeNPC: function(){
         this.nodes[this.currentNodeIndex].NPC.splice(this.currentNPCIndex,1);
-        //console.log(this.nodes[this.currentNodeIndex].NPC);
         this.currentNPCIndex = -1;
     }
 });

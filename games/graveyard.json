@@ -478,6 +478,10 @@
             "NPC": [
                 {
                     "nPercent": 100, 
+                    "nNPC": 11
+                },
+                {
+                    "nPercent": 100, 
                     "nNPC": 8
                 }
             ], 
