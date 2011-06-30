@@ -61,6 +61,7 @@ dojo.declare('main', null, {
         this.offerSaying ="";
 
         this._readingInstructions = false;
+        this.duringMove = false;
         this.potionIndex = 0;
         this.itemIndex = 0;
         
@@ -74,7 +75,7 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "1: New Game <br> 2: Resume Saved Game  <br> 3: Instructions For Playing";
                 break;
             case this.sMove:
-                this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West <br> S: Search Location for Items <br> D: Query Directions";
+                this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West <br> S: Search Location for Items <br> D: Query Directions <br> P: Use Potion";
                 break;
             case this.sFight:
                 this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P: Use Potion <br> Q:  ";
@@ -405,6 +406,21 @@ dojo.declare('main', null, {
                                     this._audio.say({text:" passages are open.", channel: 'main'});
                                 }
                                 this.setState(this.sMove);                                
+                                break;
+                            case 80: //P: use potion if available
+                                    this.setState(this.sOff);
+                                    this.player.stopAudio();
+                                    if(this.player.potions.length != 0){
+                                        this._audio.say({text:"Use the left and right arrow keys to cycle through the potions.", channel: "main"});
+                                        this.duringMove = true;
+                                        this.setState(this.sPotionCycle);   
+                                    }
+                                    else{
+                                        this._audio.say({text:"You do not have any potion.", channel: "main"})
+                                        .anyAfter(dojo.hitch(this,function(){
+                                            this.setState(this.sMove);
+                                        }));
+                                    }
                                 break;
                         }
                         break;
@@ -790,10 +806,16 @@ dojo.declare('main', null, {
         this.potionIndex = 0;
         
         def.then(dojo.hitch(this,function(){
-            var def2 = this.enemyAttack();
-            def2.then(dojo.hitch(this,function(){
-                this.setState(this.sFight);
-            })); 
+            if(this.duringMove){
+                this.duringMove = false;
+                this.setState(this.sMove);
+            }
+            else{
+                var def2 = this.enemyAttack();
+                def2.then(dojo.hitch(this,function(){
+                    this.setState(this.sFight);
+                }));
+            }
         }));
     },
 

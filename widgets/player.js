@@ -8,7 +8,7 @@ dojo.declare('widgets.player', [dijit._Widget], {
     constructor: function() {
         this.hp = 100;
         this.gold = 100;
-        this.maxHP = this.hp;
+        this.maxHP = 100;
         this.strength = 0;
         this.defense = 0;
         this.potions = new Array();
@@ -96,7 +96,7 @@ dojo.declare('widgets.player', [dijit._Widget], {
     updateHP: function(change){
         this.hp+=change;
         if(this.hp > this.maxHP){
-            this.hp = this.maxHp;
+            this.hp = this.maxHP;
         }
         var deferred = new dojo.Deferred();
         if(change < 0){ //lost health
