@@ -74,7 +74,7 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "1: New Game <br> 2: Resume Saved Game  <br> 3: Instructions For Playing";
                 break;
             case this.sMove:
-                this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West <br> S: Search Location for Items";
+                this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West <br> S: Search Location for Items <br> D: Query Directions";
                 break;
             case this.sFight:
                 this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P: Use Potion <br> Q:  ";
@@ -371,7 +371,41 @@ dojo.declare('main', null, {
                                     }
                                 }));
 
-                                break;                   
+                                break;
+                            case 68: //query directions
+                                this.setState(this.sOff);
+                                this.player.stopAudio();
+                                this._audio.stop({channel:'main'});
+                                var directions = this.map.queryDirections();
+                                var stringArr = new Array();
+                                if(directions[0]!= -1){
+                                    stringArr.push(" north,");
+                                }
+                                if(directions[1]!= -1){
+                                    stringArr.push(" south, ");
+                                }
+                                if(directions[2]!= -1){
+                                    stringArr.push(" east, ");
+                                }
+                                if(directions[3]!= -1){
+                                    stringArr.push(" west, ");
+                                }
+                                
+                                if(stringArr.length == 1){
+                                    this._audio.say({text: "The " + stringArr[0] + " passage is open.", channel: 'main'});
+                                }
+                                else{
+                                    this._audio.say({text: " The ", channel: 'main'});
+                                    dojo.forEach(stringArr, dojo.hitch(this,function(dir, idx){
+                                        if(idx == (stringArr.length -1)){
+                                            this._audio.say({text: " and ", channel: 'main'});
+                                        }
+                                        this._audio.say({text: dir, channel: 'main'});
+                                    }));
+                                    this._audio.say({text:" passages are open.", channel: 'main'});
+                                }
+                                this.setState(this.sMove);                                
+                                break;
                         }
                         break;
                     case this.sMenu:

@@ -67,6 +67,15 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return true;
     },
 
+    queryDirections: function(){
+        var toReturn = new Array(4);
+        toReturn[0] = this.nodes[this.currentNodeIndex].nNorth;
+        toReturn[1] = this.nodes[this.currentNodeIndex].nSouth;
+        toReturn[2] = this.nodes[this.currentNodeIndex].nEast;
+        toReturn[3] = this.nodes[this.currentNodeIndex].nWest;
+        return toReturn;
+    },
+
     /*
         attempts to move to neighbor in the specified direction
         if no such neighbor exists, return false.
