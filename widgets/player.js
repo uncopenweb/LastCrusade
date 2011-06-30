@@ -134,7 +134,7 @@ dojo.declare('widgets.player', [dijit._Widget], {
     updateHPplusWait: function(change){
         this.hp+=change;
         if(this.hp > this.maxHP){
-            this.hp = this.maxHp;
+            this.hp = this.maxHP;
         }
         var deferred = new dojo.Deferred();
         if(change < 0){ //lost health
