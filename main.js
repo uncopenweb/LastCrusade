@@ -42,6 +42,8 @@ dojo.declare('main', null, {
         this.sFriend = 12;
         this.state = this.sOff;
         this.potentialItems = new Array(); //items to ask player if he/she wants
+        this.start = true;
+        this.firstFriend = true;
         this.tempItem = null;
 
         this.skipVendors = false;
@@ -56,6 +58,7 @@ dojo.declare('main', null, {
         this.friendData = null;
         this.keyDelay = 0;
         this.directions = dojo.byId("directions");
+        this.offerSaying ="";
 
         this._readingInstructions = false;
         this.potionIndex = 0;
@@ -74,7 +77,7 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West <br> S: Search Location for Items";
                 break;
             case this.sFight:
-                this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P:  <br> Q:  ";
+                this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P: Use Potion <br> Q:  ";
                 break;
             case this.sRun:
                 this.directions.innerHTML = "Y: Yes, run away <br> N: No, stay and fight";
@@ -120,7 +123,7 @@ dojo.declare('main', null, {
         begin gameplay
     */
     _start: function(){
-        this.mapList = ["graveyard.json", "forest.json", "castle.json"];
+        this.mapList = ["forest.json", "graveyard.json", "castle.json"];
         this.player = new widgets.player({}, null); 
         //start background and loop indefinitely 
         this._audio.setProperty({name: 'loop', channel: 'background', value: true});
@@ -159,7 +162,12 @@ dojo.declare('main', null, {
         var dataDef = dojo.xhrGet(mapRequest);
         dataDef.addCallback(dojo.hitch(this, function(data) { 
             this.map = new widgets.map({mapData: data}, null); 
-            this.player.equipWeakItems(this.map);
+            if(this.start){
+                this.start = false;
+            }
+            else{
+                this.player.equipWeakItems(this.map);
+            }
             this._audio.say({text: "You are now entering the " + this.map.Name})
                 .anyAfter(dojo.hitch(this,function(){
                     this.setState(this.sMove);
@@ -458,7 +466,13 @@ dojo.declare('main', null, {
                                     this.setState(this.sPotionCycle);   
                                 }
                                 else{
-                                    this._audio.say({text:"You do not have any potion.", channel: "main"});
+                                    this._audio.say({text:"You do not have any potion.", channel: "main"})
+                                    .anyAfter(dojo.hitch(this,function(){
+                                        var def = this.enemyAttack();
+                                        def.then(dojo.hitch(this,function(){
+                                            this.setState(this.sFight);
+                                        }));
+                                    }));
                                 }
                                 break;
                             case 81: //Q
@@ -695,7 +709,7 @@ dojo.declare('main', null, {
                                 //play sound and give all items to player
                                 this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.friend.ActionSound], channel: 'main'})
                                     .anyAfter(dojo.hitch(this,function(){
-                                        var def = this.examineItems(this.friend.Items, "The " + this.friend.Name+ "has given you ");
+                                        var def = this.examineItems(this.friend.Items, this.friend.Name+ "has given you ");
                                         def.then(dojo.hitch(this,function(){
                                             //remove friend or what??
                                             this.map.removeNPC(this.friendData[1]);
@@ -753,6 +767,7 @@ dojo.declare('main', null, {
         Find any items that are better than current from items, then ask player whether to take
     */
     examineItems: function(items, foundSaying){
+        this.offerSaying = foundSaying;
         var deferred = new dojo.Deferred();
         this.setState(this.sOff);
         var atLeastOne = false;
@@ -765,12 +780,12 @@ dojo.declare('main', null, {
             }
             switch(item.iType){
                 case dojo.global.WEAPON:
-                    if(item.iValue >= this.player.weapon.iValue){
+                    if((this.player.weapon == null) || (item.iValue >= this.player.weapon.iValue)){
                         this.potentialItems.push(item);
                     }
                     break;
 		        case dojo.global.ARMOR:
-                    if(item.iValue >= this.player.armor.iValue){
+                    if((this.player.armor == null) || (item.iValue >= this.player.armor.iValue)){
                         this.potentialItems.push(item);
                     }
                     break;
@@ -798,7 +813,7 @@ dojo.declare('main', null, {
                         deferred.callback({found:true});
                     }
                 }));
-                this.offerItems(foundSaying);
+                this.offerItems();
             }
         }));
         if(gameEnd){
@@ -959,7 +974,7 @@ dojo.declare('main', null, {
     /*
         Give player option of swapping items, one at a time
     */
-    offerItems: function(foundString){
+    offerItems: function(){
         if(this.potentialItems.length > 0 ){
             this.setState(this.sOff);
             var playerItem;
@@ -969,13 +984,24 @@ dojo.declare('main', null, {
             else{
                 playerItem = this.player.armor;
             }
-            this._audio.say({text: foundString + " a level " + this.potentialItems[0].iValue + " " + this.potentialItems[0].iName, channel: 'main'});
-            this._audio.say({text: "Would you like to replace your level " + playerItem.iValue + " " + playerItem.iName + " with it?", channel: 'main'})
-                .anyAfter(dojo.hitch(this,function(){
-                    //remove item
-                    this.tempItem = this.potentialItems.splice(0,1)[0];
-                    this.setState(this.sAddItem);
-                }));
+            this._audio.say({text: this.offerSaying + " a level " + this.potentialItems[0].iValue + " " + this.potentialItems[0].iName, channel: 'main'});
+            if(playerItem == null){
+                //remove and give, no choice
+                this.tempItem = this.potentialItems.splice(0,1)[0];
+                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
+                this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'main'});
+                this.player.addItem(this.tempItem);
+                this.tempItem = null;
+                this.offerItems(); 
+            }
+            else{
+                this._audio.say({text: "Would you like to replace your level " + playerItem.iValue + " " + playerItem.iName + " with it?", channel: 'main'})
+                    .anyAfter(dojo.hitch(this,function(){
+                        //remove item
+                        this.tempItem = this.potentialItems.splice(0,1)[0];
+                        this.setState(this.sAddItem);
+                    }));
+            }
         }
         else{
             dojo.publish("offeringItems", ["done"]);
@@ -986,6 +1012,8 @@ dojo.declare('main', null, {
     */
     moveResult: function(result){
         if(result){
+            this.skipVendors = false;
+            this.skipFriends = false;
             this.exploreNode();
         }
         else{
@@ -1036,14 +1064,32 @@ dojo.declare('main', null, {
         }
         else if((this.friendData[1] != -1) && !this.skipFriends){
             this.friend = this.friendData[0];
-            this._audio.say({text: "You have run into a friend. Would you like to talk to the " +  this.friend.Name});
-            this.setState(this.sFriend);
+            //force to talk
+            if(this.firstFriend){
+                this.setState(this.sOff);
+                this._audio.stop({channel:'main'});
+                this.player.stopAudio();
+                //play sound and give all items to player
+                this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.friend.ActionSound], channel: 'main'})
+                    .anyAfter(dojo.hitch(this,function(){
+                        var def = this.examineItems(this.friend.Items, this.friend.Name+ "has given you ");
+                        def.then(dojo.hitch(this,function(){
+                            //remove friend or what??
+                            this.map.removeNPC(this.friendData[1]);
+                            this.friend = null;
+                            this.exploreNode();
+                        }));
+                    }));
+                this.setState(this.sListen);
+            }
+            else{
+                this._audio.say({text: "You have run into a friend. Would you like to talk to " +  this.friend.Name});
+                this.setState(this.sFriend);
+            }
         }								
         else{
             this.setState(this.sMove);
         }
-        this.skipVendors = false;
-        this.skipFriends = false;
     },
 });
 
