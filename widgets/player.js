@@ -41,7 +41,7 @@ dojo.declare('widgets.player', [dijit._Widget], {
             this._audio.say({text: 'You currently have ' + this.gold + ' gold.'});
             if(this.potions.length > 0){
                 dojo.forEach(this.potions, dojo.hitch(this,function(potion){
-                    this._audio.say({text: 'You have a ' + potion.iName});
+                    this._audio.say({text: 'You have a ' + potion.iName + ' level ' + potion.iValue});
                 }));
             }
             else{

@@ -18,7 +18,6 @@ dojo.declare('widgets.map', [dijit._Widget], {
         dojo.global.VENDOR = 2;
         dojo.global.LEPRECHAUN = 3;
 
-        this.currentNPCIndex = -1;
         this.x = 0;
         this.y = 0;
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
@@ -152,15 +151,19 @@ dojo.declare('widgets.map', [dijit._Widget], {
         Get NPC of a node, build in order of precedence if more than one
     */
     getNPC: function(type){
-         var toReturn = null;
-         dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npc, index){
+        var toReturn = new Array(2);
+        var returnIndex = -1;
+        var returnNPC = null;
+        dojo.some(this.nodes[this.currentNodeIndex].NPC, dojo.hitch(this, function(npc, index){
             if(npc.Type == type)
             {
-                this.currentNPCIndex = index;
-                toReturn = npc;
+                returnIndex = index;
+                returnNPC = npc;
                 return false;
             }
         }));
+        toReturn[0] = returnNPC;
+        toReturn[1] = returnIndex;
         return toReturn;
     },
 
@@ -264,8 +267,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         }));
     },
 
-    removeNPC: function(){
-        this.nodes[this.currentNodeIndex].NPC.splice(this.currentNPCIndex,1);
-        this.currentNPCIndex = -1;
+    /*
+     * Remove NPC from current node specified by given index
+     *
+     */
+    removeNPC: function(index){
+        this.nodes[this.currentNodeIndex].NPC.splice(index,1);
     }
 });
