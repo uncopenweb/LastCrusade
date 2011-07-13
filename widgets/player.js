@@ -197,6 +197,10 @@ dojo.declare('widgets.player', [dijit._Widget], {
                 break;
         }
     },
+    
+    halfGold:function(){
+        this.gold = Math.floor(this.gold/2);
+    },
 
     stopAudio: function(){
         this._audio.stop();

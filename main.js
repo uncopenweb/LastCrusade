@@ -16,7 +16,6 @@ dojo.require('dojo.hash');
 dojo.require('dojox.timing');
 dojo.require('widgets.map');
 dojo.require('widgets.player');
-dojo.require('widgets.item');
 
 dojo.declare('main', null, {
     constructor: function() {
@@ -40,6 +39,8 @@ dojo.declare('main', null, {
         this.sVendorScroll = 10;
         this.sBuy = 11;
         this.sFriend = 12;
+        this.sLepEncounter = 13;
+        this.sLepGame = 14;
         this.state = this.sOff;
         this.potentialItems = new Array(); //items to ask player if he/she wants
         this.start = true;
@@ -48,6 +49,7 @@ dojo.declare('main', null, {
 
         this.skipVendors = false;
         this.skipFriends = false;
+        this.skipLep = false;
         this._mapIndex = 0;
         this.map = null;
         this.enemy = null;
@@ -56,6 +58,8 @@ dojo.declare('main', null, {
         this.enemyData = null;
         this.vendorData = null;
         this.friendData = null;
+        this.lepArray = new Array(3);
+        this.lepData = null;
         this.keyDelay = 0;
         this.directions = dojo.byId("directions");
         this.offerSaying ="";
@@ -106,6 +110,12 @@ dojo.declare('main', null, {
                 break;
             case this.sFriend:
                 this.directions.innerHTML = "Y: Talk to friend <br> N: Do not talk to friend";
+                break;
+            case this.sLepEncounter:
+                this.directions.innerHTML = "Y: Play the leprechaun's game <br> N: Refuse to play";
+                break;
+            case this.sLepGame:
+                
                 break;
             }
         })); 
@@ -777,9 +787,67 @@ dojo.declare('main', null, {
                                 this.friend = null;
                                 this.exploreNode();
                             break;
+                        }                    
+                    break;
+                    case this.sLepEncounter:
+                        switch(evt.keyCode){
+                            case 89: //Y
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                if(this.player.gold < 50){
+                                    this._audio.play({url: "sounds/general/" + this.lepmore, channel:'main'});
+                                    this.skipLep = true;
+                                    this.lepData = null;
+                                    this.setState(this.sMove);
+                                }
+                                else{
+                                    this._audio.play({url: "sounds/general/" + this.leprules, channel: 'main'});
+                                    this._audio.play({url: "sounds/general/" + this.lep123, channel: 'main'});
+                                    /*
+                                     * selecting 1,2, or 3 that maps to a 0 is bad.
+                                     * this gives a 50% chance of player having a
+                                     * ~33% chance of winning (one 1 in array) and
+                                     * 50% change of having a ~66% chance of winning
+                                     * (2 ones in array)
+                                     */
+                                    if(Math.floor(Math.random()*(2)) > 0){
+                                        this.lepArray[0] = 0;
+                                        this.lepArray[1] = 1;
+                                        this.lepArray[2] = 1;
+                                    }
+                                    else{
+                                        this.lepArray[0] = 0;
+                                        this.lepArray[1] = 0;
+                                        this.lepArray[2] = 1;
+                                    }
+                                    this._randomize(this.lepArray);
+                                    this.setState(this.sLepGame);
+                                }
+                            break;
+                            case 78: //N
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                this.skipLep = true;
+                                if(Math.floor(Math.random()*(2)) > 0){
+                                    this._audio.play({url: "sounds/general/" + this.lepmad, channel: 'main'});
+                                    this.player.halfGold();
+                                    this._audio.say({text: "The leprechaun has run away and taken half of your gold with him.", channel: 'main'});
+                                    this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'main'})
+                                        .anyAfter(dojo.hitch(this,function(){
+                                            this.exploreNode();
+                                        }));
+                                }
+                                else{
+                                    this._audio.play({url: "sounds/general/" + this.lepgood, channel: 'main'})
+                                        .anyAfter(dojo.hitch(this,function(){
+                                            this.exploreNode();
+                                        }));
+                                }
+                                this.lepData = null;
+                            break;
                         }
-                    
-                    
                     break;
                 }
         }        
@@ -791,8 +859,6 @@ dojo.declare('main', null, {
             {
                 evt.preventDefault();
             }
-            //this._audio.stop({channel: "second"});
-            //this._audio.play({url: "sounds/TooEarlyClick", channel : "second"});
         }
     },
     
@@ -1070,6 +1136,7 @@ dojo.declare('main', null, {
         if(result){
             this.skipVendors = false;
             this.skipFriends = false;
+            this.skipLep = false;
             this.exploreNode();
         }
         else{
@@ -1090,7 +1157,14 @@ dojo.declare('main', null, {
         this.enemyData = this.map.getNPC(dojo.global.ENEMY);
         this.vendorData = this.map.getNPC(dojo.global.VENDOR);
         this.friendData = this.map.getNPC(dojo.global.FRIEND);
-        console.log("vendor: ", this.vendor);
+        this.lepData = this.map.getNPC(dojo.global.LEPRECHAUN);
+        /*
+         * -1 is a sentenel value. Meaning there is no such NPC. 
+         * If the NPC exists, the second entry of the array returned
+         * by this.map.getNPC() will be the index of the NPC in the 
+         * current node's NPC array. Necessary for removing at a later
+         * time if defeated or the like
+         * */
         if(this.enemyData[1] != -1)
         {
             this.enemy = this.enemyData[0];
@@ -1122,6 +1196,7 @@ dojo.declare('main', null, {
             this.friend = this.friendData[0];
             //force to talk
             if(this.firstFriend){
+                this.firstFriend = false;
                 this.setState(this.sOff);
                 this._audio.stop({channel:'main'});
                 this.player.stopAudio();
@@ -1142,9 +1217,27 @@ dojo.declare('main', null, {
                 this._audio.say({text: "You have run into a friend. Would you like to talk to " +  this.friend.Name});
                 this.setState(this.sFriend);
             }
+        }
+        else if((this.lepData[1] != -1) && !this.skipLep){
+            this._audio.say({text: "You have encountered a leprechaun.", channel: 'main'});
+            this._audio.play({url: "sounds/general/" + this.lepplay, channel: 'main'})
+            this.setState(this.sLepEncounter);
         }								
         else{
             this.setState(this.sMove);
+        }
+    },
+    
+    //  randomizes an array
+    _randomize: function(array) {
+        var i = array.length;
+        if ( i == 0 ) return false;
+        while ( --i ) {
+            var j = Math.floor( Math.random() * ( i + 1 ) );
+            var tempi = array[i];
+            var tempj = array[j];
+            array[i] = tempj;
+            array[j] = tempi;
         }
     },
 });
