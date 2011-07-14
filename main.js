@@ -41,6 +41,7 @@ dojo.declare('main', null, {
         this.sFriend = 12;
         this.sLepEncounter = 13;
         this.sLepGame = 14;
+        this.sLepAgain = 15;
         this.state = this.sOff;
         this.potentialItems = new Array(); //items to ask player if he/she wants
         this.start = true;
@@ -115,7 +116,10 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "Y: Play the leprechaun's game <br> N: Refuse to play";
                 break;
             case this.sLepGame:
-                
+                this.directions.innerHTML = "Press 1,2 or 3 to play <br> Press 'A' to attempt to kill the leprechaun.";
+                break;
+            case this.sLepAgain:
+                this.directions.innerHTML = "Y: Play again <br> N: Don't play again";
                 break;
             }
         })); 
@@ -799,30 +803,11 @@ dojo.declare('main', null, {
                                     this._audio.play({url: "sounds/general/" + this.lepmore, channel:'main'});
                                     this.skipLep = true;
                                     this.lepData = null;
-                                    this.setState(this.sMove);
+                                    this.exploreNode();
                                 }
                                 else{
                                     this._audio.play({url: "sounds/general/" + this.leprules, channel: 'main'});
-                                    this._audio.play({url: "sounds/general/" + this.lep123, channel: 'main'});
-                                    /*
-                                     * selecting 1,2, or 3 that maps to a 0 is bad.
-                                     * this gives a 50% chance of player having a
-                                     * ~33% chance of winning (one 1 in array) and
-                                     * 50% change of having a ~66% chance of winning
-                                     * (2 ones in array)
-                                     */
-                                    if(Math.floor(Math.random()*(2)) > 0){
-                                        this.lepArray[0] = 0;
-                                        this.lepArray[1] = 1;
-                                        this.lepArray[2] = 1;
-                                    }
-                                    else{
-                                        this.lepArray[0] = 0;
-                                        this.lepArray[1] = 0;
-                                        this.lepArray[2] = 1;
-                                    }
-                                    this._randomize(this.lepArray);
-                                    this.setState(this.sLepGame);
+                                    this.startLepGame();
                                 }
                             break;
                             case 78: //N
@@ -849,6 +834,55 @@ dojo.declare('main', null, {
                             break;
                         }
                     break;
+                    case this.sLepGame:
+                        switch(evt.keyCode){
+                            case dojo.keys.NUMPAD_1:
+                            case 49:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                this.lepResponse(this.lepArray[0]);
+                                break;
+                            case dojo.keys.NUMPAD_2:
+                            case 50:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                this.lepResponse(this.lepArray[1]);                            
+                                break;
+                            case dojo.keys.NUMPAD_3:
+                            case 51:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                this.lepResponse(this.lepArray[2]);
+                                break;
+                                
+                            case 65: //attack
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                break;
+                            }                            
+                    break;
+                    case this.sLepAgain:
+                        switch(evt.keyCode){
+                         case 89: //Y
+                            this.setState(this.sOff);
+                            this._audio.stop({channel:'main'});
+                            this.player.stopAudio();
+                            this.startLepGame();
+                            break;
+                         case 78: //N
+                            this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                            this._audio.play({url: 'sounds/general/' + this.lepbye, channel: 'main'});
+                            this.skipLep = true;
+                            this.exploreNode();
+                            break;
+                        }
+                    break;
                 }
         }        
         else {
@@ -859,6 +893,53 @@ dojo.declare('main', null, {
             {
                 evt.preventDefault();
             }
+        }
+    },
+    
+    startLepGame: function(){
+    this._audio.play({url: "sounds/general/" + this.lep123, channel: 'main'});
+        var temp = Math.floor(Math.random()*(3));
+        if(temp == 0){
+            this.lepArray[0] = -50;
+            this.lepArray[1] = 25;
+            this.lepArray[2] = 25;
+        }
+        else if(temp == 1){
+            this.lepArray[0] = -50;
+            this.lepArray[1] = 35;
+            this.lepArray[2] = 35;
+        }
+        else{
+            this.lepArray[0] = -50;
+            this.lepArray[1] = -50;
+            this.lepArray[2] = 75;
+        }
+        this._randomize(this.lepArray);
+        this.setState(this.sLepGame);    
+    },
+    
+    /*
+     * Sequence after player has chosen 1-3 during lep game
+     * */
+    lepResponse: function(choice){
+        this.player.gold+=choice;
+        if(choice > 0){ //win
+            this._audio.play({url: 'sounds/general/' + this.lepwin, channel: 'main'});
+        }
+        else{ //lose
+            this._audio.play({url: 'sounds/general/' + this.leplose, channel: 'main'});
+        }
+        this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'main'});
+        
+        if(this.player.gold < 50){
+            this._audio.play({url: "sounds/general/" + this.lepmore, channel:'main'});
+            this.skipLep = true;
+            this.lepData = null;
+            this.exploreNode();
+        }
+        else{
+            this._audio.play({url: 'sounds/general/' + this.lepagain, channel: 'main'});
+            this.setState(this.sLepAgain);
         }
     },
     
