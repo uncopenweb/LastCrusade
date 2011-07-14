@@ -475,10 +475,8 @@ dojo.declare('main', null, {
                                 var def = this.playerAttack();
                                 def.then(dojo.hitch(this, function(result){
                                     if(result.vanquished){
-                                        console.log("Killed, attempting to loot.");
                                         var def2 = this.examineItems(this.enemy.Items, "You recovered ");
-                                        def2.then(dojo.hitch(this,function(){
-                                            console.log("Finished loot");                                              
+                                        def2.then(dojo.hitch(this,function(){                                          
                                             this.map.removeNPC(this.enemyData[1]);
                                             this.enemy = null;
                                             this.setState(this.sMove);
@@ -862,6 +860,24 @@ dojo.declare('main', null, {
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
+                                if(Math.floor(Math.random()*(2))==0){//killed
+                                    this._audio.play({url: 'sounds/general/' + this.lepdie, channel: 'main'});
+                                    var def = this.examineItems(this.lepData[0].Items, "You took ");
+                                    def.then(dojo.hitch(this,function(){                                          
+                                        this.map.removeNPC(this.lepData[1]);
+                                        this.lepData = null;
+                                        this.exploreNode();
+                                    }));
+                                }
+                                else{//fail
+                                    this._audio.play({url: 'sounds/general/' + this.leplive, channel: 'main'});
+                                    this.player.halfHealth();
+                                    this.player.removePotions();
+                                    this._audio.say({text: "You now have " + this.player.hp + " hit points and no potions.", channel: 'main'});
+                                    this.map.removeNPC(this.lepData[1]);
+                                    this.lepData = null;
+                                    this.exploreNode();
+                                }
                                 break;
                             }                            
                     break;
@@ -1300,7 +1316,7 @@ dojo.declare('main', null, {
             }
         }
         else if((this.lepData[1] != -1) && !this.skipLep){
-            this._audio.say({text: "You have encountered a leprechaun.", channel: 'main'});
+            this._audio.say({text: "You have encountered a leprekaun.", channel: 'main'});
             this._audio.play({url: "sounds/general/" + this.lepplay, channel: 'main'})
             this.setState(this.sLepEncounter);
         }								

@@ -201,6 +201,15 @@ dojo.declare('widgets.player', [dijit._Widget], {
     halfGold:function(){
         this.gold = Math.floor(this.gold/2);
     },
+    
+    halfHealth: function(){
+        this.hp = Math.floor(this.hp/2);
+    },
+
+    removePotions: function(){
+        this.potions = new Array();
+        
+    },
 
     stopAudio: function(){
         this._audio.stop();
