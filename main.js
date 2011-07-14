@@ -140,7 +140,7 @@ dojo.declare('main', null, {
     _start: function(){
         this.mapList = ["forest.json", "graveyard.json", "castle.json"];
         this.player = new widgets.player({}, null); 
-        //start background and loop indefinitely 
+        this._audio.play({url: 'sounds/general/' + this.title, channel:'main'});
         this._audio.setProperty({name: 'loop', channel: 'background', value: true});
         this._audio.play({url: "sounds/general/"+ this.theme, channel: 'background'});
         this._audio.play({url: "sounds/general/" + this.menu, channel: 'main'});
@@ -241,26 +241,15 @@ dojo.declare('main', null, {
 	    this.through = "g_through";			
 	    this.leads = "g_leadto";			
 	    this.vendor = "g_vendor";			
-	    // Item search									
-	    this.noitems = "g_noitems";			
-	    this.nomore = "g_nomore";			
-	    this.found = "g_found";				
-	    this.replace = "g_replace";	
-        this.equip = "equip";		
-        //had to change to With vs with	    
-        this.With = "g_with";	
+ 	
 	    // Battle										
 	    this.fightsong = "fight";			
-	    this.encounter = "encountered";		
-	    this.attack = "enemy_a";			
-	    this.defense = "enemy_d";			
-	    this.hehas = "enemy_h";				
-	    this.nowhas = "enemy_nh";			
+        this.equip = "equip";
 	    this.hitpoints = "hp";				
 	    this.hitpoint = "hp_1";				
 	    this.hitpointsr = "hp_remain";		
 	    this.hitpointr = "hp_remain_1";		
-	    this.runquestion = "run_away";		
+	
 	    this.youlost = "player_l";			
 	    this.younow = "player_nh";			
 	    this.youattack = "player_a";		
@@ -271,18 +260,8 @@ dojo.declare('main', null, {
 	    this.enemyMiss = "enemy_m";			
 	    this.playerMiss = "player_m";		
 	    this.playerDeath = "player_x";		
-	    // Vendor										
-	    this.welcome = "v_welcome";			
-	    this.today = "v_today";				
-	    this.purchase = "v_purchase";		
-	    this.vfor = "v_for";				
-	    this.vgold = "v_gold";				
-	    this.nowhave = "v_nowhave";			
-	    this.vgoldr = "v_goldremain";		
-	    this.afford = "v_cannot";			
-	    this.goodbye = "v_goodbye";			
-	    // Friend										
-	    this.talkto = "talkto";				
+	
+ 			
 	    // Leprechaun									
 	    this.leprechaun = "leprechaun";		
 	    this.lepplay = "play_lep";			
@@ -295,25 +274,13 @@ dojo.declare('main', null, {
 	    this.lepagain = "again_lep";		
 	    this.lepbye = "goodbye_lep";		
 	    this.lepgood = "noplaygood_lep";	
-	    this.lepmad = "noplaymad_lep";		
-	    this.leptook = "leptook";			
+	    this.lepmad = "noplaymad_lep";				
 	    this.leplive = "survive_lep";		
 	    this.lepdie = "death_lep";			
-	    // Stat											
-	    this.sndStatStr = "player_s";		
-	    this.sndStatDef = "player_d";		
+	
 	    // Misc											
-	    this.level = "level";				
-	    this.coins = "gold";				
-	    this.sndPotion = "player_p_1";		
-	    this.sndPotions = "player_p";		
-	    this.instruct = "g_instruc";		
-	    this.runyes = "run_yes";			
-	    this.runno = "run_no";				
-	    this.notstrong = "g_notstrong";		
-	    // Save & Load game								
-	    this.load = "loading";				
-	    this.save = "saved";     
+		
+	    this.instruct = "g_instruc";  
     },
     
     /*
@@ -484,7 +451,6 @@ dojo.declare('main', null, {
                                         }));
                                     }
                                     else{
-                                        console.log("Still alive.");
                                         var def = this.enemyAttack();
                                         def.then(dojo.hitch(this,function(){
                                             this.setState(this.sFight);
@@ -530,10 +496,7 @@ dojo.declare('main', null, {
                                 else{
                                     this._audio.say({text:"You do not have any potion.", channel: "main"})
                                     .anyAfter(dojo.hitch(this,function(){
-                                        var def = this.enemyAttack();
-                                        def.then(dojo.hitch(this,function(){
-                                            this.setState(this.sFight);
-                                        }));
+                                        this.setState(this.sFight);
                                     }));
                                 }
                                 break;
@@ -729,10 +692,12 @@ dojo.declare('main', null, {
                                 }
                                 else{
                                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                                    this.player.addItem(this.vendor.Items[this.itemIndex]);
+                                    this.player.addItem(dojo.clone(this.vendor.Items[this.itemIndex]));
                                     //take away gold
                                     this.player.gold-= this.vendor.Items[this.itemIndex].iValue;
-                                    this.vendor.Items.splice(this.itemIndex, 1);
+                                    if(this.vendor.Items[this.itemIndex].iType != dojo.global.POTION){
+                                        this.vendor.Items.splice(this.itemIndex, 1);
+                                    }
                                     this.itemIndex = 0;
                                     
                                     if(this.vendor.Items.length == 0){
@@ -1130,7 +1095,7 @@ dojo.declare('main', null, {
                         deferred.callback();
                     }
                     else{
-                        console.log("player dead, need to fill in what to do");
+                        this.start();
                     }
                 }));
             }
