@@ -133,6 +133,36 @@ dojo.declare('main', null, {
             this._start();
         }));           
     },
+    
+    _gameReset: function(){
+        this.state = this.sOff;
+        this.potentialItems = new Array(); //items to ask player if he/she wants
+        this.start = true;
+        this.firstFriend = true;
+        this.tempItem = null;
+
+        this.skipVendors = false;
+        this.skipFriends = false;
+        this.skipLep = false;
+        this._mapIndex = 0;
+        this.map = null;
+        this.enemy = null;
+        this.vendor = null;
+        this.friend = null;
+        this.enemyData = null;
+        this.vendorData = null;
+        this.friendData = null;
+        this.player = null;
+        this.lepArray = new Array(3);
+        this.lepData = null;
+        this.keyDelay = 0;
+        this.offerSaying ="";
+
+        this._readingInstructions = false;
+        this.duringMove = false;
+        this.potionIndex = 0;
+        this.itemIndex = 0;   
+    },
 
     /*
         begin gameplay
@@ -505,6 +535,9 @@ dojo.declare('main', null, {
                             /* @TODO: REMOVE AFTER DEBUGGING DONE!!!!!!!!!!!*/
                             case 75: //set enemy health to 0
                                 this.enemy.HP = 0;
+                                break;
+                            case 83:
+                                this.player.hp = 0;
                                 break;
                         }  
                         break;
@@ -1095,7 +1128,12 @@ dojo.declare('main', null, {
                         deferred.callback();
                     }
                     else{
-                        this.start();
+                        this.setState(this.sOff);
+                        this._audio.stop({channel:'main'});
+                        this._audio.stop({channel:'background'});
+                        this.player.stopAudio();
+                        this._gameReset();
+                        this._start();
                     }
                 }));
             }
