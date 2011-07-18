@@ -125,6 +125,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
                     return true;
                 }
             }
+            else if(this.nodes[neighbor].RequiredItems.length!=0){
+                //if(this.player.special.length
+                //@TODO: need to enforce required items
+            }
             else{
                 this.lastNodeIndex = this.currentNodeIndex;
                 this.currentNodeIndex = neighbor;

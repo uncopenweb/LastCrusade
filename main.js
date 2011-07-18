@@ -398,6 +398,14 @@ dojo.declare('main', null, {
                                         }));
                                     }
                                 break;
+                            case 77:
+                                if(this.player.strength == 0){
+                                    this.player.strength = 100;
+                                }
+                                else{
+                                    this.player.strength = 0;
+                                }
+                            break;
                         }
                         break;
                     case this.sMenu:
