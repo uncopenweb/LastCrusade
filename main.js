@@ -7,7 +7,6 @@
 *
 ***************************************************************************/
 /*  @TODO: Add in too soon click for space bar?*/
-/*  @TODO: Should be able to use potion when moving as well as when in fight*?
 /*  @TODO: Sell back items -> need for primary and secondary weapons??*/
 
 dojo.provide('main');
@@ -814,7 +813,7 @@ dojo.declare('main', null, {
                                 if(Math.floor(Math.random()*(2)) > 0){
                                     this._audio.play({url: "sounds/general/" + this.lepmad, channel: 'main'});
                                     this.player.halfGold();
-                                    this._audio.say({text: "The leprechaun has run away and taken half of your gold with him.", channel: 'main'});
+                                    this._audio.say({text: "The leprekaun has run away and taken half of your gold with him.", channel: 'main'});
                                     this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'main'})
                                         .anyAfter(dojo.hitch(this,function(){
                                             this.exploreNode();
@@ -1234,6 +1233,7 @@ dojo.declare('main', null, {
     */
     moveResult: function(result){
         if(result){
+            this._audio.stop({channel:'main'});
             this.skipVendors = false;
             this.skipFriends = false;
             this.skipLep = false;
@@ -1305,6 +1305,7 @@ dojo.declare('main', null, {
                     .anyAfter(dojo.hitch(this,function(){
                         var def = this.examineItems(this.friend.Items, this.friend.Name+ "has given you ");
                         def.then(dojo.hitch(this,function(){
+                            this.setState(this.sOff);
                             //remove friend or what??
                             this.map.removeNPC(this.friendData[1]);
                             this.friend = null;
