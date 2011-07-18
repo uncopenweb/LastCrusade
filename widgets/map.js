@@ -44,8 +44,8 @@ dojo.declare('widgets.map', [dijit._Widget], {
         may fail if there is no neighbor node in that direction.
         @return boolean indicating success of move
     */
-    move: function(direction){
-        result = this._getNeighbor(direction);
+    move: function(direction, player){
+        result = this._getNeighbor(direction, player);
         if(!result)
         { 
             return false;
@@ -79,9 +79,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
     /*
         attempts to move to neighbor in the specified direction
         if no such neighbor exists, return false.
-        otherwise return true and set the new currentNodeIndex
+        otherwise if player can defeat enemy (if present) at location,
+        return true and set the new currentNodeIndex
     */
-    _getNeighbor: function(direction){
+    _getNeighbor: function(direction, player){
         var neighbor = -1;
         switch(direction){
             case this.NORTH:
@@ -101,9 +102,34 @@ dojo.declare('widgets.map', [dijit._Widget], {
             return false;
         }
         else{
-            this.lastNodeIndex = this.currentNodeIndex;
-            this.currentNodeIndex = neighbor;
-            return true;
+            var enemy = null;
+            //look to see if enemy at location
+            dojo.some(this.nodes[neighbor].NPC, dojo.hitch(this, function(npc)
+            {
+                if(npc.Type == dojo.global.ENEMY)
+                {
+                    enemy = npc;
+                    return false;
+                }
+            }));
+            if(enemy!=null){
+                if(((player.strength*2) <= enemy.Defense)
+                    && (player.weapon!=null) && (player.weapon.iName!="death blade"))
+                {
+                    player.tooWeak = true;
+                    return false;
+                }
+                else{
+                    this.lastNodeIndex = this.currentNodeIndex;
+                    this.currentNodeIndex = neighbor;
+                    return true;
+                }
+            }
+            else{
+                this.lastNodeIndex = this.currentNodeIndex;
+                this.currentNodeIndex = neighbor;
+                return true;
+            }
         }
     },
 

@@ -11,6 +11,7 @@ dojo.declare('widgets.player', [dijit._Widget], {
         this.maxHP = 100;
         this.strength = 0;
         this.defense = 0;
+        this.tooWeak = false;
         this.potions = new Array();
         this.weapon = null;
         this.armor = null;

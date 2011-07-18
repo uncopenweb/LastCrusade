@@ -298,33 +298,31 @@ dojo.declare('main', null, {
                                 this.setState(this.sOff);
                                 this.player.stopAudio();
                                 evt.preventDefault();
-                                result = this.map.move(this.map.SOUTH);
+                                result = this.map.move(this.map.SOUTH, this.player);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
                                 this.player.stopAudio();
                                 evt.preventDefault();
-                                result = this.map.move(this.map.WEST);
+                                result = this.map.move(this.map.WEST, this.player);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.RIGHT_ARROW:
                                 this.setState(this.sOff);
                                 this.player.stopAudio();
                                 evt.preventDefault();
-                                result = this.map.move(this.map.EAST);
+                                result = this.map.move(this.map.EAST, this.player);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.UP_ARROW:
                                 this.setState(this.sOff);
                                 this.player.stopAudio();
                                 evt.preventDefault();
-                                result = this.map.move(this.map.NORTH);
+                                result = this.map.move(this.map.NORTH, this.player);
                                 this.moveResult(result);
                                 break;
                             case dojo.keys.SPACE:
-
-                                //should we add in a too soon click for this??
                                 this.setState(this.sOff);
                                 this.player.stopAudio();
                                 this.fadeChannel('background');
@@ -937,22 +935,24 @@ dojo.declare('main', null, {
         Use the potion selected
     */
     _usePotion:function(){
-        var def = this.player.updateHPplusWait(this.player.potions[this.potionIndex].iValue);
-        //delete potion
-        this.player.potions.splice(this.potionIndex, 1); 
-        this.potionIndex = 0;
-        
-        def.then(dojo.hitch(this,function(){
-            if(this.duringMove){
-                this.duringMove = false;
-                this.setState(this.sMove);
-            }
-            else{
-                var def2 = this.enemyAttack();
-                def2.then(dojo.hitch(this,function(){
-                    this.setState(this.sFight);
-                }));
-            }
+        this._audio.play({url: 'sounds/general/potion_a', channel:'main'})
+            .anyAfter(dojo.hitch(this,function(){
+            var def = this.player.updateHPplusWait(this.player.potions[this.potionIndex].iValue);
+            //delete potion
+            this.player.potions.splice(this.potionIndex, 1); 
+            this.potionIndex = 0;
+            def.then(dojo.hitch(this,function(){
+                if(this.duringMove){
+                    this.duringMove = false;
+                    this.setState(this.sMove);
+                }
+                else{
+                    var def2 = this.enemyAttack();
+                    def2.then(dojo.hitch(this,function(){
+                        this.setState(this.sFight);
+                    }));
+                }
+            }));
         }));
     },
 
@@ -1225,11 +1225,19 @@ dojo.declare('main', null, {
             this.exploreNode();
         }
         else{
-            this._audio.stop({channel: "main"});
-            this._audio.play({url: "sounds/noMove", channel : "main"})
-            .anyAfter(dojo.hitch(this,function(){
-                this.setState(this.sMove);            
-            }));
+            if(this.player.tooWeak){
+                this.player.tooWeak = false;
+                this._audio.stop({channel: "main"});
+                this._audio.say({text: "You are not strong enough to move down this passage. Come back when you have greater strength.", channel : "main"})
+                this.setState(this.sMove);
+            }
+            else{
+                this._audio.stop({channel: "main"});
+                this._audio.play({url: "sounds/noMove", channel : "main"})
+                .anyAfter(dojo.hitch(this,function(){
+                    this.setState(this.sMove);            
+                }));
+            }
         }
     },
 
