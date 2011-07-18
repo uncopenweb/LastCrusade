@@ -82,7 +82,7 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "Up Arrow: Move North <br> Down Arrow: Move South <br> Right Arrow: Move East <br> Left Arrow: Move West <br> S: Search Location for Items <br> D: Query Directions <br> P: Use Potion";
                 break;
             case this.sFight:
-                this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P: Use Potion <br> Q:  ";
+                this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P: Use Potion <br> Q: Query Enemy ";
                 break;
             case this.sRun:
                 this.directions.innerHTML = "Y: Yes, run away <br> N: No, stay and fight";
@@ -240,76 +240,44 @@ dojo.declare('main', null, {
         setup all sound names from original game, most will eventually be deleted
     */
     _initSounds: function(){
-        this.theme = "main_theme";			
-	    this.title = "title";				
-	    // Story										
-	    this.story = "introduction";		
-	    this.ending = "end_king";			
-	    // Menu											
-	    this.menu = "menu";					
-	    this.nodata = "no_save_data";		
-	    this.nocust = "no_save_custom";		
-	    // Directions									
-	    this.dirChar = "dir_characters";	
-	    this.dirEnem = "dir_enemy";			
-	    this.dirItem = "dir_items";			
-	    this.dirLoca = "dir_location";		
-	    this.dirSave = "dir_save";			
-	    this.dirSkip = "dir_skip";			
-	    this.dirSpac = "dir_spacebar";		
-	    this.dirQuit = "dir_quit";						
-	    // Node query									
-	    this.nPass = "g_northern";			
-	    this.sPass = "g_southern";			
-	    this.ePass = "g_eastern";			
-	    this.wPass = "g_western";			
-	    this.hasbeen = "g_visited";			
-	    this.isopen = "g_open";				
-	    this.locked = "g_locked";			
-	    this.need = "g_need";				
-	    this.through = "g_through";			
-	    this.leads = "g_leadto";			
-	    this.vendor = "g_vendor";			
+        this.theme = "main_theme";
+	    this.title = "title";
+	    // Story
+	    this.story = "introduction";
+	    this.ending = "end_king";
+	    // Menu
+	    this.menu = "menu";
+	    // Directions
+	    this.dirChar = "dir_characters";
+	    this.dirEnem = "dir_enemy";
+	    this.dirItem = "dir_items";
+	    this.dirLoca = "dir_location";
+	    this.dirSave = "dir_save";
+	    this.dirSkip = "dir_skip";
+	    this.dirSpac = "dir_spacebar";
+	    this.dirQuit = "dir_quit";
  	
-	    // Battle										
-	    this.fightsong = "fight";			
-        this.equip = "equip";
-	    this.hitpoints = "hp";				
-	    this.hitpoint = "hp_1";				
-	    this.hitpointsr = "hp_remain";		
-	    this.hitpointr = "hp_remain_1";		
-	
-	    this.youlost = "player_l";			
-	    this.younow = "player_nh";			
-	    this.youattack = "player_a";		
-	    this.collected = "collected";					
-	    this.easy = "easy_q";				
-	    this.fair = "fair_q";				
-	    this.risky = "risky_q";				
-	    this.enemyMiss = "enemy_m";			
-	    this.playerMiss = "player_m";		
-	    this.playerDeath = "player_x";		
-	
+	    // Battle
+	    this.fightsong = "fight";
  			
-	    // Leprechaun									
-	    this.leprechaun = "leprechaun";		
-	    this.lepplay = "play_lep";			
-	    this.lepmore = "more_lep";			
-	    this.lepgone = "lepgone";			
-	    this.leprules = "rules_lep";		
-	    this.lep123 = "123_lep";			
-	    this.lepwin = "pwin_lep";			
-	    this.leplose = "plose_lep";			
-	    this.lepagain = "again_lep";		
-	    this.lepbye = "goodbye_lep";		
-	    this.lepgood = "noplaygood_lep";	
-	    this.lepmad = "noplaymad_lep";				
-	    this.leplive = "survive_lep";		
-	    this.lepdie = "death_lep";			
+	    // Leprechaun
+	    this.lepplay = "play_lep";
+	    this.lepmore = "more_lep";
+	    this.lepgone = "lepgone";
+	    this.leprules = "rules_lep";
+	    this.lep123 = "123_lep";
+	    this.lepwin = "pwin_lep";
+	    this.leplose = "plose_lep";
+	    this.lepagain = "again_lep";
+	    this.lepbye = "goodbye_lep";
+	    this.lepgood = "noplaygood_lep";
+	    this.lepmad = "noplaymad_lep";
+	    this.leplive = "survive_lep";
+	    this.lepdie = "death_lep";
 	
-	    // Misc											
-		
-	    this.instruct = "g_instruc";  
+	    // Misc		
+	    this.instruct = "g_instruc";
+        this.equip = "equip";
     },
     
     /*
@@ -530,6 +498,10 @@ dojo.declare('main', null, {
                                 }
                                 break;
                             case 81: //Q
+                                this.setState(this.sOff);
+                                this.player.stopAudio();
+                                this._queryEnemy();
+                                this.setState(this.sFight);
                                 break;
                             /* @TODO: REMOVE AFTER DEBUGGING DONE!!!!!!!!!!!*/
                             case 75: //set enemy health to 0
@@ -870,7 +842,12 @@ dojo.declare('main', null, {
                                     this._audio.play({url: 'sounds/general/' + this.leplive, channel: 'main'});
                                     this.player.halfHealth();
                                     this.player.removePotions();
-                                    this._audio.say({text: "You now have " + this.player.hp + " hit points and no potions.", channel: 'main'});
+                                    if(this.player.hp == 1){
+                                        this._audio.say({text: "You now have " + this.player.hp + " hit point and no potions.", channel: 'main'});
+                                    }
+                                    else{
+                                        this._audio.say({text: "You now have " + this.player.hp + " hit points and no potions.", channel: 'main'});
+                                    }
                                     this.map.removeNPC(this.lepData[1]);
                                     this.lepData = null;
                                     this.exploreNode();
@@ -1167,10 +1144,18 @@ dojo.declare('main', null, {
                         }));
                 }
                 else{
-                    this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit points."})
-                    .anyAfter(dojo.hitch(this,function(){
-                        deferred.callback({vanquished:false});
-                    }));
+                    if(this.enemy.HP==1){
+                        this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit point."})
+                        .anyAfter(dojo.hitch(this,function(){
+                            deferred.callback({vanquished:false});
+                        }));
+                    }
+                    else{
+                        this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit points."})
+                        .anyAfter(dojo.hitch(this,function(){
+                            deferred.callback({vanquished:false});
+                        }));
+                    }
                 }
             }
             else{ //miss
@@ -1277,7 +1262,12 @@ dojo.declare('main', null, {
                 //read stats
                 this._audio.say({text: "Its strength is " + this.enemy.Strength + ".", channel:'main'});
                 this._audio.say({text: "Its defense is " + this.enemy.Defense + ".", channel:'main'});
-                this._audio.say({text: "It has " + this.enemy.HP + " hit points.", channel:'main'});
+                if(this.enemy.HP == 1){
+                    this._audio.say({text: "It has " + this.enemy.HP + " hit point.", channel:'main'});
+                }
+                else{
+                    this._audio.say({text: "It has " + this.enemy.HP + " hit points.", channel:'main'});
+                }
 
                 //option to run
                 this._audio.say({text: "Do you want to try to run away?", channel:'main'});
@@ -1339,6 +1329,20 @@ dojo.declare('main', null, {
             var tempj = array[j];
             array[i] = tempj;
             array[j] = tempi;
+        }
+    },
+
+    _queryEnemy: function(){
+        if(!this.enemy) return;
+        var factor = this.enemy.Defense/(this.player.strength*2);
+        if(factor >= .75) {
+            this._audio.say({text:"This is a risky battle.", channel:'main'});
+        }
+        else if(factor >= .35){
+            this._audio.say({text:"This is a fair battle.", channel:'main'});
+        }
+        else{
+            this._audio.say({text:"This is an easy battle.", channel:'main'});
         }
     },
 });
