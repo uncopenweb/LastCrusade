@@ -41,9 +41,14 @@ dojo.declare('widgets.player', [dijit._Widget], {
             this._audio.say({text: 'You currently have ' + this.hp + ' hit points.'});
             this._audio.say({text: 'You currently have ' + this.gold + ' gold.'});
             if(this.potions.length > 0){
-                dojo.forEach(this.potions, dojo.hitch(this,function(potion){
-                    this._audio.say({text: 'You have a ' + potion.iName + ' level ' + potion.iValue});
-                }));
+                if(this.potions.length > 2){
+                    this._audio.say({text: 'You have ' + this.potions.length + ' potions.'});
+                }
+                else{
+                    dojo.forEach(this.potions, dojo.hitch(this,function(potion){
+                        this._audio.say({text: 'You have a ' + potion.iName + ' level ' + potion.iValue});
+                    }));
+                }
             }
             else{
                 this._audio.say({text: 'You currently have no potions.'});

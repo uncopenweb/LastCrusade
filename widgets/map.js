@@ -6,7 +6,6 @@ dojo.declare('widgets.map', [dijit._Widget], {
     mapData: {}, 
 
     constructor: function() {
-        //**poor mans enums
         //directions        
         this.NORTH = 0;
         this.SOUTH = 1;

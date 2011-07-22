@@ -14,10 +14,8 @@ dojo.declare('main', null, {
     constructor: function() {
         //TODO: allow user to set markers
         //TODO: save user from things like making too strong of an enemy
-        //TODO: Have a node.js widget. Can istantiate as many as you like.
-            //at the end convert each new node widget to a json that
-            //will be used during gameplay
-        //TODO: going to need cleanup after x # of deletions
+        //TODO: EXPORT and IMPORT
+        //TODO: Max # nodes?
         //TODO: unreachable nodes??
 
         //globals
@@ -43,7 +41,7 @@ dojo.declare('main', null, {
 
         //garbage collection
         this.trash = 0;
-        this.collectionTime = 3;
+        this.collectionTime = 10;
 
         this.nodes = new Array();
         this.keyDelay = 0;

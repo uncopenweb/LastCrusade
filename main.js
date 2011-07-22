@@ -85,40 +85,40 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "A: Attack <br> R: Attempt to Run Away <br> P: Use Potion <br> Q: Query Enemy ";
                 break;
             case this.sRun:
-                this.directions.innerHTML = "Y: Yes, run away <br> N: No, stay and fight";
+                this.directions.innerHTML = "Up Arrow: Yes, run away <br> Down Arrow: No, stay and fight";
                 break;
             case this.sListen:
                 this.directions.innerHTML = "F: Skip";
                 break;
             case this.sAddItem:
-                this.directions.innerHTML = "Y: Yes, add item <br> N: No, discard item";
+                this.directions.innerHTML = "Up Arrow: Yes, add item <br> Down Arrow: No, discard item";
                 break;
             case this.sPotionCycle:
                 this.directions.innerHTML = "Use the left and right arrow keys to cycle through the potions <br> Press Escape to cancel";
                 break;
             case this.sPotionChoice:
-                this.directions.innerHTML = "A: Accept, use potion <br> Left/Right Arrow: Choose Another <br> Press Escape to cancel";              
+                this.directions.innerHTML = "Up Arrow: Accept, use potion <br> Left/Right Arrow: Choose Another <br> Press Escape to cancel";              
                 break;
             case this.sVendor:
-                this.directions.innerHTML = "Y: Yes check out inventory <br> N: No, I don't want to buy anything";
+                this.directions.innerHTML = "Up Arrow: Yes check out inventory <br> Down Arrow: No, I don't want to buy anything";
                 break;
             case this.sVendorScroll:
-                this.directions.innerHTML = "B: Buy item <br> Left/Right Arrow: Choose Another <br> Escape: Return to game";              
+                this.directions.innerHTML = "Up Arrow: Buy item <br> Left/Right Arrow: Choose Another <br> Escape: Return to game";              
                 break;   
             case this.sBuy:
-                this.directions.innerHTML = "Y: Yes, buy item <br> N: No, continue looking";         
+                this.directions.innerHTML = "Up Arrow:: Yes, buy item <br> Down Arrow: No, continue looking";         
                 break;
             case this.sFriend:
-                this.directions.innerHTML = "Y: Talk to friend <br> N: Do not talk to friend";
+                this.directions.innerHTML = "Up Arrow: Talk to friend <br> Down Arrow: Do not talk to friend";
                 break;
             case this.sLepEncounter:
-                this.directions.innerHTML = "Y: Play the leprechaun's game <br> N: Refuse to play";
+                this.directions.innerHTML = "Up Arrow: Play the leprechaun's game <br> Down Arrow: Refuse to play";
                 break;
             case this.sLepGame:
                 this.directions.innerHTML = "Press 1,2 or 3 to play <br> Press 'A' to attempt to kill the leprechaun.";
                 break;
             case this.sLepAgain:
-                this.directions.innerHTML = "Y: Play again <br> N: Don't play again";
+                this.directions.innerHTML = "Up Arrow: Play again <br> Down Arrow: Don't play again";
                 break;
             }
         })); 
@@ -286,7 +286,6 @@ dojo.declare('main', null, {
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
             console.log("Game state: " , this.state);
-            console.log("enemy: ", this.enemy);
             this._keyHasGoneUp = false;             
                 switch(this.state){  
                     case this.sOff:
@@ -387,12 +386,12 @@ dojo.declare('main', null, {
                                     this.setState(this.sOff);
                                     this.player.stopAudio();
                                     if(this.player.potions.length != 0){
-                                        this._audio.say({text:"Use the left and right arrow keys to cycle through the potions.", channel: "main"});
+                                        this._audio.say({text:"Use the left and right arrow keys to cycle through the potions. Press the up arrow to select a potion and escape to cancel.", channel: "main"});
                                         this.duringMove = true;
                                         this.setState(this.sPotionCycle);   
                                     }
                                     else{
-                                        this._audio.say({text:"You do not have any potion.", channel: "main"})
+                                        this._audio.say({text:"You do not have any potions.", channel: "main"})
                                         .anyAfter(dojo.hitch(this,function(){
                                             this.setState(this.sMove);
                                         }));
@@ -493,7 +492,7 @@ dojo.declare('main', null, {
                                 this.setState(this.sOff);
                                 this.player.stopAudio();
                                 if(this.player.potions.length != 0){
-                                    this._audio.say({text:"Use the left and right arrow keys to cycle through the potions.", channel: "main"});
+                                    this._audio.say({text:"Use the left and right arrow keys to cycle through the potions.  Press the up arrow to select a potion and escape to cancel.", channel: "main"});
                                     this.setState(this.sPotionCycle);   
                                 }
                                 else{
@@ -520,7 +519,7 @@ dojo.declare('main', null, {
                         break;
                     case this.sRun:
                         switch(evt.keyCode){
-                            case 89: //Y
+                            case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
                                 this._audio.stop({channel: "main"});
                                 var randZeroTo99=Math.floor(Math.random()*100);
@@ -544,7 +543,7 @@ dojo.declare('main', null, {
                                     }));
                                 }
                             break;
-                            case 78: //N
+                            case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
                                 this._audio.stop({channel: "main"});
                                 //enemy should also attack
@@ -574,7 +573,7 @@ dojo.declare('main', null, {
                         break;
                     case this.sAddItem:
                         switch(evt.keyCode){
-                            case 89: //Y
+                            case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
                                 this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
                                 this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'main'});
@@ -582,7 +581,7 @@ dojo.declare('main', null, {
                                 this.tempItem = null;
                                 this.offerItems();                                
                             break;
-                            case 78: //N
+                            case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
                                 this.tempItem = null;
                                 this.offerItems();   
@@ -590,10 +589,12 @@ dojo.declare('main', null, {
                         }
                         break;
                     case this.sPotionCycle:
+                        var move = false;
                         switch(evt.keyCode){
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
+                                move = true;
                                 if(--this.potionIndex < 0){
                                     this.potionIndex = (this.player.potions.length - 1);
                                 }
@@ -601,13 +602,28 @@ dojo.declare('main', null, {
                             case dojo.keys.RIGHT_ARROW:
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
+                                move = true;
                                 if(++this.potionIndex >= this.player.potions.length){
                                     this.potionIndex = 0;
                                 }
                                 break;
+                            case dojo.keys.ESCAPE:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                if(this.duringMove){
+                                    this.duringMove = false;
+                                    this.setState(this.sMove);
+                                }
+                                else{
+                                    this.setState(this.sFight);
+                                }
+                                break;
                         }
-                        this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
-                        this.setState(this.sPotionChoice);
+                        if(move){
+                            this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
+                            this.setState(this.sPotionChoice);
+                        }
                         break; 
                     case this.sPotionChoice:
                         switch(evt.keyCode){
@@ -629,7 +645,7 @@ dojo.declare('main', null, {
                                 this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
                                 this.setState(this.sPotionChoice);
                                 break;
-                            case 65: //A
+                            case dojo.keys.UP_ARROW: //accept
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this._usePotion();                           
@@ -650,15 +666,15 @@ dojo.declare('main', null, {
                         break; 
                     case this.sVendor:
                         switch(evt.keyCode){
-                            case 89: //Y
+                            case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
                                 this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
-                                this._audio.say({text: "Use the arrow keys to cycle through the options and press bee to select a purchase. Press escape to return to the game.", channel:'main'});
+                                this._audio.say({text: "Use the arrow keys to cycle through the options and press the up arrow to select a purchase. Press escape to return to the game.", channel:'main'});
                                 this.setState(this.sVendorScroll);
                             break;
-                            case 78: //N
+                            case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
@@ -688,7 +704,7 @@ dojo.declare('main', null, {
                                 this._audio.say({text: this.vendor.Items[this.itemIndex].iName + "price " + this.vendor.Items[this.itemIndex].iValue + " gold.", channel: "main"});
                                 this.setState(this.sVendorScroll);
                                 break;
-                            case 66: //B
+                            case dojo.keys.UP_ARROW: //B
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this._buyItem();                           
@@ -705,7 +721,7 @@ dojo.declare('main', null, {
                     break;
                     case this.sBuy:
                         switch(evt.keyCode){
-                            case 89: //Y
+                            case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 if(this.player.gold < this.vendor.Items[this.itemIndex].iValue){
@@ -739,7 +755,7 @@ dojo.declare('main', null, {
                                 }
                                 
                             break;
-                            case 78: //N
+                            case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
@@ -751,7 +767,7 @@ dojo.declare('main', null, {
                     //have to fill up an array, go through it one by one and callback when all done
                     case this.sFriend:
                         switch(evt.keyCode){
-                            case 89: //Y
+                            case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
@@ -768,7 +784,7 @@ dojo.declare('main', null, {
                                     }));
                                 this.setState(this.sListen);
                             break;
-                            case 78: //N
+                            case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
@@ -780,7 +796,7 @@ dojo.declare('main', null, {
                     break;
                     case this.sLepEncounter:
                         switch(evt.keyCode){
-                            case 89: //Y
+                            case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
@@ -795,7 +811,7 @@ dojo.declare('main', null, {
                                     this.startLepGame();
                                 }
                             break;
-                            case 78: //N
+                            case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
@@ -875,13 +891,13 @@ dojo.declare('main', null, {
                     break;
                     case this.sLepAgain:
                         switch(evt.keyCode){
-                         case 89: //Y
+                         case dojo.keys.UP_ARROW: //Y
                             this.setState(this.sOff);
                             this._audio.stop({channel:'main'});
                             this.player.stopAudio();
                             this.startLepGame();
                             break;
-                         case 78: //N
+                         case dojo.keys.DOWN_ARROW: //N
                             this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this.player.stopAudio();
