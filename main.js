@@ -94,10 +94,10 @@ dojo.declare('main', null, {
                 this.directions.innerHTML = "Y: Yes, add item <br> N: No, discard item";
                 break;
             case this.sPotionCycle:
-                this.directions.innerHTML = "Use the left and right arrow keys to cycle through the potions.";
+                this.directions.innerHTML = "Use the left and right arrow keys to cycle through the potions <br> Press Escape to cancel";
                 break;
             case this.sPotionChoice:
-                this.directions.innerHTML = "A: Accept, use potion <br> Left/Right Arrow: Choose Another";              
+                this.directions.innerHTML = "A: Accept, use potion <br> Left/Right Arrow: Choose Another <br> Press Escape to cancel";              
                 break;
             case this.sVendor:
                 this.directions.innerHTML = "Y: Yes check out inventory <br> N: No, I don't want to buy anything";
@@ -633,7 +633,19 @@ dojo.declare('main', null, {
                                 this.setState(this.sOff);
                                 this._audio.stop({channel:'main'});
                                 this._usePotion();                           
-                            break;
+                                break;
+                            case dojo.keys.ESCAPE:
+                                this.setState(this.sOff);
+                                this._audio.stop({channel:'main'});
+                                this.player.stopAudio();
+                                if(this.duringMove){
+                                    this.duringMove = false;
+                                    this.setState(this.sMove);
+                                }
+                                else{
+                                    this.setState(this.sFight);
+                                }
+                                break;
                         }
                         break; 
                     case this.sVendor:

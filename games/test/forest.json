@@ -8,112 +8,96 @@
             "iType": 0, 
             "iName": "small dagger", 
             "iValue": 3, 
-            "iNameSound": 15
         }, 
         {
             "iActionSound": -1, 
             "iType": 1, 
             "iName": "small shield", 
             "iValue": 3, 
-            "iNameSound": 16
         }, 
         {
             "iActionSound": -1, 
             "iType": 3, 
             "iName": "bag of gold", 
             "iValue": 100, 
-            "iNameSound": 8
         }, 
         {
             "iActionSound": -1, 
             "iType": 3, 
             "iName": "gold coins", 
             "iValue": 50, 
-            "iNameSound": 9
         }, 
         {
             "iActionSound": 26, 
             "iType": 0, 
             "iName": "wooden dagger", 
             "iValue": 2, 
-            "iNameSound": 20
         }, 
         {
             "iActionSound": -1, 
             "iType": 1, 
             "iName": "wooden shield", 
             "iValue": 2, 
-            "iNameSound": 21
         }, 
         {
             "iActionSound": 26, 
             "iType": 0, 
             "iName": "dagger", 
             "iValue": 4, 
-            "iNameSound": 10
         }, 
         {
             "iActionSound": 26, 
             "iType": 0, 
             "iName": "sharp dagger", 
             "iValue": 5, 
-            "iNameSound": 13
         }, 
         {
             "iActionSound": 26, 
             "iType": 0, 
             "iName": "silver dagger", 
             "iValue": 7, 
-            "iNameSound": 14
         }, 
         {
             "iActionSound": 26, 
             "iType": 0, 
             "iName": "black talon", 
             "iValue": 8, 
-            "iNameSound": 22
         }, 
         {
             "iActionSound": 29, 
             "iType": 0, 
             "iName": "small sword", 
             "iValue": 10, 
-            "iNameSound": 17
         }, 
         {
             "iActionSound": 27, 
             "iType": 2, 
             "iName": "potion", 
             "iValue": 25, 
-            "iNameSound": 11
         }, 
         {
             "iActionSound": -1, 
             "iType": 1, 
             "iName": "shield", 
             "iValue": 5, 
-            "iNameSound": 12
         }, 
         {
             "iActionSound": -1, 
             "iType": 1, 
             "iName": "strong shield", 
             "iValue": 7, 
-            "iNameSound": 18
         }, 
         {
             "iActionSound": -1, 
             "iType": 1, 
             "iName": "weak armor", 
             "iValue": 10, 
-            "iNameSound": 19
         }, 
         {
             "iActionSound": -1, 
             "iType": 3, 
             "iName": "pot of gold", 
             "iValue": 250, 
-            "iNameSound": 46
         }
     ], 
     "NPCs": [
@@ -127,8 +111,6 @@
             "cStrMin": 0, 
             "cName": "Christopher", 
             "cHPMin": 0, 
-            "cItemCount": 2, 
-            "cNameSound": 54, 
             "items": [
                 {
                     "cPercent": 100, 
@@ -151,8 +133,6 @@
             "cStrMin": 2, 
             "cName": "wolf", 
             "cHPMin": 1, 
-            "cItemCount": 1, 
-            "cNameSound": 0, 
             "items": [
                 {
                     "cPercent": 20, 
@@ -171,8 +151,6 @@
             "cStrMin": 7, 
             "cName": "snake", 
             "cHPMin": 3, 
-            "cItemCount": 2, 
-            "cNameSound": 6, 
             "items": [
                 {
                     "cPercent": 30, 
@@ -195,8 +173,6 @@
             "cStrMin": 3, 
             "cName": "bear", 
             "cHPMin": 5, 
-            "cItemCount": 2, 
-            "cNameSound": 2, 
             "items": [
                 {
                     "cPercent": 20, 
@@ -219,8 +195,6 @@
             "cStrMin": 5, 
             "cName": "berserker", 
             "cHPMin": 1, 
-            "cItemCount": 2, 
-            "cNameSound": 3, 
             "items": [
                 {
                     "cPercent": 40, 
@@ -243,8 +217,6 @@
             "cStrMin": 3, 
             "cName": "barbarian", 
             "cHPMin": 3, 
-            "cItemCount": 2, 
-            "cNameSound": 1, 
             "items": [
                 {
                     "cPercent": 50, 
@@ -267,8 +239,6 @@
             "cStrMin": 7, 
             "cName": "giant spider", 
             "cHPMin": 7, 
-            "cItemCount": 2, 
-            "cNameSound": 7, 
             "items": [
                 {
                     "cPercent": 70, 
@@ -291,8 +261,6 @@
             "cStrMin": 5, 
             "cName": "centaur", 
             "cHPMin": 7, 
-            "cItemCount": 2, 
-            "cNameSound": 4, 
             "items": [
                 {
                     "cPercent": 30, 
@@ -315,8 +283,6 @@
             "cStrMin": 12, 
             "cName": "cyclops", 
             "cHPMin": 25, 
-            "cItemCount": 4, 
-            "cNameSound": 5, 
             "items": [
                 {
                     "cPercent": 50, 
@@ -347,8 +313,6 @@
             "cStrMin": 20, 
             "cName": "weapons r us", 
             "cHPMin": 0, 
-            "cItemCount": 3, 
-            "cNameSound": 47, 
             "items": [
                 {
                     "cPercent": 100, 
@@ -375,8 +339,6 @@
             "cStrMin": 15, 
             "cName": "nice price weapons", 
             "cHPMin": 0, 
-            "cItemCount": 3, 
-            "cNameSound": 48, 
             "items": [
                 {
                     "cPercent": 100, 
@@ -403,8 +365,6 @@
             "cStrMin": 0, 
             "cName": "leprachuan", 
             "cHPMin": 0, 
-            "cItemCount": 3, 
-            "cNameSound": 45, 
             "items": [
                 {
                     "cPercent": 25, 
@@ -431,8 +391,6 @@
             "cStrMin": 0, 
             "cName": "John the farmer", 
             "cHPMin": 0, 
-            "cItemCount": 0, 
-            "cNameSound": 53, 
             "items": [], 
             "cRunPerc": 0
         }, 
@@ -446,8 +404,6 @@
             "cStrMin": 0, 
             "cName": "peter", 
             "cHPMin": 0, 
-            "cItemCount": 0, 
-            "cNameSound": 52, 
             "items": [], 
             "cRunPerc": 0
         }
@@ -513,12 +469,8 @@
     "nodes": [
         {
             "nNorth": -1, 
-            "visited": 0,
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -530,15 +482,11 @@
             "Sounds": [
                 31
             ], 
-            "nMusicCount": 1, 
             "nIndex": 40, 
             "nWest": -1
         }, 
         {
             "nNorth": 3, 
-            "visited": 0,
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [
                 {
                     "nPercent": 75, 
@@ -546,7 +494,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -560,15 +507,11 @@
                 38, 
                 40
             ], 
-            "nMusicCount": 3, 
             "nIndex": 41, 
             "nWest": 0
         }, 
         {
             "nNorth": 4, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 2, 
             "Items": [
                 {
                     "nPercent": 50, 
@@ -576,7 +519,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 46, 
@@ -594,15 +536,11 @@
                 39, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 42, 
             "nWest": 1
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 3, 
             "Items": [
                 {
                     "nPercent": 60, 
@@ -610,7 +548,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 10, 
@@ -632,15 +569,11 @@
                 38, 
                 39
             ], 
-            "nMusicCount": 3, 
             "nIndex": 31, 
             "nWest": -1
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 2, 
             "Items": [
                 {
                     "nPercent": 75, 
@@ -652,7 +585,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 46, 
@@ -670,18 +602,13 @@
                 38, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 32, 
             "nWest": 3
         }, 
         {
             "nNorth": 1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 3, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 10, 
@@ -703,18 +630,13 @@
                 39, 
                 40
             ], 
-            "nMusicCount": 3, 
             "nIndex": 51, 
             "nWest": -1
         }, 
         {
             "nNorth": 2, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -726,18 +648,13 @@
             "Sounds": [
                 44
             ], 
-            "nMusicCount": 1, 
             "nIndex": 52, 
             "nWest": 5
         }, 
         {
             "nNorth": 16, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -749,15 +666,11 @@
             "Sounds": [
                 31
             ], 
-            "nMusicCount": 1, 
             "nIndex": 53, 
             "nWest": 6
         }, 
         {
             "nNorth": 13, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 3, 
             "Items": [
                 {
                     "nPercent": 70, 
@@ -769,7 +682,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 46, 
@@ -791,18 +703,13 @@
                 38, 
                 40
             ], 
-            "nMusicCount": 3, 
             "nIndex": 54, 
             "nWest": 7
         }, 
         {
             "nNorth": 18, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 3, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 46, 
@@ -824,18 +731,13 @@
                 40, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 55, 
             "nWest": 8
         }, 
         {
             "nNorth": 19, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -847,18 +749,13 @@
             "Sounds": [
                 43
             ], 
-            "nMusicCount": 1, 
             "nIndex": 56, 
             "nWest": 9
         }, 
         {
             "nNorth": 20, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -872,15 +769,11 @@
                 40, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 57, 
             "nWest": 10
         }, 
         {
             "nNorth": 8, 
-            "visited": 0,
-            "nImage": "                    ", 
-            "nNPCCount": 0, 
             "Items": [
                 {
                     "nPercent": 100, 
@@ -888,22 +781,17 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [], 
             "nSouth": -1, 
             "nEast": -1, 
             "Sounds": [
                 42
             ], 
-            "nMusicCount": 1, 
             "nIndex": 64, 
             "nWest": -1
         }, 
         {
             "nNorth": 14, 
-            "visited": 0,
-            "nImage": "                    ", 
-            "nNPCCount": 2, 
             "Items": [
                 {
                     "nPercent": 100, 
@@ -911,7 +799,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 80, 
@@ -929,15 +816,11 @@
                 39, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 44, 
             "nWest": 16
         }, 
         {
             "nNorth": 15, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [
                 {
                     "nPercent": 25, 
@@ -945,7 +828,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -957,15 +839,11 @@
             "Sounds": [
                 31
             ], 
-            "nMusicCount": 1, 
             "nIndex": 34, 
             "nWest": 17
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 0, 
             "Items": [
                 {
                     "nPercent": 100, 
@@ -973,25 +851,19 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [], 
             "nSouth": 14, 
             "nEast": -1, 
             "Sounds": [
                 42
             ], 
-            "nMusicCount": 1, 
             "nIndex": 24, 
             "nWest": -1
         }, 
         {
             "nNorth": 17, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -1003,15 +875,11 @@
             "Sounds": [
                 43
             ], 
-            "nMusicCount": 1, 
             "nIndex": 43, 
             "nWest": 2
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 2, 
             "Items": [
                 {
                     "nPercent": 100, 
@@ -1019,7 +887,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 54, 
@@ -1037,18 +904,13 @@
                 40, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 33, 
             "nWest": 4
         }, 
         {
             "nNorth": 24, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -1060,15 +922,11 @@
             "Sounds": [
                 44
             ], 
-            "nMusicCount": 1, 
             "nIndex": 45, 
             "nWest": 13
         }, 
         {
             "nNorth": 23, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 0, 
             "Items": [
                 {
                     "nPercent": 60, 
@@ -1080,22 +938,17 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [], 
             "nSouth": 10, 
             "nEast": 20, 
             "Sounds": [
                 42
             ], 
-            "nMusicCount": 1, 
             "nIndex": 46, 
             "nWest": 18
         }, 
         {
             "nNorth": 22, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 2, 
             "Items": [
                 {
                     "nPercent": 33, 
@@ -1103,7 +956,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 50, 
@@ -1121,15 +973,11 @@
                 39, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 47, 
             "nWest": 19
         }, 
         {
             "nNorth": 25, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [
                 {
                     "nPercent": 77, 
@@ -1137,7 +985,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -1149,15 +996,11 @@
             "Sounds": [
                 42
             ], 
-            "nMusicCount": 1, 
             "nIndex": 48, 
             "nWest": 20
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [
                 {
                     "nPercent": 66, 
@@ -1165,7 +1008,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -1179,15 +1021,11 @@
                 38, 
                 40
             ], 
-            "nMusicCount": 3, 
             "nIndex": 37, 
             "nWest": 23
         }, 
         {
             "nNorth": -1, 
-            "visited": 0,
-            "nImage": "                    ", 
-            "nNPCCount": 3, 
             "Items": [
                 {
                     "nPercent": 50, 
@@ -1199,7 +1037,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 46, 
@@ -1221,15 +1058,11 @@
                 37, 
                 41
             ], 
-            "nMusicCount": 3, 
             "nIndex": 36, 
             "nWest": 24
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 2, 
             "Items": [
                 {
                     "nPercent": 30, 
@@ -1237,7 +1070,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 46, 
@@ -1255,15 +1087,11 @@
                 36, 
                 37
             ], 
-            "nMusicCount": 3, 
             "nIndex": 35, 
             "nWest": 14
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 1, 
             "Items": [
                 {
                     "nPercent": 50, 
@@ -1271,7 +1099,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 100, 
@@ -1285,15 +1112,11 @@
                 38, 
                 39
             ], 
-            "nMusicCount": 3, 
             "nIndex": 38, 
             "nWest": 22
         }, 
         {
             "nNorth": 21, 
-            "visited": 0,
-            "nImage": "                    ", 
-            "nNPCCount": 2, 
             "Items": [
                 {
                     "nPercent": 20, 
@@ -1301,7 +1124,6 @@
                 }
             ], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [
                 {
                     "nPercent": 50, 
@@ -1319,25 +1141,19 @@
                 39, 
                 40
             ], 
-            "nMusicCount": 3, 
             "nIndex": 58, 
             "nWest": 11
         }, 
         {
             "nNorth": -1, 
-            "visited": 0, 
-            "nImage": "                    ", 
-            "nNPCCount": 0, 
             "Items": [], 
             "RequiredItems": [], 
-            "nReqItemCount": 0, 
             "NPC": [], 
             "nSouth": -1, 
             "nEast": -1, 
             "Sounds": [
                 31
             ], 
-            "nMusicCount": 1, 
             "nIndex": 49, 
             "nWest": 21
         }

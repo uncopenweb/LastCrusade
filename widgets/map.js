@@ -143,7 +143,6 @@ dojo.declare('widgets.map', [dijit._Widget], {
     visitCurrentNode: function(){
         var cNode = this.mapData.nodes[this.currentNodeIndex];
         var deferred = new dojo.Deferred();
-        cNode.visited = 1;
         if(this.currentNodeIndex == this.mapData.End){
             this.destroyRecursive();
         }
