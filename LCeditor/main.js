@@ -528,7 +528,7 @@ dojo.declare('main', null, {
         this.cMap = null;
         this.cMap = new Array();
         dojo.forEach(this.nodes, dojo.hitch(this,function(node){
-            this.cMap.push({"x": node.x, "y": node.y}, node.nIndex);
+            this.cMap.push([{"x": node.x, "y": node.y}, node.nIndex]);
         }));
         console.log("Reset CMap: ", this.cMap);
     },
