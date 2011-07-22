@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Last Crusade Editor</title>
+    <style type="text/css">
+      @import "http://ajax.googleapis.com/ajax/libs/dojo/1.4.1/dojo/resources/dojo.css";
+    </style>
+    <script type="text/javascript">
+        var djConfig = {
+            isDebug: false,
+            parseOnLoad: true,
+            baseUrl: './',
+            modulePaths: {'widgets' : 'widgets'}
+        };
+    </script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dojo/dojo.xd.js"></script>
+    <script type="text/javascript" src="/libs/uow/trace.js"></script>
+    <script type="text/javascript" src="/libs/uow.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript">
+        dojo.require('dijit.Dialog');
+        dojo.require('dijit.layout.BorderContainer');
+        dojo.require('dijit.layout.ContentPane');
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+  </head>
+  <body class="tundra">
+    <div dojoType="dijit.layout.BorderContainer" id = "mainContents" liveSplitters="true">
+        <div dojoType="dijit.layout.ContentPane" region="top" id ="header" splitter="false">
+        </div>
+        <div dojoType="dijit.layout.ContentPane" id="game" region="center" splitter="true">
+            <div>Directions</div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane"region="bottom" splitter="true">
+            <div id="directions"></div>
+        </div>
+    </div>
+    <!--<div id="loadingDialog" style="display: none" dojoType="dijit.Dialog" title="Loading">
+        <div dojoType="dijit.layout.ContentPane" title="foo" style = "width: 500px; height: 100px; overflow: auto; padding-left: 25px; padding-right: 25px; text-align: center;">
+            <h1>The Last Crusade is loading</h1>
+        </div>
+    </div>-->
+  </body>
+</html>
