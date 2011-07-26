@@ -122,9 +122,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
             if(this.nodes[neighbor].RequiredItems.length!=0){
                 var failedOne = false;
                 dojo.some(this.nodes[neighbor].RequiredItems, dojo.hitch(this,function(NItemIdx){
-                    NItem = this.map.items[NItemIdx.nReqItem];
+                    var NItem = this.items[NItemIdx.nReqItem];
+                    console.log("NITEM: ", NItem);
                     var pass = false;
-                    dojo.some(player.special, dojo.hitch(this, function(pItem){
+                    dojo.some(player.specialItems, dojo.hitch(this, function(pItem){
                         if((pItem.iActionSound == NItem.iActionSound)
                             &&(pItem.iName == NItem.iName)
                             &&(pItem.iValue == NItem.iValue))
@@ -134,7 +135,8 @@ dojo.declare('widgets.map', [dijit._Widget], {
                         }
                     }));
                     if(!pass){
-                        player.missingItemName = NItem.name;
+                        console.log("NEED: ", NItem.iName);
+                        player.missingItemName = NItem.iName;
                         failedOne = true;
                         return false; //exit loop
                     }

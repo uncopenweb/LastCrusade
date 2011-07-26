@@ -167,7 +167,9 @@ dojo.declare('main', null, {
         begin gameplay
     */
     _start: function(){
-        this.mapList = ["forest.json", "graveyard.json", "castle.json"];
+        //@TODO: CHANGE BACK!!!!!!!!!!!!!!!!1
+        //this.mapList = ["forest.json", "graveyard.json", "castle.json"];
+        this.mapList = ["graveyard.json"];
         this.player = new widgets.player({}, null); 
         this._audio.play({url: 'sounds/general/' + this.title, channel:'main'});
         this._audio.setProperty({name: 'loop', channel: 'background', value: true});
@@ -207,6 +209,8 @@ dojo.declare('main', null, {
         dataDef.addCallback(dojo.hitch(this, function(data) { 
             this.map = new widgets.map({mapData: data}, null); 
             if(this.start){
+                //@TODO REMOVE!!!!!!!!!!!!!!!!!!!!
+                this.player.equipWeakItems(this.map);
                 this.start = false;
             }
             else{
@@ -397,14 +401,12 @@ dojo.declare('main', null, {
                                         }));
                                     }
                                 break;
-                            case 77:
-                                if(this.player.strength == 0){
-                                    this.player.strength = 100;
-                                }
-                                else{
-                                    this.player.strength = 0;
-                                }
-                            break;
+                            /* @TODO: REMOVE AFTER DEBUGGING DONE!!!!!!!!!!!*/
+                            case 71:
+                                this.player.hp = 100;
+                                this.player.strength = 100;
+                                this.player.defense = 1000;
+                                break;
                         }
                         break;
                     case this.sMenu:
@@ -512,8 +514,10 @@ dojo.declare('main', null, {
                             case 75: //set enemy health to 0
                                 this.enemy.HP = 0;
                                 break;
-                            case 83:
-                                this.player.hp = 0;
+                            case 71:
+                                this.player.hp = 100;
+                                this.player.strength = 100;
+                                this.player.defense = 1000;
                                 break;
                         }  
                         break;
@@ -1030,7 +1034,7 @@ dojo.declare('main', null, {
                     break;
                 case dojo.global.SPECIAL:
                     this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                    this._audio.say({text: foundSaying + " " + item.iName + " level " + this.iValue, channel: 'main'});
+                    this._audio.say({text: foundSaying + " " + item.iName, channel: 'main'});
                     this.player.addItem(item);
                     break;
             }
@@ -1261,6 +1265,7 @@ dojo.declare('main', null, {
             this.exploreNode();
         }
         else{
+            console.log("Name: ", this.player.missingItemName);
             if(this.player.tooWeak){
                 this.player.tooWeak = false;
                 this._audio.stop({channel: "main"});
