@@ -121,20 +121,22 @@ dojo.declare('widgets.map', [dijit._Widget], {
             }
             if(this.nodes[neighbor].RequiredItems.length!=0){
                 var failedOne = false;
-                dojo.forEach(this.nodes[neighbor].RequiredItems, dojo.hitch(this,function(NItem){
+                dojo.some(this.nodes[neighbor].RequiredItems, dojo.hitch(this,function(NItemIdx){
+                    NItem = this.map.items[NItemIdx.nReqItem];
                     var pass = false;
-                    dojo.forEach(player.special, dojo.hitch(this, function(spec){
-                        item = this.map.items[spec.nReqItem];
-                        if((item.iActionSound == NItem.iActionSound)
-                            &&(item.iName == NItem.iName)
-                            &&(item.iValue == NItem.iValue))
+                    dojo.some(player.special, dojo.hitch(this, function(pItem){
+                        if((pItem.iActionSound == NItem.iActionSound)
+                            &&(pItem.iName == NItem.iName)
+                            &&(pItem.iValue == NItem.iValue))
                         {
                             pass = true;
+                            return false; //exit loop
                         }
                     }));
                     if(!pass){
                         player.missingItemName = NItem.name;
                         failedOne = true;
+                        return false; //exit loop
                     }
                 }));
                 if(failedOne){
