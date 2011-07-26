@@ -1267,6 +1267,12 @@ dojo.declare('main', null, {
                 this._audio.say({text: "You are not strong enough to move down this passage. Come back when you have greater strength.", channel : "main"})
                 this.setState(this.sMove);
             }
+            else if(this.player.missingItemName!=null){
+                this._audio.stop({channel: "main"});
+                this._audio.say({text: "You need the " + this.player.missingItemName + " to proceed down this path. Come back when you have found it.", channel : "main"})
+                this.player.missingItemName = null;
+                this.setState(this.sMove);
+            }
             else{
                 this._audio.stop({channel: "main"});
                 this._audio.play({url: "sounds/noMove", channel : "main"})

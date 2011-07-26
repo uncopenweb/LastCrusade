@@ -15,6 +15,7 @@ dojo.declare('widgets.player', [dijit._Widget], {
         this.potions = new Array();
         this.weapon = null;
         this.armor = null;
+        this.missingItemName = null;
         this.specialItems = new Array();
         this.ready = false;
         var def = uow.getAudio({defaultCaching: true});

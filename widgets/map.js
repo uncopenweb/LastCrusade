@@ -118,15 +118,33 @@ dojo.declare('widgets.map', [dijit._Widget], {
                     player.tooWeak = true;
                     return false;
                 }
+            }
+            if(this.nodes[neighbor].RequiredItems.length!=0){
+                var failedOne = false;
+                dojo.forEach(this.nodes[neighbor].RequiredItems, dojo.hitch(this,function(NItem){
+                    var pass = false;
+                    dojo.forEach(player.special, dojo.hitch(this, function(spec){
+                        item = this.map.items[spec.nReqItem];
+                        if((item.iActionSound == NItem.iActionSound)
+                            &&(item.iName == NItem.iName)
+                            &&(item.iValue == NItem.iValue))
+                        {
+                            pass = true;
+                        }
+                    }));
+                    if(!pass){
+                        player.missingItemName = NItem.name;
+                        failedOne = true;
+                    }
+                }));
+                if(failedOne){
+                    return false;
+                }
                 else{
                     this.lastNodeIndex = this.currentNodeIndex;
                     this.currentNodeIndex = neighbor;
                     return true;
                 }
-            }
-            else if(this.nodes[neighbor].RequiredItems.length!=0){
-                //if(this.player.special.length
-                //@TODO: need to enforce required items
             }
             else{
                 this.lastNodeIndex = this.currentNodeIndex;
