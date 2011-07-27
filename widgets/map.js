@@ -38,11 +38,13 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.setUpNodes();
     },
 
-    /*
-        attempts to move in the direction specified. 
-        may fail if there is no neighbor node in that direction.
-        @return boolean indicating success of move
-    */
+    /*******************************************************************
+     *
+     * attempts to move in the direction specified.
+     * may fail if there is no neighbor node in that direction.
+     * @return boolean indicating success of move
+     *
+     ******************************************************************/
     move: function(direction, player){
         result = this._getNeighbor(direction, player);
         if(!result)
@@ -66,6 +68,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return true;
     },
 
+    /*******************************************************************
+     *
+     * Setup array of adjacent node indexes
+     *
+     ******************************************************************/
     queryDirections: function(){
         var toReturn = new Array(4);
         toReturn[0] = this.nodes[this.currentNodeIndex].nNorth;
@@ -75,12 +82,14 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return toReturn;
     },
 
-    /*
-        attempts to move to neighbor in the specified direction
-        if no such neighbor exists, return false.
-        otherwise if player can defeat enemy (if present) at location,
-        return true and set the new currentNodeIndex
-    */
+    /*******************************************************************
+     *
+     * attempts to move to neighbor in the specified direction
+     * if no such neighbor exists, return false.
+     * otherwise if player can defeat enemy (if present) at location,
+     * return true and set the new currentNodeIndex
+     *
+     ******************************************************************/
     _getNeighbor: function(direction, player){
         var neighbor = -1;
         switch(direction){
@@ -158,9 +167,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         }
     },
 
-    /*
-        May eventually be simplfied, not sure what I need right now
-    */
+    /*******************************************************************
+     *
+     * May eventually be simplfied, not sure what I need right now
+     *
+     ******************************************************************/
     visitCurrentNode: function(){
         var cNode = this.mapData.nodes[this.currentNodeIndex];
         var deferred = new dojo.Deferred();
@@ -180,9 +191,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return deferred;
     },
 
-    /*
-        Used when the player runs away from the enemy
-    */
+    /*******************************************************************
+     *
+     * Used when the player successfully runs away from the enemy
+     *
+     ******************************************************************/
     returnPrevious: function(){
         var deferred = new dojo.Deferred();
         var temp = this.currentNodeIndex;
@@ -195,6 +208,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return deferred;       
     },
 
+    /*******************************************************************
+     *
+     * returns random entry in passed in array
+     *
+     ******************************************************************/
     oneOf: function(array){
         return array[Math.floor(Math.random()*array.length)];
     },
@@ -206,9 +224,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         dojo.publish("mapStatus", ["mapDestroy"]);
     },
 
-    /*
-        Get NPC of a node, build in order of precedence if more than one
-    */
+    /*******************************************************************
+     *
+     * Get NPC of a node, build in order of precedence if more than one
+     *
+     ******************************************************************/
     getNPC: function(type){
         var toReturn = new Array(2);
         var returnIndex = -1;
@@ -226,9 +246,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return toReturn;
     },
 
-    /*
-        fade out and stop channel
-    */
+    /*******************************************************************
+     *
+     * fade out and stop channel
+     *
+     ******************************************************************/
     fade: function(){
         var increments=[0.75, 0.5, 0.25, 0.1, 0.05];
         var i = 0;
@@ -249,13 +271,15 @@ dojo.declare('widgets.map', [dijit._Widget], {
         return deferred;
     },
 
-    /*
-        Each NPC has min and max params for health, strength, etc. Need to fixed values.
-        Also, for each node, and NPC has a percentage change that it will be at that given
-        node, so go ahead and determine that now
-
-        Likewise determine the items for each node
-    */
+    /*******************************************************************
+     *
+     * Each NPC has min and max params for health, strength, etc. Need
+     * to resolve to a fixed value. Also, for each node, an NPC has a
+     * percentage change that it will be at that given node, so go ahead
+     * and determine which NPCs are present. Likewise determine the
+     * items for each node
+     *
+     ******************************************************************/
     setUpNodes: function(){
         dojo.forEach(this.nodes, dojo.hitch(this, function(node){
             var toPop = [];
@@ -326,10 +350,11 @@ dojo.declare('widgets.map', [dijit._Widget], {
         }));
     },
 
-    /*
+    /*******************************************************************
+     * 
      * Remove NPC from current node specified by given index
      *
-     */
+     ******************************************************************/
     removeNPC: function(index){
         this.nodes[this.currentNodeIndex].NPC.splice(index,1);
     }

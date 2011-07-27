@@ -1,12 +1,11 @@
-/**************************************************************************
+/***********************************************************************
 *
 * TheLastCrusade -- developed for HarkTheSound.org by Robert Overman
 *
 * From the original Win version:
-* http://www.cs.unc.edu/Research/assist/et/projects/RPG/TheLastCrusade.htm
+* www.cs.unc.edu/Research/assist/et/projects/RPG/TheLastCrusade.htm
 *
-***************************************************************************/
-/*  @TODO: Add in too soon click for space bar?*/
+***********************************************************************/
 /*  @TODO: Sell back items -> need for primary and secondary weapons??*/
 
 dojo.provide('main');
@@ -132,7 +131,13 @@ dojo.declare('main', null, {
             this._start();
         }));           
     },
-    
+
+    /*******************************************************************
+     *
+     * Resets all boolean values/other game data for restarting the game
+     * for when player killed for example
+     * 
+     ******************************************************************/
     _gameReset: function(){
         this.state = this.sOff;
         this.potentialItems = new Array(); //items to ask player if he/she wants
@@ -163,13 +168,13 @@ dojo.declare('main', null, {
         this.itemIndex = 0;   
     },
 
-    /*
-        begin gameplay
-    */
+    /*******************************************************************
+     *
+     * begin gameplay
+     *
+     ******************************************************************/
     _start: function(){
-        //@TODO: CHANGE BACK!!!!!!!!!!!!!!!!1
-        //this.mapList = ["forest.json", "graveyard.json", "castle.json"];
-        this.mapList = ["graveyard.json"];
+        this.mapList = ["forest.json", "graveyard.json", "castle.json"];
         this.player = new widgets.player({}, null); 
         this._audio.play({url: 'sounds/general/' + this.title, channel:'main'});
         this._audio.setProperty({name: 'loop', channel: 'background', value: true});
@@ -178,10 +183,12 @@ dojo.declare('main', null, {
         this.setState(this.sMenu);            
     },
 
-    /*
-        Load the map and visit the first node
-        Also sets up how to handle game widget destruction
-    */
+    /*******************************************************************
+     *
+     * Load the map and visit the first node. Also sets up how to
+     * handle game widget destruction
+     * 
+     ******************************************************************/
     _loadMap: function(fileName) {
         var mapHandle = dojo.subscribe("mapStatus", dojo.hitch(this, function(message){
             if (message == "mapDestroy") {
@@ -209,8 +216,6 @@ dojo.declare('main', null, {
         dataDef.addCallback(dojo.hitch(this, function(data) { 
             this.map = new widgets.map({mapData: data}, null); 
             if(this.start){
-                //@TODO REMOVE!!!!!!!!!!!!!!!!!!!!
-                this.player.equipWeakItems(this.map);
                 this.start = false;
             }
             else{
@@ -224,10 +229,12 @@ dojo.declare('main', null, {
         }));
     },
 
-    /*
-        Remove key down flag. Checking key down flag prevents streaming 
-        requests to server from holding down a key
-    */
+    /*******************************************************************
+     *
+     * Remove key down flag. Checking key down flag prevents streaming
+     * requests to server from holding down a key
+     *
+     ******************************************************************/
     _removeKeyDownFlag: function() {
         if (this.keyDelayTimer && this.keyDelayTimer.isRunning){} //do nothing
         else{
@@ -240,9 +247,12 @@ dojo.declare('main', null, {
         }
 	},    
 
-    /*
-        setup all sound names from original game, most will eventually be deleted
-    */
+    /*******************************************************************
+     *
+     * setup all sound names from original game, most will eventually
+     * be deleted
+     *
+     ******************************************************************/
     _initSounds: function(){
         this.theme = "main_theme";
 	    this.title = "title";
@@ -284,9 +294,11 @@ dojo.declare('main', null, {
         this.equip = "equip";
     },
     
-    /*
-        Analyze user input given the state of the game
-    */
+    /*******************************************************************
+     *
+     * Analyze user input given the state of the game
+     *
+     ******************************************************************/
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
             console.log("Game state: " , this.state);
@@ -923,7 +935,12 @@ dojo.declare('main', null, {
             }
         }
     },
-    
+
+    /*******************************************************************
+     *
+     * Setup a game with encountered leprechaun
+     *
+     ******************************************************************/
     startLepGame: function(){
     this._audio.play({url: "sounds/general/" + this.lep123, channel: 'main'});
         var temp = Math.floor(Math.random()*(3));
@@ -946,9 +963,11 @@ dojo.declare('main', null, {
         this.setState(this.sLepGame);    
     },
     
-    /*
+    /*******************************************************************
+     * 
      * Sequence after player has chosen 1-3 during lep game
-     * */
+     * 
+     ******************************************************************/
     lepResponse: function(choice){
         this.player.gold+=choice;
         if(choice > 0){ //win
@@ -971,9 +990,11 @@ dojo.declare('main', null, {
         }
     },
     
-    /*
-        Use the potion selected
-    */
+    /*******************************************************************
+     *
+     * Use the potion selected
+     *
+     ******************************************************************/
     _usePotion:function(){
         this._audio.play({url: 'sounds/general/potion_a', channel:'main'})
             .anyAfter(dojo.hitch(this,function(){
@@ -996,9 +1017,15 @@ dojo.declare('main', null, {
         }));
     },
 
-    /*
-        Find any items that are better than current from items, then ask player whether to take
-    */
+    /*******************************************************************
+     *
+     * Used for example after defeating an enemy or searching a location
+     * for items. Finds any items that are better than current from
+     * items (for example a stronger weapon/0, then ask player whether
+     * to take or not. Items such as gold and special are automatically
+     * given to the player without asking.
+     *
+     ******************************************************************/
     examineItems: function(items, foundSaying){
         this.offerSaying = foundSaying;
         var deferred = new dojo.Deferred();
@@ -1058,9 +1085,11 @@ dojo.declare('main', null, {
         return deferred;
     },
 
-    /*
-        Buy the selected item
-    */
+    /*******************************************************************
+     *
+     * Buy the selected item
+     *
+     ******************************************************************/
     _buyItem: function(){
         switch(this.vendor.Items[this.itemIndex].iType){
             case dojo.global.WEAPON:
@@ -1101,9 +1130,11 @@ dojo.declare('main', null, {
         }));
     },
 
-    /*
-        fade out and stop channel
-    */
+    /*******************************************************************
+     *
+     * fade out and stop channel
+     *
+     ******************************************************************/
     fadeChannel: function(chn){
         //implement fading boolean        
         this.fading = true;
@@ -1126,9 +1157,11 @@ dojo.declare('main', null, {
         return deferred;
     },
 
-    /*
-        Enemy attack player
-    */
+    /*******************************************************************
+     *
+     * Enemy attack sequence
+     *
+     ******************************************************************/
     enemyAttack: function(){
         this.setState(this.sOff);
         var deferred = new dojo.Deferred();
@@ -1145,11 +1178,18 @@ dojo.declare('main', null, {
                     }
                     else{
                         this.setState(this.sOff);
-                        this._audio.stop({channel:'main'});
-                        this._audio.stop({channel:'background'});
-                        this.player.stopAudio();
-                        this._gameReset();
-                        this._start();
+                        var playerHas = _useElixir();
+                        if(playerHas){
+                            this.player.hp = this.player.maxHP;
+                            deferred.callback();
+                        }
+                        else{
+                            this._audio.stop({channel:'main'});
+                            this._audio.stop({channel:'background'});
+                            this.player.stopAudio();
+                            this._gameReset();
+                            this._start();
+                        }
                     }
                 }));
             }
@@ -1163,9 +1203,37 @@ dojo.declare('main', null, {
         return deferred;
     },
 
-    /*
-        Player attack enemy
-    */
+    /*******************************************************************
+     *
+     * See if player has the undead elixir, if so remove
+     *
+     ******************************************************************/
+    _useElixr:function(){
+        var foundElixir = false;
+        var eIdx = -1;
+        var eSoundIdx = -1;
+        dojo.some(this.player.specialItems, dojo.hitch(this,function(item, index){
+            if(item.iName == "undead elixir")
+            {
+                foundElixir = true;
+                eIdx = index;
+                eSoundIdx = item.iActionSound;
+                return false;
+            }
+        }));
+        if(foundElixir){
+            this._audio.stop({channel:'main'});
+            this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[eSoundIdx], channel: 'main'});
+            this.player.specialItems.splice(eIdx,1);
+        }
+        return foundElixir;
+    },
+    
+    /*******************************************************************
+     *
+     * Player attack sequence
+     *
+     ******************************************************************/
     playerAttack: function(){
         var deferred = new dojo.Deferred();
         this.setState(this.sOff);
@@ -1208,18 +1276,25 @@ dojo.declare('main', null, {
         return deferred;
     },
 
-    /*
-        Sets this.state and also publishes to change on screen directions
-    */
+    /*******************************************************************
+     *
+     * Sets this.state and also publishes to change on screen directions
+     * On screen directions need to be improved
+     *
+     ******************************************************************/
     setState:function(state){
         //console.log(arguments.callee.caller.toString(), "With state: " + this.state);
         this.state = state;
         dojo.publish("stateStatus", [state]);
     },
 
-    /*
-        Give player option of swapping items, one at a time
-    */
+    /*******************************************************************
+     *
+     * Give player option of swapping items, one at a time. Used for
+     * giving player option whether to keep items found during search
+     * or recovered from an enemy
+     *
+     ******************************************************************/
     offerItems: function(){
         if(this.potentialItems.length > 0 ){
             this.setState(this.sOff);
@@ -1253,9 +1328,14 @@ dojo.declare('main', null, {
             dojo.publish("offeringItems", ["done"]);
         }
     },
-    /*
-        Decides what to do given a success value of whether the player was allowed to move
-    */
+    
+    /*******************************************************************
+     *
+     * Decides what to do given a success value of whether the player
+     * was allowed to move. See map._getNeighbor() for reason why a move
+     * could fail
+     *
+     ******************************************************************/
     moveResult: function(result){
         if(result){
             this._audio.stop({channel:'main'});
@@ -1288,9 +1368,11 @@ dojo.declare('main', null, {
         }
     },
 
-    /*
-        Sequence following a successful move
-    */
+    /*******************************************************************
+     *
+     * Sequence following a successful move
+     *
+     ******************************************************************/
     exploreNode: function(){
         console.log(this.map.nodes[this.map.currentNodeIndex]);
         this.map.visitCurrentNode();
@@ -1374,7 +1456,11 @@ dojo.declare('main', null, {
         }
     },
     
-    //  randomizes an array
+    /*******************************************************************
+     *
+     * randomizes an array
+     *
+     ******************************************************************/
     _randomize: function(array) {
         var i = array.length;
         if ( i == 0 ) return false;
@@ -1387,6 +1473,12 @@ dojo.declare('main', null, {
         }
     },
 
+    /*******************************************************************
+     *
+     * Determines how risky a battle is and informs the player of this.
+     * A query is prompted by the user during battle with 'Q' button.
+     *
+     ******************************************************************/
     _queryEnemy: function(){
         if(!this.enemy) return;
         var factor = this.enemy.Defense/(this.player.strength*2);
