@@ -14,9 +14,76 @@ dojo.require('dojo.hash');
 dojo.require('dojox.timing');
 dojo.require('widgets.map');
 dojo.require('widgets.player');
-
+/////////////////////////////////
+dojo.require("dijit.form.Slider");
+//////////////////////////////////
 dojo.declare('main', null, {
+
     constructor: function() {
+
+        ///////////////////////REMOVE AFTER MOVING TO HARK SITE/////////
+        var slider = new dijit.form.HorizontalSlider({
+            name: "master",
+            value: 1,
+            minimum: 0,
+            maximum: 1,
+            intermediateChanges: true,
+            style: "width:300px;",
+            onChange: function(value) {
+                console.log("Value: ", value);
+            }
+        },
+        "master");
+        var slider = new dijit.form.HorizontalSlider({
+            name: "speechRate",
+            value: 1,
+            minimum: 0,
+            maximum: 1,
+            intermediateChanges: true,
+            style: "width:300px;",
+            onChange: function(value) {
+                console.log("Value: ", value);
+            }
+        },
+        "speechRate");
+                var slider = new dijit.form.HorizontalSlider({
+            name: "speechVol",
+            value: 1,
+            minimum: 0,
+            maximum: 1,
+            intermediateChanges: true,
+            style: "width:300px;",
+            onChange: function(value) {
+                console.log("Value: ", value);
+            }
+        },
+        "speechVol");
+                var slider = new dijit.form.HorizontalSlider({
+            name: "soundVol",
+            value: 1,
+            minimum: 0,
+            maximum: 1,
+            intermediateChanges: true,
+            style: "width:300px;",
+            onChange: function(value) {
+                console.log("Value: ", value);
+            }
+        },
+        "soundVol");
+                var slider = new dijit.form.HorizontalSlider({
+            name: "music",
+            value: 1,
+            minimum: 0,
+            maximum: 1,
+            intermediateChanges: true,
+            style: "width:300px;",
+            onChange: function(value) {
+                console.log("Value: ", value);
+            }
+        },
+        "music");
+        ////////////////////////////////////////////////////////////////
+        
         dojo.global.WEAPON = 0;
         dojo.global.ARMOR = 1;
         dojo.global.POTION = 2;
@@ -176,10 +243,10 @@ dojo.declare('main', null, {
     _start: function(){
         this.mapList = ["forest.json", "graveyard.json", "castle.json"];
         this.player = new widgets.player({}, null); 
-        this._audio.play({url: 'sounds/general/' + this.title, channel:'main'});
-        this._audio.setProperty({name: 'loop', channel: 'background', value: true});
-        this._audio.play({url: "sounds/general/"+ this.theme, channel: 'background'});
-        this._audio.play({url: "sounds/general/" + this.menu, channel: 'main'});
+        this._audio.play({url: 'sounds/general/' + this.title, channel:'speech'});
+        this._audio.setProperty({name: 'loop', channel: 'music', value: true});
+        this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
+        this._audio.play({url: "sounds/general/" + this.menu, channel: 'speech'});
         this.setState(this.sMenu);            
     },
 
@@ -221,7 +288,7 @@ dojo.declare('main', null, {
             else{
                 this.player.equipWeakItems(this.map);
             }
-            this._audio.say({text: "You are now entering the " + this.map.Name})
+            this._audio.say({text: "You are now entering the " + this.map.Name, channel: 'speech'})
                 .anyAfter(dojo.hitch(this,function(){
                     this.setState(this.sMove);
                     this.exploreNode();
@@ -339,17 +406,15 @@ dojo.declare('main', null, {
                                 break;
                             case dojo.keys.SPACE:
                                 this.setState(this.sOff);
-                                this.player.stopAudio();
-                                this.fadeChannel('background');
-                                this._audio.stop({channel:'main'});
+                                this.fadeChannel('music');
+                                this._stopAudio();
                                 this.player.readStats();
                                 //don't need to wait through all of stats
                                 this.setState(this.sMove);                              
                                 break;    
                             case 83: //search for items
                                 this.setState(this.sOff);
-                                this.player.stopAudio();
-                                this._audio.stop({channel:'main'});
+                                this._stopAudio();
                                 var def = this.examineItems(this.map.nodes[this.map.currentNodeIndex].Items, "You found ");
                                 def.then(dojo.hitch(this,function(result){
                                     if(result.found){
@@ -358,7 +423,7 @@ dojo.declare('main', null, {
                                         this.setState(this.sMove);               
                                     }
                                     else{
-                                        this._audio.say({text:"You did not find any items."});
+                                        this._audio.say({text:"You did not find any items.", channel:'speech'});
                                         this.setState(this.sMove);        
                                     }
                                 }));
@@ -366,8 +431,7 @@ dojo.declare('main', null, {
                                 break;
                             case 68: //query directions
                                 this.setState(this.sOff);
-                                this.player.stopAudio();
-                                this._audio.stop({channel:'main'});
+                                this._stopAudio();
                                 var directions = this.map.queryDirections();
                                 var stringArr = new Array();
                                 if(directions[0]!= -1){
@@ -384,17 +448,17 @@ dojo.declare('main', null, {
                                 }
                                 
                                 if(stringArr.length == 1){
-                                    this._audio.say({text: "The " + stringArr[0] + " passage is open.", channel: 'main'});
+                                    this._audio.say({text: "The " + stringArr[0] + " passage is open.", channel: 'speech'});
                                 }
                                 else{
-                                    this._audio.say({text: " The ", channel: 'main'});
+                                    this._audio.say({text: " The ", channel: 'speech'});
                                     dojo.forEach(stringArr, dojo.hitch(this,function(dir, idx){
                                         if(idx == (stringArr.length -1)){
-                                            this._audio.say({text: " and ", channel: 'main'});
+                                            this._audio.say({text: " and ", channel: 'speech'});
                                         }
-                                        this._audio.say({text: dir, channel: 'main'});
+                                        this._audio.say({text: dir, channel: 'speech'});
                                     }));
-                                    this._audio.say({text:" passages are open.", channel: 'main'});
+                                    this._audio.say({text:" passages are open.", channel: 'speech'});
                                 }
                                 this.setState(this.sMove);                                
                                 break;
@@ -402,12 +466,12 @@ dojo.declare('main', null, {
                                     this.setState(this.sOff);
                                     this.player.stopAudio();
                                     if(this.player.potions.length != 0){
-                                        this._audio.say({text:"Use the left and right arrow keys to cycle through the potions. Press the up arrow to select a potion and escape to cancel.", channel: "main"});
+                                        this._audio.say({text:"Use the left and right arrow keys to cycle through the potions. Press the up arrow to select a potion and escape to cancel.", channel: "speech"});
                                         this.duringMove = true;
                                         this.setState(this.sPotionCycle);   
                                     }
                                     else{
-                                        this._audio.say({text:"You do not have any potions.", channel: "main"})
+                                        this._audio.say({text:"You do not have any potions.", channel: "speech"})
                                         .anyAfter(dojo.hitch(this,function(){
                                             this.setState(this.sMove);
                                         }));
@@ -440,7 +504,7 @@ dojo.declare('main', null, {
                                     return def3;
                                 })).then(dojo.hitch(this, function(){
                                     this.setState(this.sListen);
-                                    this._audio.play({url: 'sounds/general/' + this.story, channel: 'main'})
+                                    this._audio.play({url: 'sounds/general/' + this.story, channel: 'speech'})
                                         .anyAfter(dojo.hitch(this, function(){
                                         //state is changed again in load map to move
                                         this._loadMap(this.mapList[this._mapIndex]);                            
@@ -479,7 +543,7 @@ dojo.declare('main', null, {
                                 this.player.stopAudio();
                                 var randZeroTo99=Math.floor(Math.random()*100);
                                 if(randZeroTo99 > this.enemy.RunPerc){ //fail
-                                    this._audio.say({text: "Your attempt to run away has failed. You must continue to fight the " + this.enemy.Name})
+                                    this._audio.say({text: "Your attempt to run away has failed. You must continue to fight the " + this.enemy.Name, channel:'speech'})
                                         .anyAfter(dojo.hitch(this, function(){
                                             var def = this.enemyAttack();
                                             def.then(dojo.hitch(this,function(){
@@ -489,7 +553,7 @@ dojo.declare('main', null, {
                                 }
                                 else{//success
                                     this.fadeChannel("background");
-                                    this._audio.say({text: "You have abandoned the fight and returned to your previous location."});
+                                    this._audio.say({text: "You have abandoned the fight and returned to your previous location.", channel:'speech'});
 
                                     //restore enemy health if you run away
                                     this.enemy.HP = this.enemy.MaxHP;
@@ -506,11 +570,11 @@ dojo.declare('main', null, {
                                 this.setState(this.sOff);
                                 this.player.stopAudio();
                                 if(this.player.potions.length != 0){
-                                    this._audio.say({text:"Use the left and right arrow keys to cycle through the potions.  Press the up arrow to select a potion and escape to cancel.", channel: "main"});
+                                    this._audio.say({text:"Use the left and right arrow keys to cycle through the potions.  Press the up arrow to select a potion and escape to cancel.", channel: "speech"});
                                     this.setState(this.sPotionCycle);   
                                 }
                                 else{
-                                    this._audio.say({text:"You do not have any potion.", channel: "main"})
+                                    this._audio.say({text:"You do not have any potion.", channel: "speech"})
                                     .anyAfter(dojo.hitch(this,function(){
                                         this.setState(this.sFight);
                                     }));
@@ -537,10 +601,10 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
-                                this._audio.stop({channel: "main"});
+                                this._audio.stop({channel: "speech"});
                                 var randZeroTo99=Math.floor(Math.random()*100);
                                 if(randZeroTo99 > this.enemy.RunPerc){ //fail
-                                    this._audio.say({text: "Your attempt to run away has failed. You must now fight the " + this.enemy.Name})
+                                    this._audio.say({text: "Your attempt to run away has failed. You must now fight the " + this.enemy.Name, channel:'speech'})
                                         .anyAfter(dojo.hitch(this, function(){
                                             var def = this.enemyAttack();
                                             def.then(dojo.hitch(this,function(){
@@ -550,7 +614,7 @@ dojo.declare('main', null, {
                                 }
                                 else{//success
                                     this.fadeChannel("background");
-                                    this._audio.say({text: "You have avoided the " + this.enemy.Name + " and returned to your previous location."});
+                                    this._audio.say({text: "You have avoided the " + this.enemy.Name + " and returned to your previous location.", channel:'speech'});
 
                                     this.enemy = null;
                                     var def = this.map.returnPrevious();
@@ -561,9 +625,9 @@ dojo.declare('main', null, {
                             break;
                             case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
-                                this._audio.stop({channel: "main"});
+                                this._audio.stop({channel: "speech"});
                                 //enemy should also attack
-                                this._audio.say({text: "You have chosen to stand your ground."})
+                                this._audio.say({text: "You have chosen to stand your ground.", channel:'speech'})
                                     .anyAfter(dojo.hitch(this, function(){
                                         var def = this.enemyAttack();
                                         def.then(dojo.hitch(this,function(){
@@ -578,10 +642,10 @@ dojo.declare('main', null, {
                         // 'f' to stop sounds on main
                         case 70:
                             this.setState(this.sOff);
-                            this._audio.stop({channel: 'main'});
+                            this._stopAudio();
                             if(this._readingInstructions){
                                 this._readingInstructions = false;
-                                this._audio.play({url: "sounds/general/"+ this.theme, channel:'main'});
+                                this._audio.play({url: "sounds/general/"+ this.theme, channel:'music'});
                                 this.setState(this.sMenu);
                             }
                             break;
@@ -591,8 +655,8 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
-                                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                                this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'main'});
+                                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
+                                this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'speech'});
                                 this.player.addItem(this.tempItem);
                                 this.tempItem = null;
                                 this.offerItems();                                
@@ -609,7 +673,7 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 move = true;
                                 if(--this.potionIndex < 0){
                                     this.potionIndex = (this.player.potions.length - 1);
@@ -617,7 +681,7 @@ dojo.declare('main', null, {
                                 break;
                             case dojo.keys.RIGHT_ARROW:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speecj'});
                                 move = true;
                                 if(++this.potionIndex >= this.player.potions.length){
                                     this.potionIndex = 0;
@@ -625,7 +689,7 @@ dojo.declare('main', null, {
                                 break;
                             case dojo.keys.ESCAPE:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 if(this.duringMove){
                                     this.duringMove = false;
@@ -637,7 +701,7 @@ dojo.declare('main', null, {
                                 break;
                         }
                         if(move){
-                            this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
+                            this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "speech"});
                             this.setState(this.sPotionChoice);
                         }
                         break; 
@@ -645,30 +709,30 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 if(--this.potionIndex < 0){
                                     this.potionIndex = (this.player.potions.length - 1);
                                 }
-                                this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
+                                this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "speech"});
                                 this.setState(this.sPotionChoice);
                                 break;
                             case dojo.keys.RIGHT_ARROW:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 if(++this.potionIndex >= this.player.potions.length){
                                     this.potionIndex = 0;
                                 }
-                                this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "main"});
+                                this._audio.say({text: this.player.potions[this.potionIndex].iName + "level " + this.player.potions[this.potionIndex].iValue, channel: "speech"});
                                 this.setState(this.sPotionChoice);
                                 break;
                             case dojo.keys.UP_ARROW: //accept
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this._usePotion();                           
                                 break;
                             case dojo.keys.ESCAPE:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 if(this.duringMove){
                                     this.duringMove = false;
@@ -684,15 +748,15 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
-                                this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
-                                this._audio.say({text: "Use the arrow keys to cycle through the options and press the up arrow to select a purchase. Press escape to return to the game.", channel:'main'});
+                                this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'speech'});
+                                this._audio.say({text: "Use the arrow keys to cycle through the options and press the up arrow to select a purchase. Press escape to return to the game.", channel:'speech'});
                                 this.setState(this.sVendorScroll);
                             break;
                             case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 this.skipVendors = true;
                                 this.vendor = null;
@@ -704,30 +768,30 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.LEFT_ARROW:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 if(--this.itemIndex < 0){
                                     this.itemIndex = (this.vendor.Items.length - 1);
                                 }
-                                this._audio.say({text: this.vendor.Items[this.itemIndex].iName + "price " + this.vendor.Items[this.itemIndex].iValue + " gold.", channel: "main"});
+                                this._audio.say({text: this.vendor.Items[this.itemIndex].iName + "price " + this.vendor.Items[this.itemIndex].iValue + " gold.", channel: "speech"});
                                 this.setState(this.sVendorScroll);
                                 break;
                             case dojo.keys.RIGHT_ARROW:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 if(++this.itemIndex >= this.vendor.Items.length){
                                     this.itemIndex = 0;
                                 }
-                                this._audio.say({text: this.vendor.Items[this.itemIndex].iName + "price " + this.vendor.Items[this.itemIndex].iValue + " gold.", channel: "main"});
+                                this._audio.say({text: this.vendor.Items[this.itemIndex].iName + "price " + this.vendor.Items[this.itemIndex].iValue + " gold.", channel: "speech"});
                                 this.setState(this.sVendorScroll);
                                 break;
-                            case dojo.keys.UP_ARROW: //B
+                            case dojo.keys.UP_ARROW: //Buy
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this._buyItem();                           
                                 break;
                             case dojo.keys.ESCAPE:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 this.skipVendors = true;
                                 this.vendor = null;
@@ -739,13 +803,13 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 if(this.player.gold < this.vendor.Items[this.itemIndex].iValue){
-                                    this._audio.say({text:"You cannot afford this item.", channel:'main'});
+                                    this._audio.say({text:"You cannot afford this item.", channel:'speech'});
                                     this.setState(this.sVendorScroll);
                                 }
                                 else{
-                                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
+                                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
                                     this.player.addItem(dojo.clone(this.vendor.Items[this.itemIndex]));
                                     //take away gold
                                     this.player.gold-= this.vendor.Items[this.itemIndex].iValue;
@@ -755,7 +819,7 @@ dojo.declare('main', null, {
                                     this.itemIndex = 0;
                                     
                                     if(this.vendor.Items.length == 0){
-                                        this._audio.say({text: "That was the last item in our inventory. Thank you for your business.", channel: 'main'})
+                                        this._audio.say({text: "That was the last item in our inventory. Thank you for your business.", channel: 'speech'})
                                         .anyAfter(dojo.hitch(this,function(){
                                             //remove vendor
                                             this.map.removeNPC(this.vendorData[1]);                                        
@@ -764,8 +828,8 @@ dojo.declare('main', null, {
                                         }));
                                     }
                                     else{
-                                        this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
-                                        this._audio.say({text: "Use the arrow keys to cycle through the options and press bee to select a purchase. Press escape to return to the game.", channel:'main'});
+                                        this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'speech'});
+                                        this._audio.say({text: "Use the arrow keys to cycle through the options and press up to select a purchase. Press escape to return to the game.", channel:'speech'});
                                         this.setState(this.sVendorScroll);
                                     }
                                 }
@@ -773,9 +837,9 @@ dojo.declare('main', null, {
                             break;
                             case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
-                                this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'main'});
-                                this._audio.say({text: "Use the arrow keys to cycle through the options and press bee to select a purchase. Press escape to return to the game.", channel:'main'});
+                                this._audio.stop({channel:'speech'});
+                                this._audio.say({text: "You currently have " + this.player.gold + " gold.", channel:'speech'});
+                                this._audio.say({text: "Use the arrow keys to cycle through the options and press bee to select a purchase. Press escape to return to the game.", channel:'speech'});
                                 this.setState(this.sVendorScroll);
                             break;
                         }
@@ -785,10 +849,10 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 //play sound and give all items to player
-                                this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.friend.ActionSound], channel: 'main'})
+                                this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.friend.ActionSound], channel: 'speech'})
                                     .anyAfter(dojo.hitch(this,function(){
                                         var def = this.examineItems(this.friend.Items, this.friend.Name+ "has given you ");
                                         def.then(dojo.hitch(this,function(){
@@ -802,7 +866,7 @@ dojo.declare('main', null, {
                             break;
                             case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 this.skipFriends = true;
                                 this.friend = null;
@@ -814,35 +878,35 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                             case dojo.keys.UP_ARROW: //Y
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 if(this.player.gold < 50){
-                                    this._audio.play({url: "sounds/general/" + this.lepmore, channel:'main'});
+                                    this._audio.play({url: "sounds/general/" + this.lepmore, channel:'sound'});
                                     this.skipLep = true;
                                     this.lepData = null;
                                     this.exploreNode();
                                 }
                                 else{
-                                    this._audio.play({url: "sounds/general/" + this.leprules, channel: 'main'});
+                                    this._audio.play({url: "sounds/general/" + this.leprules, channel: 'sound'});
                                     this.startLepGame();
                                 }
                             break;
                             case dojo.keys.DOWN_ARROW: //N
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 this.skipLep = true;
                                 if(Math.floor(Math.random()*(2)) > 0){
-                                    this._audio.play({url: "sounds/general/" + this.lepmad, channel: 'main'});
+                                    this._audio.play({url: "sounds/general/" + this.lepmad, channel: 'sound'});
                                     this.player.halfGold();
-                                    this._audio.say({text: "The leprekaun has run away and taken half of your gold with him.", channel: 'main'});
-                                    this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'main'})
+                                    this._audio.say({text: "The leprekaun has run away and taken half of your gold with him.", channel: 'speech'});
+                                    this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'speech'})
                                         .anyAfter(dojo.hitch(this,function(){
                                             this.exploreNode();
                                         }));
                                 }
                                 else{
-                                    this._audio.play({url: "sounds/general/" + this.lepgood, channel: 'main'})
+                                    this._audio.play({url: "sounds/general/" + this.lepgood, channel: 'sound'})
                                         .anyAfter(dojo.hitch(this,function(){
                                             this.exploreNode();
                                         }));
@@ -856,31 +920,31 @@ dojo.declare('main', null, {
                             case dojo.keys.NUMPAD_1:
                             case 49:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 this.lepResponse(this.lepArray[0]);
                                 break;
                             case dojo.keys.NUMPAD_2:
                             case 50:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 this.lepResponse(this.lepArray[1]);                            
                                 break;
                             case dojo.keys.NUMPAD_3:
                             case 51:
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 this.lepResponse(this.lepArray[2]);
                                 break;
                                 
                             case 65: //attack
                                 this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 if(Math.floor(Math.random()*(2))==0){//killed
-                                    this._audio.play({url: 'sounds/general/' + this.lepdie, channel: 'main'});
+                                    this._audio.play({url: 'sounds/general/' + this.lepdie, channel: 'sound'});
                                     var def = this.examineItems(this.lepData[0].Items, "You took ");
                                     def.then(dojo.hitch(this,function(){                                          
                                         this.map.removeNPC(this.lepData[1]);
@@ -889,14 +953,14 @@ dojo.declare('main', null, {
                                     }));
                                 }
                                 else{//fail
-                                    this._audio.play({url: 'sounds/general/' + this.leplive, channel: 'main'});
+                                    this._audio.play({url: 'sounds/general/' + this.leplive, channel: 'sound'});
                                     this.player.halfHealth();
                                     this.player.removePotions();
                                     if(this.player.hp == 1){
-                                        this._audio.say({text: "You now have " + this.player.hp + " hit point and no potions.", channel: 'main'});
+                                        this._audio.say({text: "You now have " + this.player.hp + " hit point and no potions.", channel: 'speech'});
                                     }
                                     else{
-                                        this._audio.say({text: "You now have " + this.player.hp + " hit points and no potions.", channel: 'main'});
+                                        this._audio.say({text: "You now have " + this.player.hp + " hit points and no potions.", channel: 'speech'});
                                     }
                                     this.map.removeNPC(this.lepData[1]);
                                     this.lepData = null;
@@ -909,15 +973,15 @@ dojo.declare('main', null, {
                         switch(evt.keyCode){
                          case dojo.keys.UP_ARROW: //Y
                             this.setState(this.sOff);
-                            this._audio.stop({channel:'main'});
+                            this._audio.stop({channel:'speech'});
                             this.player.stopAudio();
                             this.startLepGame();
                             break;
                          case dojo.keys.DOWN_ARROW: //N
                             this.setState(this.sOff);
-                                this._audio.stop({channel:'main'});
+                                this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
-                            this._audio.play({url: 'sounds/general/' + this.lepbye, channel: 'main'});
+                            this._audio.play({url: 'sounds/general/' + this.lepbye, channel: 'sound'});
                             this.skipLep = true;
                             this.exploreNode();
                             break;
@@ -942,7 +1006,7 @@ dojo.declare('main', null, {
      *
      ******************************************************************/
     startLepGame: function(){
-    this._audio.play({url: "sounds/general/" + this.lep123, channel: 'main'});
+    this._audio.play({url: "sounds/general/" + this.lep123, channel: 'sound'});
         var temp = Math.floor(Math.random()*(3));
         if(temp == 0){
             this.lepArray[0] = -50;
@@ -971,21 +1035,21 @@ dojo.declare('main', null, {
     lepResponse: function(choice){
         this.player.gold+=choice;
         if(choice > 0){ //win
-            this._audio.play({url: 'sounds/general/' + this.lepwin, channel: 'main'});
+            this._audio.play({url: 'sounds/general/' + this.lepwin, channel: 'sound'});
         }
         else{ //lose
-            this._audio.play({url: 'sounds/general/' + this.leplose, channel: 'main'});
+            this._audio.play({url: 'sounds/general/' + this.leplose, channel: 'sound'});
         }
-        this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'main'});
+        this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'speech'});
         
         if(this.player.gold < 50){
-            this._audio.play({url: "sounds/general/" + this.lepmore, channel:'main'});
+            this._audio.play({url: "sounds/general/" + this.lepmore, channel:'sound'});
             this.skipLep = true;
             this.lepData = null;
             this.exploreNode();
         }
         else{
-            this._audio.play({url: 'sounds/general/' + this.lepagain, channel: 'main'});
+            this._audio.play({url: 'sounds/general/' + this.lepagain, channel: 'sound'});
             this.setState(this.sLepAgain);
         }
     },
@@ -996,7 +1060,7 @@ dojo.declare('main', null, {
      *
      ******************************************************************/
     _usePotion:function(){
-        this._audio.play({url: 'sounds/general/potion_a', channel:'main'})
+        this._audio.play({url: 'sounds/general/potion_a', channel:'sound'})
             .anyAfter(dojo.hitch(this,function(){
             var def = this.player.updateHPplusWait(this.player.potions[this.potionIndex].iValue);
             //delete potion
@@ -1050,18 +1114,18 @@ dojo.declare('main', null, {
                     }
                     break;
                 case dojo.global.POTION:
-                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                    this._audio.say({text: foundSaying + " " + item.iName + " level " + item.iValue, channel: 'main'});
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
+                    this._audio.say({text: foundSaying + " " + item.iName + " level " + item.iValue, channel: 'speech'});
                     this.player.addItem(item);
                     break;
                 case dojo.global.GOLD:
-                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                    this._audio.say({text: foundSaying + " " + item.iValue + " gold pieces!" , channel: 'main'});
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
+                    this._audio.say({text: foundSaying + " " + item.iValue + " gold pieces!" , channel: 'speech'});
                     this.player.addItem(item);
                     break;
                 case dojo.global.SPECIAL:
-                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                    this._audio.say({text: foundSaying + " " + item.iName, channel: 'main'});
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
+                    this._audio.say({text: foundSaying + " " + item.iName, channel: 'speech'});
                     this.player.addItem(item);
                     break;
             }
@@ -1093,17 +1157,17 @@ dojo.declare('main', null, {
     _buyItem: function(){
         switch(this.vendor.Items[this.itemIndex].iType){
             case dojo.global.WEAPON:
-                this._audio.say({text: "Purchasing this item will replace your current weapon, " + this.player.weapon.iName + " level " + this.player.weapon.iValue, channel:'main'});
-                this._audio.say({text: "Are you sure you want to replace it with " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue, channel:'main'});
+                this._audio.say({text: "Purchasing this item will replace your current weapon, " + this.player.weapon.iName + " level " + this.player.weapon.iValue, channel:'speech'});
+                this._audio.say({text: "Are you sure you want to replace it with " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue, channel:'speech'});
                 this.setState(this.sBuy);
             break;
             case dojo.global.ARMOR:
-                this._audio.say({text: "Purchasing this item will replace your current armor, " + this.player.armor.iName + " level " + this.player.armor.iValue, channel:'main'});
-                this._audio.say({text: "Are you sure you want to replace it with " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue, channel:'main'});
+                this._audio.say({text: "Purchasing this item will replace your current armor, " + this.player.armor.iName + " level " + this.player.armor.iValue, channel:'speech'});
+                this._audio.say({text: "Are you sure you want to replace it with " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue, channel:'speech'});
                 this.setState(this.sBuy);
             break;
             default:
-                this._audio.say({text: "Are you sure you want to purchase " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue , channel:'main'});
+                this._audio.say({text: "Are you sure you want to purchase " + this.vendor.Items[this.itemIndex].iName + " level " + this.vendor.Items[this.itemIndex].iValue , channel:'speech'});
                 this.setState(this.sBuy);
         }
     },
@@ -1116,15 +1180,15 @@ dojo.declare('main', null, {
         var def = this.fadeChannel('background');
         def.then(dojo.hitch(this, function(){
             this.setState(this.sListen);
-            this._audio.play({url: "sounds/general/"+ this.dirSpac, channel:'main'});
+            this._audio.play({url: "sounds/general/"+ this.dirSpac, channel:'sound'});
             dojo.forEach([this.dirChar, this.dirItem, this.dirLoca, this.dirEnem,   this.dirSave, this.dirQuit, this.instruct], dojo.hitch(this, function(sound){
-                this._audio.play({url: "sounds/general/" + sound, channel:'main'}); 
+                this._audio.play({url: "sounds/general/" + sound, channel:'sound'}); 
             }));
-            this._audio.play({url: "sounds/general/"+ this.menu, channel:'main'})
+            this._audio.play({url: "sounds/general/"+ this.menu, channel:'sound'})
                 .anyAfter(dojo.hitch(this,function(){
                     //start background when done
                     this._readingInstructions = false;
-                    this._audio.play({url: "sounds/general/"+ this.theme, channel:'main'});
+                    this._audio.play({url: "sounds/general/"+ this.theme, channel:'sound'});
                     this.setState(this.sMenu);
                 }));
         }));
@@ -1166,7 +1230,7 @@ dojo.declare('main', null, {
         this.setState(this.sOff);
         var deferred = new dojo.Deferred();
         //play action sound
-        this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.enemy.ActionSound], channel: 'enemy'})
+        this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.enemy.ActionSound], channel: 'sound'})
         .anyAfter(dojo.hitch(this, function(){
             var randS = Math.floor(Math.random()*(this.enemy.Strength+1));
             var total = randS + this.enemy.Strength - this.player.defense;
@@ -1184,8 +1248,8 @@ dojo.declare('main', null, {
                             deferred.callback();
                         }
                         else{
-                            this._audio.stop({channel:'main'});
-                            this._audio.stop({channel:'background'});
+                            this._audio.stop({channel:'speech'});
+                            this._audio.stop({channel:'music'});
                             this.player.stopAudio();
                             this._gameReset();
                             this._start();
@@ -1194,7 +1258,7 @@ dojo.declare('main', null, {
                 }));
             }
             else{ //miss
-                this._audio.say({text: "The " + this.enemy.Name + " failed. in its attack."})
+                this._audio.say({text: "The " + this.enemy.Name + " failed. in its attack.", channel: 'speech'})
                     .anyAfter(dojo.hitch(this, function(){    
                         deferred.callback();
                     }));
@@ -1222,8 +1286,8 @@ dojo.declare('main', null, {
             }
         }));
         if(foundElixir){
-            this._audio.stop({channel:'main'});
-            this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[eSoundIdx], channel: 'main'});
+            this._audio.stop({channel:'speech'});
+            this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[eSoundIdx], channel: 'sound'});
             this.player.specialItems.splice(eIdx,1);
         }
         return foundElixir;
@@ -1237,7 +1301,7 @@ dojo.declare('main', null, {
     playerAttack: function(){
         var deferred = new dojo.Deferred();
         this.setState(this.sOff);
-        this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.player.weapon.iActionSound], channel: 'enemy'})
+        this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.player.weapon.iActionSound], channel: 'sound'})
         .anyAfter(dojo.hitch(this, function(){
             var randS = Math.floor(Math.random()*(this.player.strength+1));
             var total = randS + this.player.strength - this.enemy.Defense;
@@ -1246,20 +1310,20 @@ dojo.declare('main', null, {
                 if(this.enemy.HP <= 0){
                     this.fadeChannel('background');
                     var enemyName = this.enemy.Name;
-                    this._audio.say({text: "Successful attack! You have vanquished the " + enemyName})
+                    this._audio.say({text: "Successful attack! You have vanquished the " + enemyName, channel: 'speech'})
                         .anyAfter(dojo.hitch(this,function(){
                             deferred.callback({vanquished:true});
                         }));
                 }
                 else{
                     if(this.enemy.HP==1){
-                        this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit point."})
+                        this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit point.", channel:'speech'})
                         .anyAfter(dojo.hitch(this,function(){
                             deferred.callback({vanquished:false});
                         }));
                     }
                     else{
-                        this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit points."})
+                        this._audio.say({text: "Successful attack! You have weakened the enemy to " + this.enemy.HP + "hit points.", channel: 'speech'})
                         .anyAfter(dojo.hitch(this,function(){
                             deferred.callback({vanquished:false});
                         }));
@@ -1267,7 +1331,7 @@ dojo.declare('main', null, {
                 }
             }
             else{ //miss
-                this._audio.say({text: "You failed to hit the enemy."})
+                this._audio.say({text: "You failed to hit the enemy.", channel:'speech'})
                     .anyAfter(dojo.hitch(this,function(){
                         deferred.callback({vanquished:false});
                     }));
@@ -1305,18 +1369,18 @@ dojo.declare('main', null, {
             else{
                 playerItem = this.player.armor;
             }
-            this._audio.say({text: this.offerSaying + " a level " + this.potentialItems[0].iValue + " " + this.potentialItems[0].iName, channel: 'main'});
+            this._audio.say({text: this.offerSaying + " a level " + this.potentialItems[0].iValue + " " + this.potentialItems[0].iName, channel: 'speech'});
             if(playerItem == null){
                 //remove and give, no choice
                 this.tempItem = this.potentialItems.splice(0,1)[0];
-                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'main'});
-                this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'main'});
+                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
+                this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'speech'});
                 this.player.addItem(this.tempItem);
                 this.tempItem = null;
                 this.offerItems(); 
             }
             else{
-                this._audio.say({text: "Would you like to replace your level " + playerItem.iValue + " " + playerItem.iName + " with it?", channel: 'main'})
+                this._audio.say({text: "Would you like to replace your level " + playerItem.iValue + " " + playerItem.iName + " with it?", channel: 'speech'})
                     .anyAfter(dojo.hitch(this,function(){
                         //remove item
                         this.tempItem = this.potentialItems.splice(0,1)[0];
@@ -1338,7 +1402,7 @@ dojo.declare('main', null, {
      ******************************************************************/
     moveResult: function(result){
         if(result){
-            this._audio.stop({channel:'main'});
+            this._audio.stop({channel:'speech'});
             this.skipVendors = false;
             this.skipFriends = false;
             this.skipLep = false;
@@ -1348,19 +1412,19 @@ dojo.declare('main', null, {
             console.log("Name: ", this.player.missingItemName);
             if(this.player.tooWeak){
                 this.player.tooWeak = false;
-                this._audio.stop({channel: "main"});
-                this._audio.say({text: "You are not strong enough to move down this passage. Come back when you have greater strength.", channel : "main"})
+                this._audio.stop({channel: "speech"});
+                this._audio.say({text: "You are not strong enough to move down this passage. Come back when you have greater strength.", channel : "speech"})
                 this.setState(this.sMove);
             }
             else if(this.player.missingItemName!=null){
-                this._audio.stop({channel: "main"});
-                this._audio.say({text: "You need the " + this.player.missingItemName + " to proceed down this path. Come back when you have found it.", channel : "main"})
+                this._audio.stop({channel: "speech"});
+                this._audio.say({text: "You need the " + this.player.missingItemName + " to proceed down this path. Come back when you have found it.", channel : "speech"})
                 this.player.missingItemName = null;
                 this.setState(this.sMove);
             }
             else{
-                this._audio.stop({channel: "main"});
-                this._audio.play({url: "sounds/noMove", channel : "main"})
+                this._audio.stop({channel: "speech"});
+                this._audio.play({url: "sounds/noMove", channel : "sound"})
                 .anyAfter(dojo.hitch(this,function(){
                     this.setState(this.sMove);            
                 }));
@@ -1392,22 +1456,21 @@ dojo.declare('main', null, {
             this.enemy = this.enemyData[0];
             var def = this.map.fade();
             def.then(dojo.hitch(this, function(){
-                this._audio.play({url: "sounds/general/"+ this.fightsong, channel: 'background'});
-                this._audio.setProperty({name : 'volume', value: 0.75, channel : 'background', immediate : true});
-                this._audio.say({text: "You have encountered a " + this.enemy.Name + ".", channel:'main'});
+                this._audio.play({url: "sounds/general/"+ this.fightsong, channel: 'music'});
+                this._audio.say({text: "You have encountered a " + this.enemy.Name + ".", channel:'speech'});
 
                 //read stats
-                this._audio.say({text: "Its strength is " + this.enemy.Strength + ".", channel:'main'});
-                this._audio.say({text: "Its defense is " + this.enemy.Defense + ".", channel:'main'});
+                this._audio.say({text: "Its strength is " + this.enemy.Strength + ".", channel:'speech'});
+                this._audio.say({text: "Its defense is " + this.enemy.Defense + ".", channel:'speech'});
                 if(this.enemy.HP == 1){
-                    this._audio.say({text: "It has " + this.enemy.HP + " hit point.", channel:'main'});
+                    this._audio.say({text: "It has " + this.enemy.HP + " hit point.", channel:'speech'});
                 }
                 else{
-                    this._audio.say({text: "It has " + this.enemy.HP + " hit points.", channel:'main'});
+                    this._audio.say({text: "It has " + this.enemy.HP + " hit points.", channel:'speech'});
                 }
 
                 //option to run
-                this._audio.say({text: "Do you want to try to run away?", channel:'main'});
+                this._audio.say({text: "Do you want to try to run away?", channel:'speech'});
 
                 //don't actually need to wait for all to be read, just make sure all have been queued up
                 this.setState(this.sRun);
@@ -1415,8 +1478,8 @@ dojo.declare('main', null, {
         }
         else if ((this.vendorData[1] != -1) && !this.skipVendors){
             this.vendor = this.vendorData[0];
-            this._audio.say({text: "Welcome to " + this.vendor.Name, channel: 'main'});
-            this._audio.say({text: "Would you like to purchase some items today?", channel:'main'});
+            this._audio.say({text: "Welcome to " + this.vendor.Name, channel: 'speech'});
+            this._audio.say({text: "Would you like to purchase some items today?", channel:'speech'});
             this.setState(this.sVendor);
         }
         else if((this.friendData[1] != -1) && !this.skipFriends){
@@ -1425,10 +1488,10 @@ dojo.declare('main', null, {
             if(this.firstFriend){
                 this.firstFriend = false;
                 this.setState(this.sOff);
-                this._audio.stop({channel:'main'});
+                this._audio.stop({channel:'speech'});
                 this.player.stopAudio();
                 //play sound and give all items to player
-                this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.friend.ActionSound], channel: 'main'})
+                this._audio.play({url: "sounds/" + this.map.Name + ".sounds/" + this.map.sounds[this.friend.ActionSound], channel: 'speech'})
                     .anyAfter(dojo.hitch(this,function(){
                         var def = this.examineItems(this.friend.Items, this.friend.Name+ "has given you ");
                         def.then(dojo.hitch(this,function(){
@@ -1442,13 +1505,13 @@ dojo.declare('main', null, {
                 this.setState(this.sListen);
             }
             else{
-                this._audio.say({text: "You have run into a friend. Would you like to talk to " +  this.friend.Name});
+                this._audio.say({text: "You have run into a friend. Would you like to talk to " +  this.friend.Name, channel: 'speech'});
                 this.setState(this.sFriend);
             }
         }
         else if((this.lepData[1] != -1) && !this.skipLep){
-            this._audio.say({text: "You have encountered a leprekaun.", channel: 'main'});
-            this._audio.play({url: "sounds/general/" + this.lepplay, channel: 'main'})
+            this._audio.say({text: "You have encountered a leprekaun.", channel: 'speech'});
+            this._audio.play({url: "sounds/general/" + this.lepplay, channel: 'sound'})
             this.setState(this.sLepEncounter);
         }								
         else{
@@ -1483,14 +1546,21 @@ dojo.declare('main', null, {
         if(!this.enemy) return;
         var factor = this.enemy.Defense/(this.player.strength*2);
         if(factor >= .75) {
-            this._audio.say({text:"This is a risky battle.", channel:'main'});
+            this._audio.say({text:"This is a risky battle.", channel:'speech'});
         }
         else if(factor >= .35){
-            this._audio.say({text:"This is a fair battle.", channel:'main'});
+            this._audio.say({text:"This is a fair battle.", channel:'speech'});
         }
         else{
-            this._audio.say({text:"This is an easy battle.", channel:'main'});
+            this._audio.say({text:"This is an easy battle.", channel:'speech'});
         }
+    },
+
+    _stopAudio: function(){
+        this._audio.stop({channel:'sound'});
+        this._audio.stop({channel:'music'});
+        this._audio.stop({channel:'speech'});
+        this.player.stopAudio();
     },
 });
 

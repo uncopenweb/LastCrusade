@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <title>The Last Crusade</title>
     <style type="text/css">
-      @import "http://ajax.googleapis.com/ajax/libs/dojo/1.4.1/dojo/resources/dojo.css";
+      @import "http://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dojo/resources/dojo.css";
+      @import "http://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dijit/themes/tundra/tundra.css";
     </style>
     <script type="text/javascript">
         var djConfig = {
@@ -26,7 +27,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
   </head>
   <body class="tundra">
-    <div dojoType="dijit.layout.BorderContainer" id = "mainContents" liveSplitters="true">
+    <div  id = "mainContents" liveSplitters="true">
         <div dojoType="dijit.layout.ContentPane" region="top" id ="header" splitter="false">
         </div>
         <div dojoType="dijit.layout.ContentPane" id="game" region="center" splitter="true">
@@ -34,6 +35,18 @@
         </div>
         <div dojoType="dijit.layout.ContentPane"region="bottom" splitter="true">
             <div id="directions"></div>
+            <!---------------REMOVE AFTER MOVING TO HARK SITE---------->
+            <p style="text-align:left;">Master</p>
+            <div id="master"></div>
+            <p style="text-align:left;">Speech Rate</p>
+            <div id="speechRate"></div>
+            <p style="text-align:left;">Speech Volume</p>
+            <div id="speechVol"></div>
+            <p style="text-align:left;">Sound Volume</p>
+            <div id="soundVol"></div>
+            <p style="text-align:left;">Music Volume</p>
+            <div id="music"></div>
+            <!---------------------------------------------------------->
         </div>
     </div>
     <!--<div id="loadingDialog" style="display: none" dojoType="dijit.Dialog" title="Loading">
