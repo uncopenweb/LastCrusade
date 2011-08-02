@@ -243,10 +243,10 @@ dojo.declare('main', null, {
     _start: function(){
         this.mapList = ["forest.json", "graveyard.json", "castle.json"];
         this.player = new widgets.player({}, null); 
-        this._audio.play({url: 'sounds/general/' + this.title, channel:'speech'});
+        this._audio.play({url: 'sounds/general/' + this.title, channel:'sound'});
         this._audio.setProperty({name: 'loop', channel: 'music', value: true});
         this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
-        this._audio.play({url: "sounds/general/" + this.menu, channel: 'speech'});
+        this._audio.play({url: "sounds/general/" + this.menu, channel: 'sound'});
         this.setState(this.sMenu);            
     },
 
@@ -491,16 +491,16 @@ dojo.declare('main', null, {
                             case dojo.keys.NUMPAD_3:
                             case 51:
                                 this.setState(this.sOff);
-                                this.fadeChannel('main');
+                                this.fadeChannel('sound');
                                 this.readMenu();
                                 break;
                             // 1 to start new game
                             case dojo.keys.NUMPAD_1:
                             case 49:
                                 this.setState(this.sOff);
-                                var d1 = this.fadeChannel('background');
+                                var d1 = this.fadeChannel('music');
                                 d1.then(dojo.hitch(this, function(){
-                                    var def3 = this.fadeChannel('main')
+                                    var def3 = this.fadeChannel('sound')
                                     return def3;
                                 })).then(dojo.hitch(this, function(){
                                     this.setState(this.sListen);
@@ -552,7 +552,7 @@ dojo.declare('main', null, {
                                         }));
                                 }
                                 else{//success
-                                    this.fadeChannel("background");
+                                    this.fadeChannel("music");
                                     this._audio.say({text: "You have abandoned the fight and returned to your previous location.", channel:'speech'});
 
                                     //restore enemy health if you run away
@@ -613,7 +613,7 @@ dojo.declare('main', null, {
                                         }));
                                 }
                                 else{//success
-                                    this.fadeChannel("background");
+                                    this.fadeChannel("music");
                                     this._audio.say({text: "You have avoided the " + this.enemy.Name + " and returned to your previous location.", channel:'speech'});
 
                                     this.enemy = null;
@@ -1177,7 +1177,7 @@ dojo.declare('main', null, {
     */
     readMenu: function(){
         this._readingInstructions = true;
-        var def = this.fadeChannel('background');
+        var def = this.fadeChannel('music');
         def.then(dojo.hitch(this, function(){
             this.setState(this.sListen);
             this._audio.play({url: "sounds/general/"+ this.dirSpac, channel:'sound'});
@@ -1308,7 +1308,7 @@ dojo.declare('main', null, {
             if(total > 0){ //successful
                 this.enemy.HP-=total;
                 if(this.enemy.HP <= 0){
-                    this.fadeChannel('background');
+                    this.fadeChannel('music');
                     var enemyName = this.enemy.Name;
                     this._audio.say({text: "Successful attack! You have vanquished the " + enemyName, channel: 'speech'})
                         .anyAfter(dojo.hitch(this,function(){
