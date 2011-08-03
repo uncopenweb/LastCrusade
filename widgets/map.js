@@ -26,6 +26,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
         def.then(dojo.hitch(this, function(audio) { 
             this._audio = audio;
             if(this.tempVolume!=-1){
+                console.log("Volume: ", this.tempVolume);
                 this.changeVolume(this.tempVolume);
             }
         }));   
@@ -43,6 +44,7 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.inherited(arguments);
         this.setUpNodes();
         if(this._audio && this.audioData){
+            console.log("Volume: ", this.audioData.volume);
             this.changeVolume(this.audioData.volume);
         }
         else if(this.audioData){

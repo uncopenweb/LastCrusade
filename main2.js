@@ -257,7 +257,7 @@ dojo.declare('main', null, {
      *
      ******************************************************************/
     _start: function(){
-        var sRate = 1;
+        var sRate = -1;
         this.mapList = ["forest.json", "graveyard.json", "castle.json"];
         this._audio.getProperty({name:'rate', channel: 'speech'})
         .anyAfter(dojo.hitch(this,function(rate){
@@ -265,13 +265,12 @@ dojo.declare('main', null, {
             this._audio.getProperty({name:'volume', channel: 'speech'})
             .anyAfter(dojo.hitch(this,function(volume){
                 console.log("Rate: ", sRate, "Volume: ", volume);
-                var ad = {rate:sRate, volume: volume};
-                    this.player = new widgets.player({audioData: ad}, null); 
-                    this._audio.play({url: 'sounds/general/' + this.title, channel:'sound'});
-                    this._audio.setProperty({name: 'loop', channel: 'music', value: true});
-                    this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
-                    this._audio.play({url: "sounds/general/" + this.menu, channel: 'sound'});
-                    this.setState(this.sMenu);     
+                        this.player = new widgets.player({rate:sRate, volume: volume}, null); 
+                        this._audio.play({url: 'sounds/general/' + this.title, channel:'sound'});
+                        this._audio.setProperty({name: 'loop', channel: 'music', value: true});
+                        this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
+                        this._audio.play({url: "sounds/general/" + this.menu, channel: 'sound'});
+                        this.setState(this.sMenu);     
             }));
         }));       
     },
@@ -911,13 +910,13 @@ dojo.declare('main', null, {
                                 this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 if(this.player.gold < 50){
-                                    this._audio.play({url: "sounds/general/" + this.lepmore, channel:'speech'});
+                                    this._audio.play({url: "sounds/general/" + this.lepmore, channel:'sound'});
                                     this.skipLep = true;
                                     this.lepData = null;
                                     this.exploreNode();
                                 }
                                 else{
-                                    this._audio.play({url: "sounds/general/" + this.leprules, channel: 'speech'});
+                                    this._audio.play({url: "sounds/general/" + this.leprules, channel: 'sound'});
                                     this.startLepGame();
                                 }
                             break;
@@ -927,7 +926,7 @@ dojo.declare('main', null, {
                                 this.player.stopAudio();
                                 this.skipLep = true;
                                 if(Math.floor(Math.random()*(2)) > 0){
-                                    this._audio.play({url: "sounds/general/" + this.lepmad, channel: 'speech'});
+                                    this._audio.play({url: "sounds/general/" + this.lepmad, channel: 'sound'});
                                     this.player.halfGold();
                                     this._audio.say({text: "The leprekaun has run away and taken half of your gold with him.", channel: 'speech'});
                                     this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'speech'})
@@ -974,7 +973,7 @@ dojo.declare('main', null, {
                                 this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
                                 if(Math.floor(Math.random()*(2))==0){//killed
-                                    this._audio.play({url: 'sounds/general/' + this.lepdie, channel: 'speech'});
+                                    this._audio.play({url: 'sounds/general/' + this.lepdie, channel: 'sound'});
                                     var def = this.examineItems(this.lepData[0].Items, "You took ");
                                     def.then(dojo.hitch(this,function(){                                          
                                         this.map.removeNPC(this.lepData[1]);
@@ -983,7 +982,7 @@ dojo.declare('main', null, {
                                     }));
                                 }
                                 else{//fail
-                                    this._audio.play({url: 'sounds/general/' + this.leplive, channel: 'speech'});
+                                    this._audio.play({url: 'sounds/general/' + this.leplive, channel: 'sound'});
                                     this.player.halfHealth();
                                     this.player.removePotions();
                                     if(this.player.hp == 1){
@@ -1011,7 +1010,7 @@ dojo.declare('main', null, {
                             this.setState(this.sOff);
                                 this._audio.stop({channel:'speech'});
                                 this.player.stopAudio();
-                            this._audio.play({url: 'sounds/general/' + this.lepbye, channel: 'speech'});
+                            this._audio.play({url: 'sounds/general/' + this.lepbye, channel: 'sound'});
                             this.skipLep = true;
                             this.exploreNode();
                             break;
@@ -1036,7 +1035,7 @@ dojo.declare('main', null, {
      *
      ******************************************************************/
     startLepGame: function(){
-    this._audio.play({url: "sounds/general/" + this.lep123, channel: 'speech'});
+    this._audio.play({url: "sounds/general/" + this.lep123, channel: 'sound'});
         var temp = Math.floor(Math.random()*(3));
         if(temp == 0){
             this.lepArray[0] = -50;
@@ -1065,21 +1064,21 @@ dojo.declare('main', null, {
     lepResponse: function(choice){
         this.player.gold+=choice;
         if(choice > 0){ //win
-            this._audio.play({url: 'sounds/general/' + this.lepwin, channel: 'speech'});
+            this._audio.play({url: 'sounds/general/' + this.lepwin, channel: 'sound'});
         }
         else{ //lose
-            this._audio.play({url: 'sounds/general/' + this.leplose, channel: 'speech'});
+            this._audio.play({url: 'sounds/general/' + this.leplose, channel: 'sound'});
         }
         this._audio.say({text: "You now have " + this.player.gold + " gold pieces.", channel: 'speech'});
         
         if(this.player.gold < 50){
-            this._audio.play({url: "sounds/general/" + this.lepmore, channel:'speech'});
+            this._audio.play({url: "sounds/general/" + this.lepmore, channel:'sound'});
             this.skipLep = true;
             this.lepData = null;
             this.exploreNode();
         }
         else{
-            this._audio.play({url: 'sounds/general/' + this.lepagain, channel: 'speech'});
+            this._audio.play({url: 'sounds/general/' + this.lepagain, channel: 'sound'});
             this.setState(this.sLepAgain);
         }
     },
@@ -1144,17 +1143,17 @@ dojo.declare('main', null, {
                     }
                     break;
                 case dojo.global.POTION:
-                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'speech'});
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
                     this._audio.say({text: foundSaying + " " + item.iName + " level " + item.iValue, channel: 'speech'});
                     this.player.addItem(item);
                     break;
                 case dojo.global.GOLD:
-                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'speech'});
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
                     this._audio.say({text: foundSaying + " " + item.iValue + " gold pieces!" , channel: 'speech'});
                     this.player.addItem(item);
                     break;
                 case dojo.global.SPECIAL:
-                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'speech'});
+                    this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
                     this._audio.say({text: foundSaying + " " + item.iName, channel: 'speech'});
                     this.player.addItem(item);
                     break;
@@ -1403,7 +1402,7 @@ dojo.declare('main', null, {
             if(playerItem == null){
                 //remove and give, no choice
                 this.tempItem = this.potentialItems.splice(0,1)[0];
-                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'speech'});
+                this._audio.play({url: "sounds/general/"+ this.equip, channel: 'sound'});
                 this._audio.say({text: this.tempItem.iName + " equipped.", channel: 'speech'});
                 this.player.addItem(this.tempItem);
                 this.tempItem = null;
@@ -1540,11 +1539,9 @@ dojo.declare('main', null, {
             }
         }
         else if((this.lepData[1] != -1) && !this.skipLep){
-            this._audio.say({text: "You have encountered a leprekaun.", channel: 'speech'})
-            .anyAfter(dojo.hitch(this,function(){
-                this._audio.play({url: "sounds/general/" + this.lepplay, channel: 'speech'})
-                this.setState(this.sLepEncounter);
-            }));
+            this._audio.say({text: "You have encountered a leprekaun.", channel: 'speech'});
+            this._audio.play({url: "sounds/general/" + this.lepplay, channel: 'sound'})
+            this.setState(this.sLepEncounter);
         }								
         else{
             this.setState(this.sMove);

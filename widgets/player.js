@@ -32,13 +32,14 @@ dojo.declare('widgets.player', [dijit._Widget], {
     },
     
     postCreate: function() {
+        console.log(this.audioData);
         if(this._audio && this.audioData){
             this.changeVolume(this.audioData.volume);
             this.changeRate(this.audioData.rate);            
         }
         else if(this.audioData){
             this.tempVol = this.audioData.volume;
-            this.tempRate = this.audioData.tempRate;
+            this.tempRate = this.audioData.rate;
         }
     },
 
@@ -239,9 +240,11 @@ dojo.declare('widgets.player', [dijit._Widget], {
 
     changeVolume: function(val){
         this._audio.setProperty({name : 'volume', value: val, immediate : true});
+        console.log("Volume: ", val);
     },
 
     changeRate: function(val){
+        console.log("Rate: ", val);
         this._audio.setProperty({name : 'rate', value: val, immediate : true});
     }
 });
