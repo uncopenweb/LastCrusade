@@ -3,7 +3,9 @@ dojo.require("dijit._Widget");
 
 dojo.declare('widgets.map', [dijit._Widget], {
     
-    mapData: {}, 
+    mapData: {},
+
+    audioData: {},
 
     constructor: function() {
         //directions        
@@ -19,9 +21,13 @@ dojo.declare('widgets.map', [dijit._Widget], {
 
         this.x = 0;
         this.y = 0;
+        this.tempVolume = -1;
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
         def.then(dojo.hitch(this, function(audio) { 
             this._audio = audio;
+            if(this.tempVolume!=-1){
+                this.changeVolume(this.tempVolume);
+            }
         }));   
     },
     
@@ -36,6 +42,12 @@ dojo.declare('widgets.map', [dijit._Widget], {
         this.Name = this.mapData.Name;
         this.inherited(arguments);
         this.setUpNodes();
+        if(this._audio && this.audioData){
+            this.changeVolume(this.audioData.volume);
+        }
+        else if(this.audioData){
+            this.tempVolume = this.audioData.volume;
+        }
     },
 
     /*******************************************************************
@@ -357,5 +369,10 @@ dojo.declare('widgets.map', [dijit._Widget], {
      ******************************************************************/
     removeNPC: function(index){
         this.nodes[this.currentNodeIndex].NPC.splice(index,1);
+    },
+
+    changeVolume: function(val){
+        console.log(val);
+        this._audio.setProperty({name : 'volume', value: val, channel : 'map', immediate : true});
     }
 });

@@ -20,69 +20,6 @@ dojo.require("dijit.form.Slider");
 dojo.declare('main', null, {
 
     constructor: function() {
-
-        ///////////////////////REMOVE AFTER MOVING TO HARK SITE/////////
-        var slider = new dijit.form.HorizontalSlider({
-            name: "master",
-            value: 1,
-            minimum: 0,
-            maximum: 1,
-            intermediateChanges: true,
-            style: "width:300px;",
-            onChange: function(value) {
-                console.log("Value: ", value);
-            }
-        },
-        "master");
-        var slider = new dijit.form.HorizontalSlider({
-            name: "speechRate",
-            value: 1,
-            minimum: 0,
-            maximum: 1,
-            intermediateChanges: true,
-            style: "width:300px;",
-            onChange: function(value) {
-                console.log("Value: ", value);
-            }
-        },
-        "speechRate");
-                var slider = new dijit.form.HorizontalSlider({
-            name: "speechVol",
-            value: 1,
-            minimum: 0,
-            maximum: 1,
-            intermediateChanges: true,
-            style: "width:300px;",
-            onChange: function(value) {
-                console.log("Value: ", value);
-            }
-        },
-        "speechVol");
-                var slider = new dijit.form.HorizontalSlider({
-            name: "soundVol",
-            value: 1,
-            minimum: 0,
-            maximum: 1,
-            intermediateChanges: true,
-            style: "width:300px;",
-            onChange: function(value) {
-                console.log("Value: ", value);
-            }
-        },
-        "soundVol");
-                var slider = new dijit.form.HorizontalSlider({
-            name: "music",
-            value: 1,
-            minimum: 0,
-            maximum: 1,
-            intermediateChanges: true,
-            style: "width:300px;",
-            onChange: function(value) {
-                console.log("Value: ", value);
-            }
-        },
-        "music");
-        ////////////////////////////////////////////////////////////////
         
         dojo.global.WEAPON = 0;
         dojo.global.ARMOR = 1;
@@ -191,6 +128,85 @@ dojo.declare('main', null, {
         var def = uow.getAudio({defaultCaching: true});    //get JSonic
         def.then(dojo.hitch(this, function(audio) { 
             this._audio = audio;
+             ///////////////////////REMOVE AFTER MOVING TO HARK SITE/////////
+            var slider = new dijit.form.HorizontalSlider({
+                name: "master",
+                value: 1,
+                minimum: 0,
+                maximum: 1,
+                intermediateChanges: true,
+                style: "width:300px;",
+                onChange: dojo.hitch(this, function(val) {
+                    this._audio.setProperty({name : 'volume', value: val, channel : 'music', immediate : true});
+                    this._audio.setProperty({name : 'volume', value: val, channel : 'sound', immediate : true});
+                    this._audio.setProperty({name : 'volume', value: val, channel : 'speech', immediate : true});
+                    if(this.map){
+                        this.map.changeVolume(val);
+                    }
+                    if(this.player){
+                        this.player.changeVolume(val);
+                    }
+                })
+            },
+            "master");
+            var slider = new dijit.form.HorizontalSlider({
+                name: "speechRate",
+                value: 150,
+                minimum: 1,
+                maximum: 300,
+                intermediateChanges: true,
+                style: "width:300px;",
+                onChange: dojo.hitch(this,function(val) {
+                    this._audio.setProperty({name : 'rate', value: Math.floor(val), channel : 'speech', immediate : true});
+                    if(this.player){
+                        this.player.changeRate(val);
+                    }
+                })
+            },
+            "speechRate");
+            var slider = new dijit.form.HorizontalSlider({
+                name: "speechVol",
+                value: 1,
+                minimum: 0,
+                maximum: 1,
+                intermediateChanges: true,
+                style: "width:300px;",
+                onChange: dojo.hitch(this,function(val) {
+                    this._audio.setProperty({name : 'volume', value: val, channel : 'speech', immediate : true});
+                    if(this.player){
+                        this.player.changeVolume(val);
+                    }
+                })
+            },
+            "speechVol");
+            var slider = new dijit.form.HorizontalSlider({
+                name: "soundVol",
+                value: 1,
+                minimum: 0,
+                maximum: 1,
+                intermediateChanges: true,
+                style: "width:300px;",
+                onChange: dojo.hitch(this,function(val) {
+                    this._audio.setProperty({name : 'volume', value: val, channel : 'sound', immediate : true});
+                })
+            },
+            "soundVol");
+            var slider = new dijit.form.HorizontalSlider({
+                name: "music",
+                value: 1,
+                minimum: 0,
+                maximum: 1,
+                intermediateChanges: true,
+                style: "width:300px;",
+                onChange: dojo.hitch(this,function(val) {
+                    if(this.map){
+                        this.map.changeVolume(val);
+                    }
+                    this._audio.setProperty({name : 'volume', value: val, channel : 'music', immediate : true});
+                })
+            },
+            "music");
+            ////////////////////////////////////////////////////////////////
             this._initSounds();
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
             dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));     
@@ -241,13 +257,22 @@ dojo.declare('main', null, {
      *
      ******************************************************************/
     _start: function(){
+        var sRate = -1;
         this.mapList = ["forest.json", "graveyard.json", "castle.json"];
-        this.player = new widgets.player({}, null); 
-        this._audio.play({url: 'sounds/general/' + this.title, channel:'sound'});
-        this._audio.setProperty({name: 'loop', channel: 'music', value: true});
-        this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
-        this._audio.play({url: "sounds/general/" + this.menu, channel: 'sound'});
-        this.setState(this.sMenu);            
+        this._audio.getProperty({name:'rate', channel: 'speech'})
+        .anyAfter(dojo.hitch(this,function(rate){
+            sRate = rate;
+            this._audio.getProperty({name:'volume', channel: 'speech'})
+            .anyAfter(dojo.hitch(this,function(volume){
+                console.log("Rate: ", sRate, "Volume: ", volume);
+                        this.player = new widgets.player({rate:sRate, volume: volume}, null); 
+                        this._audio.play({url: 'sounds/general/' + this.title, channel:'sound'});
+                        this._audio.setProperty({name: 'loop', channel: 'music', value: true});
+                        this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
+                        this._audio.play({url: "sounds/general/" + this.menu, channel: 'sound'});
+                        this.setState(this.sMenu);     
+            }));
+        }));       
     },
 
     /*******************************************************************
@@ -280,19 +305,23 @@ dojo.declare('main', null, {
             error: function(error) {console.log(error);}
         };
         var dataDef = dojo.xhrGet(mapRequest);
-        dataDef.addCallback(dojo.hitch(this, function(data) { 
-            this.map = new widgets.map({mapData: data}, null); 
-            if(this.start){
-                this.start = false;
-            }
-            else{
-                this.player.equipWeakItems(this.map);
-            }
-            this._audio.say({text: "You are now entering the " + this.map.Name, channel: 'speech'})
+        dataDef.addCallback(dojo.hitch(this, function(data) {
+            this._audio.getProperty({name:'volume', channel:'music'})
+            .anyAfter(dojo.hitch(this,function(volume){
+                this.map = new widgets.map({mapData: data, audioData: {volume: volume}}, null); 
+                if(this.start){
+                    this.start = false;
+                }
+                else{
+                    this.player.equipWeakItems(this.map);
+                }
+                this._audio.say({text: "You are now entering the " + this.map.Name, channel: 'speech'})
                 .anyAfter(dojo.hitch(this,function(){
                     this.setState(this.sMove);
                     this.exploreNode();
                 }));   
+            })); 
+            
         }));
     },
 

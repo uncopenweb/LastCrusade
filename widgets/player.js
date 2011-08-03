@@ -2,8 +2,8 @@ dojo.provide("widgets.player");
 dojo.require("dijit._Widget");
 
 dojo.declare('widgets.player', [dijit._Widget], {
-    
-    playerData: {}, 
+
+    audioData: {},
 
     constructor: function() {
         this.hp = 100;
@@ -12,6 +12,8 @@ dojo.declare('widgets.player', [dijit._Widget], {
         this.strength = 0;
         this.defense = 0;
         this.tooWeak = false;
+        this.tempVol = -1;
+        this.tempRate = -1;
         this.potions = new Array();
         this.weapon = null;
         this.armor = null;
@@ -21,11 +23,24 @@ dojo.declare('widgets.player', [dijit._Widget], {
         var def = uow.getAudio({defaultCaching: true});
         def.then(dojo.hitch(this, function(audio) { 
             this._audio = audio;
+            if(this.tempVol!=-1 && this.tempRate!=-1){
+                this.changeVolume(this.tempVol);
+                this.changeRate(this.tempRate); 
+            }
             this.ready = true;
         }));
     },
     
-    postCreate: function() {},
+    postCreate: function() {
+        if(this._audio && this.audioData){
+            this.changeVolume(this.audioData.volume);
+            this.changeRate(this.audioData.rate);            
+        }
+        else if(this.audioData){
+            this.tempVol = this.audioData.volume;
+            this.tempRate = this.audioData.tempRate;
+        }
+    },
 
     reset: function(direction){
         this.hp = this.maxHP = this.gold = 100;
@@ -221,4 +236,12 @@ dojo.declare('widgets.player', [dijit._Widget], {
     stopAudio: function(){
         this._audio.stop();
     },
+
+    changeVolume: function(val){
+        this._audio.setProperty({name : 'volume', value: val, immediate : true});
+    },
+
+    changeRate: function(val){
+        this._audio.setProperty({name : 'rate', value: val, immediate : true});
+    }
 });
