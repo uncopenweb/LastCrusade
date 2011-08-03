@@ -209,11 +209,25 @@ dojo.declare('main', null, {
             ////////////////////////////////////////////////////////////////
             this._initSounds();
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
-            dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));     
+            dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));
+            dojo.subscribe('/org/hark/pause', pauseCallback);    
             this._keyHasGoneUp = true;
             this._start();
         }));           
     },
+
+    ////////////////--------Hark Integration----------------////////////
+
+    pauseCallback: function(paused){
+        if(paused){
+            console.log("Paused");
+        }
+        else{
+            console.log("Unpaused");
+        }
+    },
+
+    ////////////////////////////////////////////////////////////////////
 
     /*******************************************************************
      *
@@ -264,14 +278,13 @@ dojo.declare('main', null, {
             sRate = rate;
             this._audio.getProperty({name:'volume', channel: 'speech'})
             .anyAfter(dojo.hitch(this,function(volume){
-                console.log("Rate: ", sRate, "Volume: ", volume);
                 var ad = {rate:sRate, volume: volume};
-                    this.player = new widgets.player({audioData: ad}, null); 
-                    this._audio.play({url: 'sounds/general/' + this.title, channel:'sound'});
-                    this._audio.setProperty({name: 'loop', channel: 'music', value: true});
-                    this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
-                    this._audio.play({url: "sounds/general/" + this.menu, channel: 'sound'});
-                    this.setState(this.sMenu);     
+                this.player = new widgets.player({audioData: ad}, null); 
+                this._audio.play({url: 'sounds/general/' + this.title, channel:'sound'});
+                this._audio.setProperty({name: 'loop', channel: 'music', value: true});
+                this._audio.play({url: "sounds/general/"+ this.theme, channel: 'music'});
+                this._audio.play({url: "sounds/general/" + this.menu, channel: 'sound'});
+                this.setState(this.sMenu);     
             }));
         }));       
     },
@@ -398,7 +411,6 @@ dojo.declare('main', null, {
      ******************************************************************/
     _analyzeKey: function(evt){
         if (this._keyHasGoneUp) {
-            console.log("Game state: " , this.state);
             this._keyHasGoneUp = false;             
                 switch(this.state){  
                     case this.sOff:
