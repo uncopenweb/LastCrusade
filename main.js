@@ -210,7 +210,14 @@ dojo.declare('main', null, {
             this._initSounds();
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
             dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));
-            dojo.subscribe('/org/hark/pause', this.pauseCallback());    
+            dojo.subscribe('/org/hark/pause', dojo.hitch(this,function(paused){
+                if(paused){
+                    console.log("Paused");
+                }
+                else{
+                    console.log("Unpaused");
+                }
+            }));    
             this._keyHasGoneUp = true;
             this._start();
         }));           
@@ -219,12 +226,7 @@ dojo.declare('main', null, {
     ////////////////--------Hark Integration----------------////////////
 
     pauseCallback: function(paused){
-        if(paused){
-            console.log("Paused");
-        }
-        else{
-            console.log("Unpaused");
-        }
+
     },
 
     ////////////////////////////////////////////////////////////////////
