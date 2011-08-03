@@ -28,6 +28,8 @@ dojo.declare('main', null, {
         dojo.global.SPECIAL = 4;
 
         //state
+        //@TODO: All the Y/N states should probably be rolled into
+        //one Y/N state with a callback
         this.sOff = 0;
         this.sMenu = 1;
         this.sMove = 2;
@@ -44,6 +46,8 @@ dojo.declare('main', null, {
         this.sLepEncounter = 13;
         this.sLepGame = 14;
         this.sLepAgain = 15;
+        //---//
+        
         this.state = this.sOff;
         this.potentialItems = new Array(); //items to ask player if he/she wants
         this.start = true;
@@ -66,6 +70,11 @@ dojo.declare('main', null, {
         this.keyDelay = 0;
         this.directions = dojo.byId("directions");
         this.offerSaying ="";
+
+        //handles//
+        this.pauseHandle = null;
+        this.prefsHandle = null;
+        //-------//
 
         this._readingInstructions = false;
         this.duringMove = false;
@@ -210,7 +219,8 @@ dojo.declare('main', null, {
             this._initSounds();
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
             dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));
-            dojo.subscribe('/org/hark/pause', this.pauseCallback());    
+            this.pauseHandle = dojo.subscribe('/org/hark/pause', this.pauseCallback());
+            this.prefsHandle = dojo.subscribe('/org/hark/prefs/response', this.prefsCallback());
             this._keyHasGoneUp = true;
             this._start();
         }));           
@@ -224,6 +234,48 @@ dojo.declare('main', null, {
         }
         else{
             console.log("Unpaused");
+        }
+    },
+
+    prefsCallback: function(prefs, which){
+        if(which == null){ //do everything
+
+        }
+        else if(which == "mouseEnabled"){
+
+        }
+        else if(which == "speechRate"){
+            this._audio.setProperty({name : 'rate', value: Math.floor(prefs.speechRate), channel : 'speech', immediate : true});
+            if(this.player){
+                this.player.changeRate(prefs.speechRate);
+            }
+        }
+        else if(which == "volume"){
+            this._audio.setProperty({name : 'volume', value: prefs.volume, channel : 'music', immediate : true});
+            this._audio.setProperty({name : 'volume', value: prefs.volume, channel : 'sound', immediate : true});
+            this._audio.setProperty({name : 'volume', value: prefs.volume, channel : 'speech', immediate : true});
+            if(this.map){
+                this.map.changeVolume(prefs.volume);
+            }
+            if(this.player){
+                this.player.changeVolume(prefs.volume);
+            }
+        }
+        else if(which == "speechVolume"){
+            this._audio.setProperty({name : 'volume', value: prefs.speechVolume, channel : 'speech', immediate : true});
+            if(this.player){
+                this.player.changeVolume(prefs.speechVolume);
+            }
+        }
+        else if(which == "soundVolume"){
+            this._audio.setProperty({name : 'volume', value: prefs.soundVolume, channel : 'sound', immediate : true});
+        }
+        else if(which == "musicVolume"){
+            if(this.map){
+                this.map.changeVolume(prefs.musicVolume);
+            }
+            this._audio.setProperty({name : 'volume', value: prefs.musicVolume, channel : 'music', immediate : true});
+                
         }
     },
 
