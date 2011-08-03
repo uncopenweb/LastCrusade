@@ -210,7 +210,7 @@ dojo.declare('main', null, {
             this._initSounds();
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
             dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));
-            dojo.subscribe('/org/hark/pause', pauseCallback);    
+            dojo.subscribe('/org/hark/pause', this.pauseCallback());    
             this._keyHasGoneUp = true;
             this._start();
         }));           
