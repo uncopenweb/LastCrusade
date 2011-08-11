@@ -229,8 +229,7 @@ dojo.declare('widgets.player', [dijit._Widget], {
     },
 
     removePotions: function(){
-        this.potions = new Array();
-        
+        this.potions = new Array();        
     },
 
     stopAudio: function(){

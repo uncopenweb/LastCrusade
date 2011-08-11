@@ -19,6 +19,8 @@ dojo.require("dijit.form.Slider");
 //////////////////////////////////
 dojo.declare('main', null, {
 
+    //@TODO: weird fadechannel bug
+    
     constructor: function() {
         
         dojo.global.WEAPON = 0;
@@ -46,9 +48,11 @@ dojo.declare('main', null, {
         this.sLepEncounter = 13;
         this.sLepGame = 14;
         this.sLepAgain = 15;
+        this.sPaused = 16;
         //---//
         
         this.state = this.sOff;
+        this.tempState = -1;
         this.potentialItems = new Array(); //items to ask player if he/she wants
         this.start = true;
         this.firstFriend = true;
@@ -219,8 +223,8 @@ dojo.declare('main', null, {
             this._initSounds();
             dojo.connect(dojo.global, 'onkeyup', dojo.hitch(this, '_removeKeyDownFlag'));
             dojo.connect(dojo.global, 'onkeydown', dojo.hitch(this, '_analyzeKey'));
-            this.pauseHandle = dojo.subscribe('/org/hark/pause', this.pauseCallback());
-            this.prefsHandle = dojo.subscribe('/org/hark/prefs/response', this.prefsCallback());
+            this.pauseHandle = dojo.subscribe('/org/hark/pause', this.pauseCallback);
+            this.prefsHandle = dojo.subscribe('/org/hark/prefs/response', this.prefsCallback);
             this._keyHasGoneUp = true;
             this._start();
         }));           
@@ -229,17 +233,59 @@ dojo.declare('main', null, {
     ////////////////--------Hark Integration----------------////////////
 
     pauseCallback: function(paused){
-        if(paused){
-            console.log("Paused");
+        /*if(paused){
+            this.tempState = this.state;
+            this.setState(this.sOff);
+
+            //turn off sound
+            this._audio.setProperty({name : 'volume', value: 0, channel : 'music', immediate : true});
+            this._audio.setProperty({name : 'volume', value: 0, channel : 'sound', immediate : true});
+            this._audio.setProperty({name : 'volume', value: 0, channel : 'speech', immediate : true});
+            if(this.map){
+                this.map.changeVolume(0);
+            }
+            if(this.player){
+                this.player.changeVolume(0);
+            }
         }
         else{
-            console.log("Unpaused");
-        }
+            if(this.tempState == -1){}
+            else{
+                this.setState(this.tempState);
+                this.tempState = -1;
+                //turn on sound
+                dojo.publish('/org/hark/prefs/request');
+            }
+        }*/
     },
 
     prefsCallback: function(prefs, which){
-        if(which == null){ //do everything
-
+        /*console.log("Prefs: ", prefs, " Which: ", which);
+        if(prefs == null){}
+        else if(which == null){ //do everything
+            this._audio.setProperty({name : 'rate', value: Math.floor(prefs.speechRate), channel : 'speech', immediate : true});
+            if(this.player){
+                this.player.changeRate(prefs.speechRate);
+            }
+            this._audio.setProperty({name : 'volume', value: prefs.volume, channel : 'music', immediate : true});
+            this._audio.setProperty({name : 'volume', value: prefs.volume, channel : 'sound', immediate : true});
+            this._audio.setProperty({name : 'volume', value: prefs.volume, channel : 'speech', immediate : true});
+            if(this.map){
+                this.map.changeVolume(prefs.volume);
+            }
+            if(this.player){
+                this.player.changeVolume(prefs.volume);
+            }
+            this._audio.setProperty({name : 'volume', value: prefs.speechVolume, channel : 'speech', immediate : true});
+            if(this.player){
+                this.player.changeVolume(prefs.speechVolume);
+            }
+            this._audio.setProperty({name : 'volume', value: prefs.soundVolume, channel : 'sound', immediate : true});
+            if(this.map){
+                this.map.changeVolume(prefs.musicVolume);
+            }
+            this._audio.setProperty({name : 'volume', value: prefs.musicVolume, channel : 'music', immediate : true});
+            
         }
         else if(which == "mouseEnabled"){
 
@@ -275,8 +321,8 @@ dojo.declare('main', null, {
                 this.map.changeVolume(prefs.musicVolume);
             }
             this._audio.setProperty({name : 'volume', value: prefs.musicVolume, channel : 'music', immediate : true});
-                
         }
+        * */
     },
 
     ////////////////////////////////////////////////////////////////////
@@ -1294,8 +1340,39 @@ dojo.declare('main', null, {
      *
      ******************************************************************/
     fadeChannel: function(chn){
-        //implement fading boolean        
-        this.fading = true;
+        /*var deferred = new dojo.Deferred();
+        this._audio.getProperty({name:'volume', channel: chn})
+        .anyAfter(dojo.hitch(this,function(value){
+            console.log("Value: ", value);
+            var j = 4;
+            var increments = new Array();
+            while(j>=0){
+                if((j*value/5) < 0.05){
+                    increments.push(0);
+                    j = -1;
+                }
+                else{
+                    increments.push(j*value/5);
+                    j = j - 1;
+                }
+            }
+            console.log(increments);
+            var i = 0;
+            var fadeTimer = new dojox.timing.Timer(400);
+            fadeTimer.onTick = dojo.hitch(this, function() {
+                this._audio.setProperty({name : 'volume', value: increments[i], channel : chn, immediate : true});
+                if(i == (increments.length - 1))
+                {
+                    fadeTimer.stop();
+                    this._audio.stop({channel : chn});
+                    this._audio.setProperty({name : 'volume', value: 1.0, channel : chn, immediate : true});
+                    deferred.callback();
+                }
+                i++;
+            });
+            fadeTimer.start();
+        }));*/
+        
         var increments=[0.75, 0.5, 0.25, 0.1, 0.05];
         var i = 0;
         var fadeTimer = new dojox.timing.Timer(400);
