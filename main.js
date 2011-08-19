@@ -1281,7 +1281,7 @@ dojo.declare('main', null, {
             }
         }));
         if(gameEnd){
-            console.log("AAAAAAAAAAAAHHH game end sequence missing");
+            this._endGame();
         }
         if(!atLeastOne){
             deferred.callback({found:false});
@@ -1734,6 +1734,11 @@ dojo.declare('main', null, {
         this._audio.stop({channel:'music'});
         this._audio.stop({channel:'speech'});
         this.player.stopAudio();
+    },
+
+    _endGame: function(){
+        this._stopAudio();
+        this._audio.play({url: "sounds/general/" + this.ending, channel: 'music'});
     },
 });
 
