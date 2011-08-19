@@ -50,7 +50,7 @@ dojo.declare('main', null, {
         this.sLepAgain = 15;
         this.sPaused = 16;
         //---//
-        
+        this.gameOver = false;
         this.state = this.sOff;
         this.tempState = -1;
         this.potentialItems = new Array(); //items to ask player if he/she wants
@@ -339,6 +339,7 @@ dojo.declare('main', null, {
         this.start = true;
         this.firstFriend = true;
         this.tempItem = null;
+        this.gameOver = false;
 
         this.skipVendors = false;
         this.skipFriends = false;
@@ -617,12 +618,6 @@ dojo.declare('main', null, {
                                         }));
                                     }
                                 break;
-                            /* @TODO: REMOVE AFTER DEBUGGING DONE!!!!!!!!!!!*/
-                            case 71:
-                                this.player.hp = 100;
-                                this.player.strength = 100;
-                                this.player.defense = 1000;
-                                break;
                         }
                         break;
                     case this.sMenu:
@@ -666,8 +661,13 @@ dojo.declare('main', null, {
                                         def2.then(dojo.hitch(this,function(){                                          
                                             this.map.removeNPC(this.enemyData[1]);
                                             this.enemy = null;
-                                            this.setState(this.sMove);
-                                            this.map.visitCurrentNode();
+                                            if(this.gameOver){
+                                                this._endGame();
+                                            }
+                                            else{
+                                                this.setState(this.sMove);
+                                                this.map.visitCurrentNode();
+                                            }
                                         }));
                                     }
                                     else{
@@ -725,15 +725,6 @@ dojo.declare('main', null, {
                                 this.player.stopAudio();
                                 this._queryEnemy();
                                 this.setState(this.sFight);
-                                break;
-                            /* @TODO: REMOVE AFTER DEBUGGING DONE!!!!!!!!!!!*/
-                            case 75: //set enemy health to 0
-                                this.enemy.HP = 0;
-                                break;
-                            case 71:
-                                this.player.hp = 100;
-                                this.player.strength = 100;
-                                this.player.defense = 1000;
                                 break;
                         }  
                         break;
@@ -1244,12 +1235,12 @@ dojo.declare('main', null, {
             }
             switch(item.iType){
                 case dojo.global.WEAPON:
-                    if((this.player.weapon == null) || (item.iValue >= this.player.weapon.iValue)){
+                    if((this.player.weapon == null) || (item.iValue > this.player.weapon.iValue)){
                         this.potentialItems.push(item);
                     }
                     break;
 		        case dojo.global.ARMOR:
-                    if((this.player.armor == null) || (item.iValue >= this.player.armor.iValue)){
+                    if((this.player.armor == null) || (item.iValue > this.player.armor.iValue)){
                         this.potentialItems.push(item);
                     }
                     break;
@@ -1281,7 +1272,8 @@ dojo.declare('main', null, {
             }
         }));
         if(gameEnd){
-            this._endGame();
+            deferred.callback({found:true});
+            this.gameOver = true;
         }
         if(!atLeastOne){
             deferred.callback({found:false});
@@ -1738,7 +1730,14 @@ dojo.declare('main', null, {
 
     _endGame: function(){
         this._stopAudio();
-        this._audio.play({url: "sounds/general/" + this.ending, channel: 'music'});
+        this.map.fade();
+        this._audio.setProperty({name: 'loop', channel: 'music', value: false});
+        this._audio.play({url: "sounds/general/" + this.ending, channel: 'music'})
+        .anyAfter(dojo.hitch(this,function(){
+            console.log("here");
+            this._gameReset();
+            this._start();
+        }));
     },
 });
 
